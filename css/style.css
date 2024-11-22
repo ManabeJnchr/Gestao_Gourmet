@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Scheherazade+New:wght@400;500;600;700&display=swap');
+
+* { font-family: "Inter", sans-serif; }
+
+body { margin: 0px; }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background-color: white;
+    height: 5vh;
+}
+
+.selected { background-color: #e8e8e8;}
+
+h3 { margin: 0px; font-size: 16px; }
+h2 { margin: 0px; font-size: 20px; }
+h1 { margin: 0px; font-size: 28px; }
+
+#div_main {
+    display: flex;
+    background-color: aqua;
+    height: 95vh;
+}
+
+#div_menu {
+    background-color: white;
+    width: 15%;
+    padding:0px;
+    border: solid 2px #e8e8e8;
+}
+
+#div_menu h2 {
+    padding: 20px;
+}
+
+#div_menu h3 {
+    padding: 0px;
+    padding-top: 18px;
+    padding-left: 20px;
+}
+
+#div_menu ul {
+    list-style-type: none;
+    padding: 0px;
+
+}
+#div_menu li {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    padding-left: 20px;
+    color:black;
+    cursor:pointer;
+}
+
+#div_content {
+    background-color: #f5f5f5;
+    width: 85%;
+}
+
+#div_contentHeader {
+    display: flex;
+    align-items: center;
+    margin-top: 0px;
+    background-color: white;
+    border: solid 2px #e8e8e8;
+    border-left: 0px;
+    padding: 8px;
+}
+
+#div_contentBody {
+    padding: 8px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.div_contentItem {
+    display: flex;
+    padding: 12px;
+    margin: 6px;
+    width: 46%;
+    height: 150px;
+    background-color: white;
+    border: solid #8a8a8a 2px;
+    border-radius: 8px;
+}
+
+#span_userIcon {
+    display: flex;
+    align-items: center;
+    color: #787878;
+    cursor: pointer;
+}
+
+.span_titleContentItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.span_contentItemText {
+    width: 100%;
+}
+
+.img_userIcon {
+    width: 40px;
+    border-radius: 20px;
+    margin-left: 8px;
+    text-align: center;
+}
+
+.img_bigIcon {
+    margin: 8px;
+    width: 32px;
+}
+
+.img_smallIcon {
+    width: 28px;
+}
+
+.img_listIcon {
+    width: 22px;
+    margin-right: 8px;
+}
+
+.img_contentThumb {
+    width: 28%;
+    max-height: 100%;
+    margin-right: 8px;
+    border-radius: 8px;
+}
+
