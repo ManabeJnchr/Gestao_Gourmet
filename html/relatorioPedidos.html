@@ -47,7 +47,7 @@
                 <h3>Relatórios</h3>
                 <ul>
                     <a href="../html/relatorioPedidos.html">
-                        <li>
+                        <li class="selected">
                             <img class="img_menuIcon" src="../src/img/receipt-solid.svg" alt="icon">
                             Pedidos
                         </li>
@@ -67,7 +67,16 @@
                 </ul>
             </div>
             <div id="div_content">
-                
+                <div id="div_contentHeader">
+                    <!-- O botão atualmente retorna a página anterior -->
+                    <button type="button" onclick="history.go(-1)">
+                        <img class="img_bigIcon" src="../src/img/arrow-left-solid.svg" alt="icon">
+                    </button>
+                    <h1>RELATÓRIO PEDIDOS</h1>
+                </div>
+                <div id="div_contentBody">
+                    
+                </div>
             </div>
         </div>
     </body>

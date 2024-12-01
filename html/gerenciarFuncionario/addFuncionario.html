@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestão Gourmet</title>
+        <link rel="stylesheet" href="../../css/style.css">
+    </head>
+    <body>
+        <header>
+            <div id="div_title">
+                <h2>Gestão Gourmet</h2>
+            </div>
+            <div id="div_user">
+                <text id="text_userName">Jean Luca</text>
+                <img id="img_userIcon" src="../../src/img/user-icon-placeholder.jpg" alt="user-icon" srcset="">
+                <img class="img_navBarIcon" src="../../src/img/chevron-down-solid.svg" alt="img_arrow-down" srcset="">
+            </div>
+        </header>
+        <div id="div_main">
+            <div id="div_menu">
+                <h2>MENU</h2>
+                <h3>Administrativo</h3>
+                <ul>
+                    <li class="selected">
+                        <a href="../../html/gerenciarFuncionario.html">
+                            <img class="img_menuIcon" src="../../src/img/users-gear-solid.svg" alt="icon">
+                            Gerenciar Funcionário
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../../html/gerenciarMesas.html">
+                            <img class="img_menuIcon" src="../../src/img/chair-solid.svg" alt="icon">
+                            Gerenciar Mesas
+                        </a>
+                    </li>
+                </ul>
+                <h3>Cardápio</h3>
+                <ul>
+                    <li>
+                        <a href="../../html/gerenciarCardapio.html">
+                            <img class="img_menuIcon" src="../../src/img/burger-solid.svg" alt="icon">
+                            Gerenciar Cardápio
+                        </a>
+                    </li>
+                </ul>
+                <h3>Relatórios</h3>
+                <ul>
+                    <a href="../../html/relatorioPedidos.html">
+                        <li>
+                            <img class="img_menuIcon" src="../../src/img/receipt-solid.svg" alt="icon">
+                            Pedidos
+                        </li>
+                    </a>
+                    <a href="../../html/relatorioReservas.html">
+                        <li>
+                            <img class="img_menuIcon" src="../../src/img/utensils-solid.svg"" alt="icon">
+                            Reservas
+                        </li>
+                    </a>
+                    <a href="../../html/relatorioFuncionarios.html">
+                        <li>
+                            <img class="img_menuIcon" src="../../src/img/users-solid.svg" alt="icon">
+                            Funcionários
+                        </li>
+                    </a>
+                </ul>
+            </div>
+            <div id="div_content">
+                <div id="div_contentHeader">
+                    <button type="button" onclick="history.go(-1)">
+                        <img class="img_bigIcon" src="../../src/img/arrow-left-solid.svg" alt="icon">
+                    </button>
+                    <h1>
+                        GERENCIAR FUNCIONÁRIO
+                    </h1>
+                    <img class="img_smallIcon" src="../../src/img/chevron-right-solid.svg">
+                    <h2>
+                        Criar Novo
+                    </h2>
+                </div>
+                <div id="div_contentBody">
+                    <div id="div_contentItemAdd">
+                        <form>
+                            <div id="div_contentItemAddTop">
+                                <div>
+                                    <label for="profileImgFuncionario" id="label_profileImgFuncionario">
+                                        <img src="../../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                                    </label>
+                                    <input type="file" accept="image/*" class="oculted" id="profileImgFuncionario" >
+                                </div>
+                                <div id="div_contentItemAddTopRight">
+                                    <div class="div_contentItemAddTopRightLine">
+                                        <div class="div_firstLabel">
+                                            <label for="nomeFuncionario">
+                                                Nome:
+                                            </label>
+                                        </div>
+                                        <input type="text" id="nomeFuncionario" name="nomeFuncionario">
+                                    </div>
+                                    <div class="div_contentItemAddTopRightLine">
+                                        <div class="div_firstLabel">
+                                            <label for="cpfFuncionario">
+                                                CPF:
+                                            </label>
+                                        </div>
+                                        <input type="text" id="cpfFuncionario" name="cpfFuncionario">
+                                        <label for="telefoneFuncionario">
+                                            Telefone:
+                                        </label>
+                                        <input type="text" id="telefoneFuncionario" name="telefoneFuncionario">
+                                        <label for="cargoFuncionario">
+                                            Cargo:
+                                        </label>
+                                        <select id="cargoFuncionario" name="cargoFuncionario">
+                                            <option value="" selected disabled>
+                                                Selecione um cargo
+                                            </option>
+                                            <option value="Administrador">
+                                                Administrador
+                                            </option>
+                                            <option value="Caixa / Atendente">
+                                                Caixa / Atendente
+                                            </option>
+                                            <option value="Garçom">
+                                                Garçom
+                                            </option>
+                                            <option value="Gerente">
+                                                Gerente
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <span>
+                                    Atenção: Ao criar um novo funcionário, será definida uma senha provisória de acesso igual ao CPF.
+                                </span>
+                                <br>
+                                <br>
+                            </div>
+                            <div id="div_contentItemAddButtons">
+                                <!-- O botão canelar retorna a página anterior -->
+                                <button id="btn_cancelar" type="button" onclick="history.go(-1)">
+                                    CANCELAR
+                                </button>
+                                <!-- O botão adicionar atualmente está definido como reset apenas para mostrar que o forms está funcionando -->
+                                <button id="btn_adicionar" type="reset">
+                                    ADICIONAR
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

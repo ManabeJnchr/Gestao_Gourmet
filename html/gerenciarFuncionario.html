@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestão Gourmet</title>
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+        <header>
+            <div id="div_title">
+                <h2>Gestão Gourmet</h2>
+            </div>
+            <div id="div_user">
+                <text id="text_userName">Jean Luca</text>
+                <img id="img_userIcon" src="../src/img/user-icon-placeholder.jpg" alt="user-icon" srcset="">
+                <img class="img_navBarIcon" src="../src/img/chevron-down-solid.svg" alt="img_arrow-down" srcset="">
+            </div>
+        </header>
+        <div id="div_main">
+            <div id="div_menu">
+                <h2>MENU</h2>
+                <h3>Administrativo</h3>
+                <ul>
+                    <li class="selected">
+                        <a href="../html/gerenciarFuncionario.html">
+                            <img class="img_menuIcon" src="../src/img/users-gear-solid.svg" alt="icon">
+                            Gerenciar Funcionário
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../html/gerenciarMesas.html">
+                            <img class="img_menuIcon" src="../src/img/chair-solid.svg" alt="icon">
+                            Gerenciar Mesas
+                        </a>
+                    </li>
+                </ul>
+                <h3>Cardápio</h3>
+                <ul>
+                    <li>
+                        <a href="../html/gerenciarCardapio.html">
+                            <img class="img_menuIcon" src="../src/img/burger-solid.svg" alt="icon">
+                            Gerenciar Cardápio
+                        </a>
+                    </li>
+                </ul>
+                <h3>Relatórios</h3>
+                <ul>
+                    <a href="../html/relatorioPedidos.html">
+                        <li>
+                            <img class="img_menuIcon" src="../src/img/receipt-solid.svg" alt="icon">
+                            Pedidos
+                        </li>
+                    </a>
+                    <a href="../html/relatorioReservas.html">
+                        <li>
+                            <img class="img_menuIcon" src="../src/img/utensils-solid.svg"" alt="icon">
+                            Reservas
+                        </li>
+                    </a>
+                    <a href="../html/relatorioFuncionarios.html">
+                        <li>
+                            <img class="img_menuIcon" src="../src/img/users-solid.svg" alt="icon">
+                            Funcionários
+                        </li>
+                    </a>
+                </ul>
+            </div>
+            <div id="div_content">
+                <div id="div_contentHeader">
+                    <!-- O botão atualmente retorna a página anterior -->
+                    <button type="button" onclick="history.go(-1)">
+                        <img class="img_bigIcon" src="../src/img/arrow-left-solid.svg" alt="icon">
+                    </button>
+                    <h1>GERENCIAR FUNCIONÁRIO</h1>
+                </div>
+                <div id="div_contentBody">
+                    <div class="div_contentItem">
+                        <div>
+                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                        </div>
+                        <div class="div_contentItemRight">
+                            <div class="div_contentItemRightTop">
+                                <h1>Novo Funcionário</h1>
+                                <a href="./gerenciarFuncionario/addFuncionario.html">
+                                    <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon" srcset="">
+                                </a>
+                            </div>
+                            <div>
+                                Acrescentar novo usuário do sistema.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_contentItem">
+                        <div>
+                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                        </div>
+                        <div class="div_contentItemRight">
+                            <div class="div_contentItemRightTop">
+                                <h1>Funcionário</h1>
+                                <a href="./ManterFuncionario_CriarNovo.html">
+                                    <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon" srcset="">
+                                </a>
+                            </div>
+                            <div>
+                                Administrador
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_contentItem">
+                        <div>
+                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                        </div>
+                        <div class="div_contentItemRight">
+                            <div class="div_contentItemRightTop">
+                                <h1>Funcionário</h1>
+                                <a href="./ManterFuncionario_CriarNovo.html">
+                                    <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon" srcset="">
+                                </a>
+                            </div>
+                            <div>
+                                Gerente
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_contentItem">
+                        <div>
+                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                        </div>
+                        <div class="div_contentItemRight">
+                            <div class="div_contentItemRightTop">
+                                <h1>Funcionário</h1>
+                                <a href="./ManterFuncionario_CriarNovo.html">
+                                    <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon" srcset="">
+                                </a>
+                            </div>
+                            <div>
+                                Caixa / Atendente
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div_contentItem">
+                        <div>
+                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                        </div>
+                        <div class="div_contentItemRight">
+                            <div class="div_contentItemRightTop">
+                                <h1>Funcionário</h1>
+                                <a href="./ManterFuncionario_CriarNovo.html">
+                                    <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon" srcset="">
+                                </a>
+                            </div>
+                            <div>
+                                Garçom
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
