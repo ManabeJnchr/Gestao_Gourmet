@@ -22,7 +22,7 @@
                 <h2>MENU</h2>
                 <h3>Administrativo</h3>
                 <ul>
-                    <li class="selected">
+                    <li>
                         <a href="../../html/gerenciarFuncionario.html">
                             <img class="img_menuIcon" src="../../src/img/users-gear-solid.svg" alt="icon">
                             Gerenciar Funcionário
@@ -37,7 +37,7 @@
                 </ul>
                 <h3>Cardápio</h3>
                 <ul>
-                    <li>
+                    <li class="selected">
                         <a href="../../html/gerenciarCardapio.html">
                             <img class="img_menuIcon" src="../../src/img/burger-solid.svg" alt="icon">
                             Gerenciar Cardápio
@@ -58,7 +58,7 @@
                             Reservas
                         </li>
                     </a>
-                    <a href="../../html/relatorioFuncionarios.html">
+                    <a href="../../html/relatorioCardapios.html">
                         <li>
                             <img class="img_menuIcon" src="../../src/img/users-solid.svg" alt="icon">
                             Funcionários
@@ -72,7 +72,7 @@
                         <img class="img_bigIcon" src="../../src/img/arrow-left-solid.svg" alt="icon">
                     </button>
                     <h1>
-                        GERENCIAR FUNCIONÁRIO
+                        GERENCIAR CARDÁPIO
                     </h1>
                     <img class="img_smallIcon" src="../../src/img/chevron-right-solid.svg">
                     <h2>
@@ -84,10 +84,10 @@
                         <form>
                             <div id="div_contentItemAddTop">
                                 <div>
-                                    <label for="profileImgFuncionario" id="label_profileImgFuncionario">
+                                    <label for="profileImgCardapio" id="label_profileImgCardapio">
                                         <img src="../../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
                                     </label>
-                                    <input type="file" accept="image/*" class="oculted" id="profileImgFuncionario" >
+                                    <input type="file" accept="image/*" class="oculted" id="profileImgCardapio" >
                                     <button type="button" id="btn_addProfileImg">
                                         <img src="../../src/img/camera-solid.svg" alt="icon" class="img_smallIconBtn">
                                         Alterar Foto
@@ -96,43 +96,23 @@
                                 <div id="div_contentItemAddTopRight">
                                     <div class="div_contentItemAddTopRightLine">
                                         <div class="div_firstLabel">
-                                            <label for="nomeFuncionario">
+                                            <label for="nomeCardapio">
                                                 Nome:
                                             </label>
                                         </div>
-                                        <input type="text" id="nomeFuncionario" name="nomeFuncionario">
+                                        <input type="text" id="nomeCardapio" name="nomeCardapio">
+                                        <label for="precoCardapio">
+                                            Preço:
+                                        </label>
+                                        <input type="number" id="precoCardapio" name="precoCardapio">
                                     </div>
                                     <div class="div_contentItemAddTopRightLine">
                                         <div class="div_firstLabel">
-                                            <label for="cpfFuncionario">
-                                                CPF:
+                                            <label for="cpfCardapio">
+                                                Descrição:
                                             </label>
                                         </div>
-                                        <input type="text" id="cpfFuncionario" name="cpfFuncionario">
-                                        <label for="telefoneFuncionario">
-                                            Telefone:
-                                        </label>
-                                        <input type="tel" id="telefoneFuncionario" name="telefoneFuncionario">
-                                        <label for="cargoFuncionario">
-                                            Cargo:
-                                        </label>
-                                        <select id="cargoFuncionario" name="cargoFuncionario">
-                                            <option value="" selected disabled>
-                                                Selecione um cargo
-                                            </option>
-                                            <option value="Administrador">
-                                                Administrador
-                                            </option>
-                                            <option value="Caixa / Atendente">
-                                                Caixa / Atendente
-                                            </option>
-                                            <option value="Garçom">
-                                                Garçom
-                                            </option>
-                                            <option value="Gerente">
-                                                Gerente
-                                            </option>
-                                        </select>
+                                        <textarea id="cpfCardapio" name="cpfCardapio"></textarea>
                                     </div>
                                 </div>
                             </div>
