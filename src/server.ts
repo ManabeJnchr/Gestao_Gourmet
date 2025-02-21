@@ -1,12 +1,21 @@
 import express, { Request, Response } from "express";
 import path from "path";
 import pool from './database';
+import cors from 'cors';
+import router from './routes';
+import initdb from './dbinit';
 
 const app = express();
 const PORT = 3001;
 
 (async function main () {
-    app.use(express.static(path.join(__dirname, "..", "public")));
+    // app.use(express.static(path.join(__dirname, "..", "public")));
+    app.use(cors());
+    app.use(express.json());
+    app.use(router);
+
+    // Inicia a base de dados:
+    await initdb();
 
     app.get('/', function (req: Request, res: Response) {
         res.sendFile(path.join(__dirname, "..", "public", "html", "index.html"))
