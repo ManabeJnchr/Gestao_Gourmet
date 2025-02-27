@@ -280,7 +280,7 @@
                                     </button>
                                 </div>
                                 <div class="col-4">
-                                    <button id="btn_adicionar" type="reset" class="w-100 btn text-white" @click="salvarRegistro()">
+                                    <button id="btn_adicionar" type="reset" class="w-100 btn text-white" @click="salvarRegistro(); tela = 'GER'">
                                         ADICIONAR
                                     </button>
                                 </div>
@@ -321,7 +321,6 @@
                             console.log(i);
                             this.dados[i] = resp.data;
                             this.limparRegistro();
-                            this.tela = 'GER';
                         }
                         else {
                             console.log('Adicionando Registro');
@@ -335,9 +334,6 @@
                     .finally(function () {
                         
                     });
-                },
-                editarRegistro(id) {
-                    this.registro = this.dados.filter(item => item.id == id)[0];
                 },
                 deletarRegistro(id) {
                     axios.post('/deletarItemCardapio', id)
@@ -354,15 +350,12 @@
                         
                     });
                 },
+                editarRegistro(id) {
+                    this.registro = this.dados.filter(item => item.id == id)[0];
+                },
                 limparRegistro() {
                     this.registro = {nome: '', preco: '', descricao: ''};
                 },
-                // salvarRegistro() {
-                //     this.registro.id = this.id;
-                //     this.id++;
-                //     this.dados.push(this.registro);
-                //     this.limparRegistro();
-                // },
             }
         }
     </script>
