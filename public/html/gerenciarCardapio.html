@@ -158,10 +158,16 @@
                                 <div class="col">
                                     <div class="d-flex m-2 justify-content-between">
                                         <h4 class="h2" x-text="dado.nome"></h4>
-                                        <a href="#" @click="tela = 'EDT'; editarRegistro(dado.id)">
-                                            <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon"
-                                                srcset="">
-                                        </a>
+                                        <div>
+                                            <a href="#" @click="tela = 'EDT'; editarRegistro(dado.id)" class="me-3">
+                                                <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon"
+                                                    srcset="">
+                                            </a>
+                                            <a href="#" @click="deletarRegistro(dado.id)">
+                                                <img src="../src/img/trash-solid.svg" alt="icon" class="img_bigIcon"
+                                                    srcset="">
+                                            </a>
+                                        </div>
                                     </div>
                                     <div class="m-2 h5 no-bold">
                                         <span>R$ </span><span x-text="dado.preco"></span>
