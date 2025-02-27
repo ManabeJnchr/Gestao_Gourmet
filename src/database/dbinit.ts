@@ -1,6 +1,6 @@
-import pool from './database';
+import { Pool } from "pg";
 
-async function initdb () {
+async function initdb (pool: Pool) {
 
     try {
         // Inicializar tabelas:
