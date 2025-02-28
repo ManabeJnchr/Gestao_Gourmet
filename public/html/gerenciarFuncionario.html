@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div x-data="Funcionarios()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="Funcionarios()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
 
                 <div class="row mt-3 mb-5 border-3 d-flex ps-0 pe-0" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
@@ -272,7 +272,7 @@
                     .catch(error => {
                         console.log(error);
                     })
-                    .finnaly(function () {
+                    .finally(function () {
 
                     });
                 },
