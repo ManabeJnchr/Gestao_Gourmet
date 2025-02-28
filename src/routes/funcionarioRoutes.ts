@@ -1,8 +1,9 @@
 
 import express from "express";
 
-import { salvarFuncionario } from '../controllers/funcionarioController';
+import { salvarFuncionario, listarFuncionarios } from '../controllers/funcionarioController';
 
 export default (router: express.Router) => {
-    router.post('/addfuncionario', salvarFuncionario);
+    router.post('/salvarFuncionario', salvarFuncionario);
+    router.get('/listarFuncionarios', listarFuncionarios);
 };
