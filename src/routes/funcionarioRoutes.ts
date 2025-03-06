@@ -6,5 +6,5 @@ import { salvarFuncionario, listarFuncionarios, deletarFuncionario } from '../co
 export default (router: express.Router) => {
     router.post('/salvarFuncionario', salvarFuncionario);
     router.get('/listarFuncionarios', listarFuncionarios);
-    router.delete('/deletarFuncionario', deletarFuncionario);
+    router.post('/deletarFuncionario', deletarFuncionario);
 };
