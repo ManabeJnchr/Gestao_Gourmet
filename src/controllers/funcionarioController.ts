@@ -78,3 +78,23 @@ export const listarFuncionarios = async (req: express.Request, res: express.Resp
         res.sendStatus(400).json({"erro":err});
     }
 }
+
+export const deletarFuncionario = async (req: express.Request, res: express.Response) => {
+    try {
+        const { id } = req.body;
+
+        const result = await pool.query(`
+            DELETE FROM funcionario
+            WHERE id = $1
+            RETURNING *;
+            `, 
+            [id]);
+
+        res.json(result.rows);
+
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(400).json({"erro":err});
+    }
+}
