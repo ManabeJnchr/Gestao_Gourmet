@@ -15,12 +15,12 @@
 </head>
 
 <body>
-    <div class="container-fluid vh-100 d-flex flex-column">
+    <div class="container-fluid vh-100">
         <header class="row border-bottom border-3">
             <div class="col-3">
                 <h2 class="mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
             </div>
-            <div class="col-9 d-flex align-items-center justify-content-end">
+            <div class="col-9 align-items-center text-end">
                 <div class="btn-group">
                     <button type="button" class="btn bg-transparent">
                         <span class="me-2" id="text_userName">Jean Luca</span>
@@ -121,7 +121,7 @@
             </div>
             <div x-data="Funcionarios()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
 
-                <div class="row mt-3 mb-5 border-3 d-flex ps-0 pe-0" id="div_contentHeader">
+                <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <!-- O botão atualmente retorna a página anterior -->
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
@@ -140,7 +140,72 @@
                 </div>
 
                 <div class="row" :class="tela == 'GER' ? '' : 'd-none'">
-                    <div class="col-sm-12 col-md-6 col-lg-4 div_contentItem m-3 pt-2 pb-2 border-4 rounded">
+                    <div class="col-sm-12 col-md-6 p-2">
+                        <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
+                            <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
+                                <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                    class="img_contentThumb rounded-2">
+                            </div>
+                            <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <h4 class="h2 text-truncate">Novo Funcionário</h4>
+                                    </div>
+                                    <div class="col text-end" style="width: 56px;
+                                    max-width: fit-content;">
+                                        <a href="#" @click="tela = 'CAD'">
+                                            <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
+                                                srcset="">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 h5 no-bold">
+                                        Acrescentar novo funcionário.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template x-for="(dado, index) in dados">
+                        <div class="col-sm-12 col-md-6 p-2">
+                            <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
+                                <div class="col-md-4 d-md-block d-none align-content-center h-100"
+                                    style="width: 150px;">
+                                    <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                        class="img_contentThumb rounded-2">
+                                </div>
+                                <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
+                                    <div class="row">
+                                        <div class="col text-truncate">
+                                            <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
+                                        </div>
+                                        <div class="col text-end" style="width: 56px;
+                                        max-width: fit-content;">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="#" @click.prevent="deletarRegistro(dado.id_funcionario)">
+                                                        <img src="../src/img/trash-solid.svg" alt="icon"
+                                                            class="img_bigIcon" srcset="">
+                                                    </a>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="#" @click="tela = 'EDT'; editarRegistro(index)">
+                                                        <img src="../src/img/pen-to-square-solid.svg" alt="icon"
+                                                            class="img_bigIcon" srcset="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="h5 no-bold" x-text="dado.id_cargo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <!-- <div class="col-sm-12 col-md-6 col-lg-4 div_contentItem m-3 pt-2 pb-2 border-4 rounded">
                         <div class="d-none d-lg-block align-content-center me-2">
                             <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
                         </div>
@@ -180,12 +245,96 @@
                                 </div>
                             </div>
                         </div>
-                    </template>
+                    </template> -->
                 </div>
 
-                <div class="row div_contentAddItem m-3 pt-2 pb-2 border-4 rounded"
-                    :class="tela == 'GER' ? 'd-none' : ''">
-                    <form action="">
+                <div class="row p-2" :class="tela == 'GER' ? 'd-none' : ''">
+                    <div class="col-12 div_contentAddItem border-4 rounded-2 py-2">
+                        <form>
+                            <div class="row">
+                                <div class="col-2 align-content-center h-100"
+                                    style="width: 150px;">
+                                    <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                        class="img_contentThumb rounded-2">
+                                </div>
+                                <div class="col">
+                                    <div class="row mb-2">
+                                        <div class="col-md-2 col-lg-2">
+                                            <label for="nomeFuncionario" class="fw-bold">Nome:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-6">
+                                            <input x-model="registro.nome" type="text" id="nomeFuncionario"
+                                                name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                        <div class="col-md-2 col-lg-1">
+                                            <label for="cpfFuncionario" class="fw-bold">CPF:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-3">
+                                            <input x-model="registro.cpf" type="text" id="cpfFuncionario"
+                                                name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-lg-2 align-items-center">
+                                            <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-4">
+                                            <input x-model="registro.telefone" type="tel" id="telefoneFuncionario"
+                                                name="telefoneFuncionario"
+                                                class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                        <div class="col-md-2 col-lg-1 align-items-center">
+                                            <label for="cargoFuncionario" class="fw-bold">Cargo:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-5">
+                                            <select x-model="registro.cargo" id="cargoFuncionario"
+                                                name="cargoFuncionario"
+                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                <option value="" selected disabled>
+                                                    Selecione um cargo
+                                                </option>
+                                                <option value=3>
+                                                    Administrador
+                                                </option>
+                                                <option value=4>
+                                                    Caixa / Atendente
+                                                </option>
+                                                <option value=1>
+                                                    Garçom
+                                                </option>
+                                                <option value=2>
+                                                    Gerente
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-1">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <span>Atenção: Ao criar um novo funcionário, será definida uma senha provisória de
+                                        acesso igual ao CPF.</span>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-end">
+                                <div class="col-4">
+                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white"
+                                        @click="tela = 'GER'; limparRegistro()"">
+                                        CANCELAR
+                                    </button>
+                                </div>
+                                <div class=" col-4">
+                                        <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                            @click="salvarRegistro(); tela = 'GER'">
+                                            ADICIONAR
+                                        </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- <form action="">
                         <div class="col">
                             <div class="row">
                                 <div class="col-2">
@@ -266,7 +415,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
                 </div>
             </div>
         </main>
