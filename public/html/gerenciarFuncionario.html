@@ -184,7 +184,7 @@
                                         max-width: fit-content;">
                                             <div class="row">
                                                 <div class="col">
-                                                    <a href="#" @click.prevent="deletarRegistro(dado.id_funcionario)">
+                                                    <a href="#" @click.prevent="deletarRegistro(dado.idfuncionario)">
                                                         <img src="../src/img/trash-solid.svg" alt="icon"
                                                             class="img_bigIcon" srcset="">
                                                     </a>
@@ -199,61 +199,19 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="h5 no-bold" x-text="dado.id_cargo"></div>
+                                        <div class="h5 no-bold" x-text="dado.cargo"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </template>
-                    <!-- <div class="col-sm-12 col-md-6 col-lg-4 div_contentItem m-3 pt-2 pb-2 border-4 rounded">
-                        <div class="d-none d-lg-block align-content-center me-2">
-                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
-                        </div>
-                        <div class="col">
-                            <div class="d-flex m-2 justify-content-between">
-                                <h4 class="h2">Novo Item</h4>
-                                <a href="#" @click="tela = 'CAD'">
-                                    <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon" srcset="">
-                                </a>
-                            </div>
-                            <div class="m-2 h5 no-bold">
-                                Acrescentar novo funcionário.
-                            </div>
-                        </div>
-                    </div>
-                    <template x-for="(dado, index) in dados">
-                        <div class="col-sm-12 col-md-6 col-lg-4 div_contentItem m-3 pt-2 pb-2 border-4 rounded">
-                            <div class="d-none d-lg-block align-content-center me-2">
-                                <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
-                            </div>
-                            <div class="col">
-                                <div class="d-flex m-2 justify-content-between">
-                                    <h4 class="h2" x-text="dado.nome"></h4>
-                                    <div>
-                                        <a href="#" @click="tela = 'EDT'; editarRegistro(index)" class="me-3">
-                                            <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon"
-                                                srcset="">
-                                        </a>
-                                        <a href="#" @click.prevent="deletarRegistro(dado.id_funcionario)">
-                                            <img src="../src/img/trash-solid.svg" alt="icon" class="img_bigIcon"
-                                                srcset="">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="m-2 h5 no-bold" x-text="dado.id_cargo">
-
-                                </div>
-                            </div>
-                        </div>
-                    </template> -->
                 </div>
 
                 <div class="row p-2" :class="tela == 'GER' ? 'd-none' : ''">
                     <div class="col-12 div_contentAddItem border-4 rounded-2 py-2">
                         <form>
                             <div class="row">
-                                <div class="col-2 align-content-center h-100"
-                                    style="width: 150px;">
+                                <div class="col-2 align-content-center h-100" style="width: 150px;">
                                     <img src="../src/img/user-icon-placeholder.jpg" alt="user"
                                         class="img_contentThumb rounded-2">
                                 </div>
@@ -325,97 +283,14 @@
                                     </button>
                                 </div>
                                 <div class=" col-4">
-                                        <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                            @click="salvarRegistro(); tela = 'GER'">
-                                            ADICIONAR
-                                        </button>
+                                    <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                        @click="salvarRegistro(); tela = 'GER'">
+                                        ADICIONAR
+                                    </button>
                                 </div>
                             </div>
                         </form>
                     </div>
-
-                    <!-- <form action="">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
-                                </div>
-                                <div class="col-10">
-                                    <div class="row mb-2">
-                                        <div class="col-2 p-0 d-flex align-items-center">
-                                            <label for="nomeFuncionario" class="fw-bold">Nome:</label>
-                                        </div>
-                                        <div class="col-6">
-                                            <input x-model="registro.nome" type="text" id="nomeFuncionario"
-                                                name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                        </div>
-                                        <div class="col-1 p-0 d-flex align-items-center">
-                                            <label for="cpfFuncionario" class="fw-bold">CPF:</label>
-                                        </div>
-                                        <div class="col-3">
-                                            <input x-model="registro.cpf" type="text" id="cpfFuncionario"
-                                                name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-2 p-0 d-flex align-items-center">
-                                            <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
-                                        </div>
-                                        <div class="col-4">
-                                            <input x-model="registro.telefone" type="tel" id="telefoneFuncionario"
-                                                name="telefoneFuncionario"
-                                                class="w-100 shadow-inside border-1 rounded-2">
-                                        </div>
-                                        <div class="col-1 p-0 d-flex align-items-center">
-                                            <label for="cargoFuncionario" class="fw-bold">Cargo:</label>
-                                        </div>
-                                        <div class="col-5">
-                                            <select x-model="registro.cargo" id="cargoFuncionario"
-                                                name="cargoFuncionario"
-                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                                <option value="" selected disabled>
-                                                    Selecione um cargo
-                                                </option>
-                                                <option value=3>
-                                                    Administrador
-                                                </option>
-                                                <option value=4>
-                                                    Caixa / Atendente
-                                                </option>
-                                                <option value=1>
-                                                    Garçom
-                                                </option>
-                                                <option value=2>
-                                                    Gerente
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="mb-1">
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <span>Atenção: Ao criar um novo funcionário, será definida uma senha provisória de
-                                        acesso igual ao CPF.</span>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-end">
-                                <div class="col-4">
-                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white"
-                                        @click="tela = 'GER'; limparRegistro()"">
-                                        CANCELAR
-                                    </button>
-                                </div>
-                                <div class=" col-4">
-                                        <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                            @click="salvarRegistro(); tela = 'GER'">
-                                            ADICIONAR
-                                        </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form> -->
                 </div>
             </div>
         </main>
@@ -444,33 +319,20 @@
                     console.log(this.registro);
                     axios.post('/salvarFuncionario', this.registro)
                         .then(resp => {
-                            if (this.registro.id > 0) {
-                                console.log('Editando Registro');
-                                var i = this.dados.findIndex(item => item.id = resp.data.id);
-                                console.log(i);
-                                this.dados[i] = resp.data;
-                                this.limparRegistro();
-                            }
-                            else {
-                                console.log('Adicionando Registro');
-                                this.dados.push(resp.data);
-                                this.limparRegistro();
-                            }
+                            this.buscarDados();
                         })
                         .catch(error => {
                             console.log(error);
                         })
                         .finally(function () {
-
+                            
                         });
                 },
                 deletarRegistro(_id) {
-                    console.log(_id);
                     axios.post('/deletarFuncionario', { id: _id })
                         .then(resp => {
-                            if (resp.data != null) {
-                                var i = this.dados.findIndex(item => item.id == _id);
-                                if (i !== -1) this.dados.splice(i, 1);
+                            if (resp.data == -1) {
+                                this.buscarDados();
                             }
                         })
                         .catch(error => {
@@ -478,11 +340,14 @@
                         });
                 },
                 editarRegistro(index) {
-                    this.registro = this.dados[index];
-                    console.log(this.registro);
+                    this.registro.id = this.dados[index].idfuncionario;
+                    this.registro.nome = this.dados[index].nome;
+                    this.registro.cpf = this.dados[index].cpf;
+                    this.registro.telefone = this.dados[index].telefone;
+                    this.registro.cargo = this.dados[index].idcargo;
                 },
                 limparRegistro() {
-                    this.registro = { nome: '', cpf: '', telefone: '', cargo: '' };
+                    this.registro = { id: -1, nome: '', cpf: '', telefone: '', cargo: '' };
                 },
             }
         }

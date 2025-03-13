@@ -4,12 +4,12 @@ import pool from '../database'
 
 export const adicionarFuncionario = async (req:express.Request, res: express.Response) => {
     try {
-        const { cargo, cpf, nome, telefone} = req.body;
+        const { cargo, cpf, nome, telefone } = req.body;
     
         // Inserir no banco de dados
     
         const result = await pool.query(`
-            INSERT INTO funcionario (nome, cpf, id_cargo, telefone) 
+            INSERT INTO funcionario (nome, cpf, idcargo, telefone) 
     
             VALUES ($1, $2, $3, $4) RETURNING *
         `, [nome, cpf, cargo, telefone]);
@@ -32,8 +32,8 @@ export const atualizarFuncionario = async (req:express.Request, res: express.Res
         // Atualizar no banco de dados
         const result = await pool.query(`
             UPDATE funcionario
-            SET nome = $1, cpf = $2, id_cargo = $3, telefone = $4
-            WHERE id = $5
+            SET nome = $1, cpf = $2, idcargo = $3, telefone = $4
+            WHERE idfuncionario = $5
             RETURNING *
         `, [nome, cpf, cargo, telefone, id]);
     
@@ -51,6 +51,7 @@ export const atualizarFuncionario = async (req:express.Request, res: express.Res
 export const salvarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
         const { cargo, cpf, id, nome, telefone} = req.body;
+        console.log(req.body);
         
         if (!cargo || !cpf || !id || !nome || !telefone) {
             res.json({"erro": "Algum argumento está faltando"});
@@ -71,7 +72,7 @@ export const salvarFuncionario = async (req: express.Request, res: express.Respo
 
 export const listarFuncionarios = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await pool.query('SELECT * FROM funcionario');
+        const result = await pool.query('SELECT f.idfuncionario, f.nome, f.cpf, f.idcargo, c.nome cargo, f.telefone FROM funcionario f LEFT JOIN cargo c on c.idcargo = f.idcargo order by f.nome, cargo asc');
         res.json(result.rows);
     } catch (err) {
         console.error(err);
@@ -86,7 +87,7 @@ export const deletarFuncionario = async (req: express.Request, res: express.Resp
 
         const result = await pool.query(`
             DELETE FROM funcionario
-            WHERE id_funcionario = $1
+            WHERE idfuncionario = $1
             RETURNING *;
             `, 
             [id]);
