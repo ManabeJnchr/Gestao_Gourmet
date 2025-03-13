@@ -9,9 +9,10 @@ export const adicionarFuncionario = async (req:express.Request, res: express.Res
         // Inserir no banco de dados
     
         const result = await pool.query(`
-            INSERT INTO funcionario (nome, cpf, id_cargo, telefone) 
+            INSERT INTO funcionario (nome, cpf, cargo_id, telefone) 
     
-            VALUES ($1, $2, $3, $4) RETURNING *
+            VALUES ($1, $2, $3, $4)
+            RETURNING *
         `, [nome, cpf, cargo, telefone]);
     
         // Retornar ao front-end
@@ -32,7 +33,7 @@ export const atualizarFuncionario = async (req:express.Request, res: express.Res
         // Atualizar no banco de dados
         const result = await pool.query(`
             UPDATE funcionario
-            SET nome = $1, cpf = $2, id_cargo = $3, telefone = $4
+            SET nome = $1, cpf = $2, cargo_id = $3, telefone = $4
             WHERE id = $5
             RETURNING *
         `, [nome, cpf, cargo, telefone, id]);
@@ -53,7 +54,7 @@ export const salvarFuncionario = async (req: express.Request, res: express.Respo
         const { cargo, cpf, id, nome, telefone} = req.body;
         
         if (!cargo || !cpf || !id || !nome || !telefone) {
-            res.json({"erro": "Algum argumento está faltando"});
+            res.json("Algum argumento está faltando");
             return;
         }
 
@@ -86,7 +87,7 @@ export const deletarFuncionario = async (req: express.Request, res: express.Resp
 
         const result = await pool.query(`
             DELETE FROM funcionario
-            WHERE id_funcionario = $1
+            WHERE id = $1
             RETURNING *;
             `, 
             [id]);
