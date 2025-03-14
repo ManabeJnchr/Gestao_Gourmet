@@ -111,10 +111,11 @@ header {
     display: none;
 }
 
-#btn_addProfileImg {
+#btn_addImg {
     box-shadow: inset 0 1px 1px #0000004d;
     outline: none;
     cursor: pointer;
+    font-size: 14px;
 }
 
 #btn_cancelar {
