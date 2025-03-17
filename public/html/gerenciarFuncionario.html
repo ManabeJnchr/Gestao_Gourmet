@@ -8,7 +8,8 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>Gestão Gourmet</title>
@@ -240,7 +241,7 @@
                                             <label for="cpfFuncionario" class="fw-bold">CPF:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-3">
-                                            <input x-model="registro.cpf" type="text" id="cpfFuncionario"
+                                            <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'" placeholder="000.000.000-00" type="text" id="cpfFuncionario"
                                                 name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
                                     </div>
@@ -249,7 +250,8 @@
                                             <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-4">
-                                            <input x-model="registro.telefone" type="tel" id="telefoneFuncionario"
+                                            <input x-model="registro.telefone" x-mask:dynamic="registro.telefone.length < 13 ? '(99) 9999-9999' : '(99) 99999-9999'"
+                                            placeholder="(00) 00000-0000" type="tel" id="telefoneFuncionario"
                                                 name="telefoneFuncionario"
                                                 class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
@@ -361,6 +363,7 @@
                 limparRegistro() {
                     this.registro = { id: -1, nome: '', cpf: '', telefone: '', cargo: '' };
                 },
+                
             }
         }
     </script>
