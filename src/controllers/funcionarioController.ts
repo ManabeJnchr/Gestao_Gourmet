@@ -1,102 +1,41 @@
 import express from 'express';
 import pool from '../database'
-
-
-export const adicionarFuncionario = async (req:express.Request, res: express.Response) => {
-    try {
-        const { cargo, cpf, nome, telefone } = req.body;
-    
-        // Inserir no banco de dados
-    
-        const result = await pool.query(`
-            INSERT INTO funcionario (nome, cpf, idcargo, telefone) 
-    
-            VALUES ($1, $2, $3, $4) RETURNING *
-        `, [nome, cpf, cargo, telefone]);
-    
-        // Retornar ao front-end
-        return res.json(result.rows[0]);
-
-    } catch (err) {
-        console.error(err);
-        res.json({"erro":err});
-
-    }
-
-}
-
-export const atualizarFuncionario = async (req:express.Request, res: express.Response) => {
-    try {
-        const { cargo, cpf, id, nome, telefone} = req.body;
-    
-        // Atualizar no banco de dados
-        const result = await pool.query(`
-            UPDATE funcionario
-            SET nome = $1, cpf = $2, idcargo = $3, telefone = $4
-            WHERE idfuncionario = $5
-            RETURNING *
-        `, [nome, cpf, cargo, telefone, id]);
-    
-        // Retornar ao front-end
-        return res.json(result.rows[0]);
-
-    } catch (err) {
-        console.error(err);
-        res.json({"erro":err});
-
-    }
-
-}
+import FuncionarioService from '../services/FuncionarioService';
 
 export const salvarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
-        const { cargo, cpf, id, nome, telefone} = req.body;
-        console.log(req.body);
-        
-        if (!cargo || !cpf || !id || !nome || !telefone) {
-            res.json({"erro": "Algum argumento está faltando"});
-            return;
-        }
+        const result : any = await FuncionarioService.salvarFuncionario(req.body);
 
-        if ((id === -1)) {
-            adicionarFuncionario(req, res);
-        } else {
-            atualizarFuncionario(req, res);
-        }
+        return res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
 
-    } catch (err) {
-        console.error(err);
-        res.json({"erro":err});
+    } catch (err: any) {
+        return res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
     }
 }
 
 export const listarFuncionarios = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await pool.query('SELECT f.idfuncionario, f.nome, f.cpf, f.idcargo, c.nome cargo, f.telefone FROM funcionario f LEFT JOIN cargo c on c.idcargo = f.idcargo order by f.nome, cargo asc');
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.sendStatus(400).json({"erro":err});
+        const result : any = await FuncionarioService.listarFuncionarios();
+
+        return res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
+    } catch (err: any) {
+        return res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro ao listar funcionários. Por favor, tente novamente"})
     }
 }
 
 export const deletarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
-        console.log(req.body);
-        const { id } = req.body;
+        const result : any = await FuncionarioService.deletarFuncionario(req.body)
 
-        const result = await pool.query(`
-            DELETE FROM funcionario
-            WHERE idfuncionario = $1
-            RETURNING *;
-            `, 
-            [id]);
+        return res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
 
-        res.json(-1);
-
-
-    } catch (err) {
-        console.error(err);
-        res.sendStatus(400).json({"erro":err});
+    } catch (err: any) {
+        return res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro ao deletar funcionário. Por favor, tente novamente"})
     }
 }
