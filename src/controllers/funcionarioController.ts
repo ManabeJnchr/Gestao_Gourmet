@@ -6,10 +6,10 @@ export const salvarFuncionario = async (req: express.Request, res: express.Respo
     try {
         const result : any = await FuncionarioService.salvarFuncionario(req.body);
 
-        return res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
+        res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
 
     } catch (err: any) {
-        return res
+        res
         .status(err.statusCode || 500)
         .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
     }
@@ -19,9 +19,9 @@ export const listarFuncionarios = async (req: express.Request, res: express.Resp
     try {
         const result : any = await FuncionarioService.listarFuncionarios();
 
-        return res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
+        res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
     } catch (err: any) {
-        return res
+        res
         .status(err.statusCode || 500)
         .json({"erro": err.mensagem || "Erro ao listar funcionários. Por favor, tente novamente"})
     }
@@ -31,10 +31,10 @@ export const deletarFuncionario = async (req: express.Request, res: express.Resp
     try {
         const result : any = await FuncionarioService.deletarFuncionario(req.body)
 
-        return res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows});
+        res.status(200).json({mensagem:result.mensagem || "Operação realizada com sucesso", result:result.rows || []});
 
     } catch (err: any) {
-        return res
+        res
         .status(err.statusCode || 500)
         .json({"erro": err.mensagem || "Erro ao deletar funcionário. Por favor, tente novamente"})
     }
