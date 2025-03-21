@@ -17,16 +17,28 @@ async function initdb (pool: Pool) {
         // Caso contrário, inicializar tabelas:
         await pool.query(`
             CREATE TABLE IF NOT EXISTS cargo (
-                id SERIAL PRIMARY KEY,
-                nome VARCHAR(50) UNIQUE NOT NULL
+                idcargo integer NOT NULL DEFAULT nextval('cargo_id_seq'::regclass),
+                nome character varying(50) COLLATE pg_catalog."default" NOT NULL,
+                CONSTRAINT pkcargo PRIMARY KEY (idcargo),
+                CONSTRAINT cargo_nome_key UNIQUE (nome)
             );
-            CREATE TABLE IF NOT EXISTS funcionario (
-                id SERIAL PRIMARY KEY,
-                nome VARCHAR(100) NOT NULL,
-                cpf VARCHAR(14) UNIQUE NOT NULL,
-                cargo_id INTEGER NOT NULL,
-                telefone VARCHAR(15) NOT NULL
-            );
+
+            CREATE TABLE IF NOT EXISTS public.funcionario
+            (
+                idfuncionario integer NOT NULL DEFAULT nextval('funcionario_id_seq'::regclass),
+                nome character varying(100) COLLATE pg_catalog."default" NOT NULL,
+                cpf character varying(14) COLLATE pg_catalog."default" NOT NULL,
+                idcargo integer NOT NULL,
+                telefone character varying(15) COLLATE pg_catalog."default" NOT NULL,
+                imagem character varying(254) COLLATE pg_catalog."default",
+                CONSTRAINT pkfuncionario PRIMARY KEY (idfuncionario),
+                CONSTRAINT funcionario_cpf_key UNIQUE (cpf),
+                CONSTRAINT funcionario_cargo_id_fkey FOREIGN KEY (idcargo)
+                    REFERENCES public.cargo (idcargo) MATCH SIMPLE
+                    ON UPDATE NO ACTION
+                    ON DELETE CASCADE
+            )
+
             CREATE TABLE IF NOT EXISTS cardapio (
                 id SERIAL PRIMARY KEY,
                 nome VARCHAR(100) NOT NULL,
@@ -113,12 +125,22 @@ async function initdb (pool: Pool) {
                 criador_id INTEGER NOT NULL,
                 FOREIGN KEY (criador_id) REFERENCES funcionario(id) ON DELETE SET NULL
             );
-            CREATE TABLE IF NOT EXISTS login (
-                id SERIAL PRIMARY KEY,
-                usuario VARCHAR(50) UNIQUE NOT NULL,
-                senha_de_acesso VARCHAR(255) NOT NULL,
-                funcionario_id INTEGER UNIQUE NOT NULL,
-                FOREIGN KEY (funcionario_id) REFERENCES funcionario(id) ON DELETE CASCADE
+            CREATE TABLE IF NOT EXISTS login
+            (
+                idlogin integer NOT NULL DEFAULT nextval('login_id_seq'::regclass),
+                usuario character varying(50) COLLATE pg_catalog."default" NOT NULL,
+                senha character varying(255) COLLATE pg_catalog."default" NOT NULL,
+                idfuncionario integer NOT NULL,
+                salt character varying(255) COLLATE pg_catalog."default",
+                "sessionToken" character varying(255) COLLATE pg_catalog."default",
+                "primeiroLogin" boolean NOT NULL DEFAULT true,
+                CONSTRAINT pklogin PRIMARY KEY (idlogin),
+                CONSTRAINT login_funcionario_id_key UNIQUE (idfuncionario),
+                CONSTRAINT login_usuario_key UNIQUE (usuario),
+                CONSTRAINT login_funcionario_id_fkey FOREIGN KEY (idfuncionario)
+                    REFERENCES public.funcionario (idfuncionario) MATCH SIMPLE
+                    ON UPDATE NO ACTION
+                    ON DELETE CASCADE
             );
         `)
 
@@ -130,6 +152,8 @@ async function initdb (pool: Pool) {
             ('Administrador'),
             ('Atendente');
             `)
+
+        console.log("# Tabelas criadas com sucesso")
         
     } catch (error) {
         console.error("# Erro ao verificar/criar tabelas: ", error);
