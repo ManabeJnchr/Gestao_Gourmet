@@ -173,7 +173,7 @@
                             <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                                 <div class="col-md-4 d-md-block d-none align-content-center h-100"
                                     style="width: 150px;">
-                                    <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                    <img :src="dado.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user"
                                         class="img_contentThumb rounded-2">
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -210,7 +210,7 @@
 
                 <div class="row p-2" :class="tela == 'GER' ? 'd-none' : ''">
                     <div class="col-12 div_contentAddItem border-4 rounded-2 py-2">
-                        <form>
+                        <form id="formFuncionario">
                             <div class="row">
                                 <div class="col-2 align-content-center h-100" style="width: 150px;">
                                     <div class="row mb-1">
@@ -327,22 +327,23 @@
                         })
                         .catch(error => {
                             console.log(error);
-                        })
-                        .finally(function () {
-
                         });
                 },
                 salvarRegistro() {
-                    console.log(this.registro);
-                    axios.post('/salvarFuncionario', this.registro)
+                    const formData = new FormData();
+                    formData.append('file', document.getElementById('input_img').files[0]);
+                    formData.append('nome', this.registro.nome);
+                    formData.append('cpf', this.registro.cpf);
+                    formData.append('telefone', this.registro.telefone);
+                    formData.append('cargo', this.registro.cargo);
+                    formData.append('id', this.registro.id);
+
+                    axios.post('/upload', formData)
                         .then(resp => {
                             this.buscarDados();
                         })
                         .catch(error => {
                             console.log(error);
-                        })
-                        .finally(function () {
-                            
                         });
                 },
                 deletarRegistro(_id) {
@@ -366,40 +367,32 @@
                 limparRegistro() {
                     this.registro = { id: -1, nome: '', cpf: '', telefone: '', cargo: '' };
                 },
-                
             }
         }
-        
-    </script>
 
-    <script>
         // Função para simular o clique no input de tipo file
         document.getElementById("btn_addImg").addEventListener("click", function() {
-        document.getElementById("input_img").click();
+            document.getElementById("input_img").click(); // Abre o seletor de arquivos
         });
 
         // Função chamada quando a imagem é selecionada
         document.getElementById("input_img").addEventListener("change", function(event) {
-        const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
-        if (file) {
-            const reader = new FileReader();
+            const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
+            if (file) {
+                const reader = new FileReader();
 
-            // Quando a leitura do arquivo for concluída
-            reader.onload = function(e) {
-            const imagemSelecionada = e.target.result; // A URL da imagem em base64
-            
-            // Mostra a imagem
-            const imageContainer = document.getElementById("imageContainer");
-            const selectedImage = document.getElementById("selectedImage");
-            selectedImage.src = imagemSelecionada;
-            
-            // Exibe a imagem na página
-            imageContainer.style.display = "block";
-            };
+                // Quando a leitura do arquivo for concluída
+                reader.onload = function(e) {
+                    const imagemSelecionada = e.target.result; // A URL da imagem em base64
 
-            // Lê o arquivo como uma URL de dados (base64)
-            reader.readAsDataURL(file);
-        }
+                    // Mostra a imagem
+                    const selectedImage = document.getElementById("selectedImage");
+                    selectedImage.src = imagemSelecionada; // Exibe a imagem na tag <img>
+                };
+
+                // Lê o arquivo como uma URL de dados (base64)
+                reader.readAsDataURL(file);
+            }
         });
     </script>
 
