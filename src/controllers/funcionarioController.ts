@@ -1,23 +1,19 @@
 import express from 'express';
-import pool from '../database';
 import { multerConfig } from '../config/multer';
 import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import FuncionarioService from '../services/FuncionarioService';
 
 const upload = multer(multerConfig);
 
 export const adicionarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
         const { cargo, cpf, nome, telefone } = req.body;
-        const imagePath = req.file?.filename;
+        const imagePath: string | undefined = req.file ? req.file.filename : undefined;
 
-        // Inserir no banco de dados
-        const result = await pool.query(`
-            INSERT INTO funcionario (nome, cpf, idcargo, telefone, imagem) 
-            VALUES ($1, $2, $3, $4, $5) RETURNING *
-        `, [nome, cpf, cargo, telefone, imagePath]);
-
-        // Retornar ao front-end
-        return res.json(result.rows[0]);
+        const result = await FuncionarioService.salvarFuncionario({ id: -1, cargo, cpf, nome, telefone, imagePath });
+        return res.json(result);
 
     } catch (err) {
         console.error(err);
@@ -28,18 +24,24 @@ export const adicionarFuncionario = async (req: express.Request, res: express.Re
 export const atualizarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
         const { cargo, cpf, id, nome, telefone } = req.body;
-        const imagePath = req.file?.filename;
+        let imagePath: string | null = req.file ? req.file.filename : (req.body.imagem || null);
 
-        // Atualizar no banco de dados
-        const result = await pool.query(`
-            UPDATE funcionario
-            SET nome = $1, cpf = $2, idcargo = $3, telefone = $4, imagem = $5
-            WHERE idfuncionario = $6
-            RETURNING *
-        `, [nome, cpf, cargo, telefone, imagePath, id]);
+        if (req.file) {
+            const oldImagePath = await FuncionarioService.getFuncionarioImagePath(id);
+            if (oldImagePath) {
+                fs.unlink(path.join('uploads', oldImagePath), (err) => {
+                    if (err) {
+                        console.error('Erro ao apagar a imagem antiga:', err);
+                    }
+                });
+            }
+        }
 
-        // Retornar ao front-end
-        return res.json(result.rows[0]);
+        const result = await FuncionarioService.salvarFuncionario({ id, cpf, cargo, nome, telefone, imagePath });
+        return res.json({
+            ...result,
+            imagem: result.imagem ? `/uploads/${result.imagem}` : null // Ensure the image path is correct
+        });
 
     } catch (err) {
         console.error(err);
@@ -58,9 +60,9 @@ export const salvarFuncionario = async (req: express.Request, res: express.Respo
         }
 
         if (id === -1) {
-            adicionarFuncionario(req, res);
+            await adicionarFuncionario(req, res);
         } else {
-            atualizarFuncionario(req, res);
+            await atualizarFuncionario(req, res);
         }
 
     } catch (err) {
@@ -71,15 +73,11 @@ export const salvarFuncionario = async (req: express.Request, res: express.Respo
 
 export const listarFuncionarios = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await pool.query('SELECT f.idfuncionario, f.nome, f.cpf, f.idcargo, c.nome cargo, f.telefone, f.imagem FROM funcionario f LEFT JOIN cargo c on c.idcargo = f.idcargo order by f.nome, cargo asc');
-        const funcionarios = result.rows.map((funcionario: any) => ({
-            ...funcionario,
-            imagem: funcionario.imagem ? `${req.protocol}://${req.get('host')}/uploads/${funcionario.imagem}` : null
-        }));
+        const funcionarios = await FuncionarioService.listarFuncionarios();
         res.json(funcionarios);
     } catch (err) {
         console.error(err);
-        res.sendStatus(400).json({ "erro": err });
+        res.status(400).json({ "erro": err });
     }
 };
 
@@ -88,17 +86,22 @@ export const deletarFuncionario = async (req: express.Request, res: express.Resp
         console.log(req.body);
         const { id } = req.body;
 
-        const result = await pool.query(`
-            DELETE FROM funcionario
-            WHERE idfuncionario = $1
-            RETURNING *;
-        `, [id]);
+        const imagePath = await FuncionarioService.getFuncionarioImagePath(id);
+        await FuncionarioService.deletarFuncionario({ id, cargo: '', cpf: '', nome: '', telefone: '' });
+
+        if (imagePath) {
+            fs.unlink(path.join('uploads', imagePath), (err) => {
+                if (err) {
+                    console.error('Erro ao apagar a imagem:', err);
+                }
+            });
+        }
 
         res.json(-1);
 
     } catch (err) {
         console.error(err);
-        res.sendStatus(400).json({ "erro": err });
+        res.status(400).json({ "erro": err });
     }
 };
 
@@ -108,7 +111,7 @@ export const uploadFuncionario = [
     async (req: express.Request, res: express.Response) => {
         try {
             const { cargo, cpf, nome, telefone, id } = req.body;
-            const imagePath = req.file?.filename;
+            const imagePath: string | undefined = req.file ? req.file.filename : req.body.imagem;
 
             if (!cargo || !cpf || !nome || !telefone) {
                 res.status(400).json({ message: 'Algum argumento está faltando' });

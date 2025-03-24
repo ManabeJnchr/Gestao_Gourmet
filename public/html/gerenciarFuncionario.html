@@ -215,9 +215,9 @@
                                 <div class="col-2 align-content-center h-100" style="width: 150px;">
                                     <div class="row mb-1">
                                         <div class="col">
-                                            <!-- A imagem será exibida aqui quando selecionada -->
-                                            <img id="selectedImage" src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb rounded-2">
-                                          </div>
+                                            <!-- A imagem será exibida aqui quando selecionada ou ao editar um funcionário -->
+                                            <img id="selectedImage" :src="registro.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user" class="img_contentThumb rounded-2">
+                                        </div>
                                     </div>
                                     <div class="row"">
                                         <div class="col">
@@ -323,7 +323,10 @@
                 buscarDados() {
                     axios.get('/listarFuncionarios')
                         .then(resp => {
-                            this.dados = resp.data;
+                            this.dados = resp.data.map(dado => ({
+                                ...dado,
+                                imagem: dado.imagem ? `/uploads/${dado.imagem}` : null // Ensure the image path is correct
+                            }));
                         })
                         .catch(error => {
                             console.log(error);
@@ -331,16 +334,20 @@
                 },
                 salvarRegistro() {
                     const formData = new FormData();
-                    formData.append('file', document.getElementById('input_img').files[0]);
+                    const fileInput = document.getElementById('input_img');
+                    if (fileInput.files[0]) {
+                        formData.append('file', fileInput.files[0]);
+                    }
                     formData.append('nome', this.registro.nome);
                     formData.append('cpf', this.registro.cpf);
                     formData.append('telefone', this.registro.telefone);
                     formData.append('cargo', this.registro.cargo);
                     formData.append('id', this.registro.id);
 
-                    axios.post('/upload', formData)
+                    axios.post('/salvarFuncionario', formData)
                         .then(resp => {
                             this.buscarDados();
+                            this.limparRegistro(); // Clear the form after saving
                         })
                         .catch(error => {
                             console.log(error);
@@ -363,9 +370,14 @@
                     this.registro.cpf = this.dados[index].cpf;
                     this.registro.telefone = this.dados[index].telefone;
                     this.registro.cargo = this.dados[index].idcargo;
+                    this.registro.imagem = this.dados[index].imagem ? this.dados[index].imagem : null; // Ensure the image path is correct
+                    document.getElementById("selectedImage").src = this.registro.imagem || '../src/img/user-icon-placeholder.jpg'; // Update the displayed image
+                    document.getElementById("input_img").value = ''; // Limpa o input de imagem
                 },
                 limparRegistro() {
                     this.registro = { id: -1, nome: '', cpf: '', telefone: '', cargo: '' };
+                    document.getElementById("selectedImage").src = '../src/img/user-icon-placeholder.jpg'; // Limpa a imagem exibida
+                    document.getElementById("input_img").value = ''; // Limpa o input de imagem
                 },
             }
         }
