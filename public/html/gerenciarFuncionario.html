@@ -8,19 +8,20 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>Gestão Gourmet</title>
 </head>
 
 <body>
-    <div class="container-fluid vh-100 d-flex flex-column">
+    <div class="container-fluid vh-100">
         <header class="row border-bottom border-3">
             <div class="col-3">
                 <h2 class="mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
             </div>
-            <div class="col-9 d-flex align-items-center justify-content-end">
+            <div class="col-9 align-items-center text-end">
                 <div class="btn-group">
                     <button type="button" class="btn bg-transparent">
                         <span class="me-2" id="text_userName">Jean Luca</span>
@@ -121,7 +122,7 @@
             </div>
             <div x-data="Funcionarios()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
 
-                <div class="row mt-3 mb-5 border-3 d-flex ps-0 pe-0" id="div_contentHeader">
+                <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <!-- O botão atualmente retorna a página anterior -->
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
@@ -140,87 +141,127 @@
                 </div>
 
                 <div class="row" :class="tela == 'GER' ? '' : 'd-none'">
-                    <div class="col-sm-12 col-md-6 col-lg-4 div_contentItem m-3 pt-2 pb-2 border-4 rounded">
-                        <div class="d-none d-lg-block align-content-center me-2">
-                            <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
-                        </div>
-                        <div class="col">
-                            <div class="d-flex m-2 justify-content-between">
-                                <h4 class="h2">Novo Item</h4>
-                                <a href="#" @click="tela = 'CAD'">
-                                    <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon" srcset="">
-                                </a>
+                    <div class="col-sm-12 col-md-6 p-2">
+                        <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
+                            <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
+                                <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                    class="img_contentThumb rounded-2">
                             </div>
-                            <div class="m-2 h5 no-bold">
-                                Acrescentar novo funcionário.
-                            </div>
-                        </div>
-                    </div>
-                    <template x-for="(dado, index) in dados">
-                        <div class="col-sm-12 col-md-6 col-lg-4 div_contentItem m-3 pt-2 pb-2 border-4 rounded">
-                            <div class="d-none d-lg-block align-content-center me-2">
-                                <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
-                            </div>
-                            <div class="col">
-                                <div class="d-flex m-2 justify-content-between">
-                                    <h4 class="h2" x-text="dado.nome"></h4>
-                                    <div>
-                                        <a href="#" @click="tela = 'EDT'; editarRegistro(index)" class="me-3">
-                                            <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_bigIcon"
-                                                srcset="">
-                                        </a>
-                                        <a href="#" @click.prevent="deletarRegistro(dado.id_funcionario)">
-                                            <img src="../src/img/trash-solid.svg" alt="icon" class="img_bigIcon"
+                            <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <h4 class="h2 text-truncate">Novo Funcionário</h4>
+                                    </div>
+                                    <div class="col text-end" style="width: 56px;
+                                    max-width: fit-content;">
+                                        <a href="#" @click="tela = 'CAD'">
+                                            <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
                                                 srcset="">
                                         </a>
                                     </div>
                                 </div>
-                                <div class="m-2 h5 no-bold" x-text="dado.id_cargo">
-
+                                <div class="row">
+                                    <div class="col-12 h5 no-bold">
+                                        Acrescentar novo funcionário.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template x-for="(dado, index) in dados">
+                        <div class="col-sm-12 col-md-6 p-2">
+                            <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
+                                <div class="col-md-4 d-md-block d-none align-content-center h-100"
+                                    style="width: 150px;">
+                                    <img :src="dado.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user"
+                                        class="img_contentThumb rounded-2">
+                                </div>
+                                <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
+                                    <div class="row">
+                                        <div class="col text-truncate">
+                                            <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
+                                        </div>
+                                        <div class="col text-end" style="width: 56px;
+                                        max-width: fit-content;">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <a href="#" @click.prevent="deletarRegistro(dado.idfuncionario)">
+                                                        <img src="../src/img/trash-solid.svg" alt="icon"
+                                                            class="img_bigIcon" srcset="">
+                                                    </a>
+                                                </div>
+                                                <div class="col">
+                                                    <a href="#" @click="tela = 'EDT'; editarRegistro(index)">
+                                                        <img src="../src/img/pen-to-square-solid.svg" alt="icon"
+                                                            class="img_bigIcon" srcset="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="h5 no-bold" x-text="dado.cargo"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </template>
                 </div>
 
-                <div class="row div_contentAddItem m-3 pt-2 pb-2 border-4 rounded"
-                    :class="tela == 'GER' ? 'd-none' : ''">
-                    <form action="">
-                        <div class="col">
+                <div class="row p-2" :class="tela == 'GER' ? 'd-none' : ''">
+                    <div class="col-12 div_contentAddItem border-4 rounded-2 py-2">
+                        <form id="formFuncionario">
                             <div class="row">
-                                <div class="col-2">
-                                    <img src="../src/img/user-icon-placeholder.jpg" alt="user" class="img_contentThumb">
+                                <div class="col-2 align-content-center h-100" style="width: 150px;">
+                                    <div class="row mb-1">
+                                        <div class="col">
+                                            <!-- A imagem será exibida aqui quando selecionada ou ao editar um funcionário -->
+                                            <img id="selectedImage" :src="registro.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user" class="img_contentThumb rounded-2">
+                                        </div>
+                                    </div>
+                                    <div class="row"">
+                                        <div class="col">
+                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
+                                                <img src="../src/img/camera-solid.svg" alt="icon" class="img_smallIconBtn me-1">
+                                                <span>Alterar Foto</span>
+                                              </button>
+                                            
+                                              <!-- Input de arquivo escondido -->
+                                              <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-10">
+                                <div class="col">
                                     <div class="row mb-2">
-                                        <div class="col-2 p-0 d-flex align-items-center">
+                                        <div class="col-md-2 col-lg-2">
                                             <label for="nomeFuncionario" class="fw-bold">Nome:</label>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-md-10 col-lg-6">
                                             <input x-model="registro.nome" type="text" id="nomeFuncionario"
                                                 name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
-                                        <div class="col-1 p-0 d-flex align-items-center">
+                                        <div class="col-md-2 col-lg-1">
                                             <label for="cpfFuncionario" class="fw-bold">CPF:</label>
                                         </div>
-                                        <div class="col-3">
-                                            <input x-model="registro.cpf" type="text" id="cpfFuncionario"
+                                        <div class="col-md-10 col-lg-3">
+                                            <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'" placeholder="000.000.000-00" type="text" id="cpfFuncionario"
                                                 name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-2 p-0 d-flex align-items-center">
+                                        <div class="col-md-2 col-lg-2 align-items-center">
                                             <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
                                         </div>
-                                        <div class="col-4">
-                                            <input x-model="registro.telefone" type="tel" id="telefoneFuncionario"
+                                        <div class="col-md-10 col-lg-4">
+                                            <input x-model="registro.telefone" x-mask:dynamic="registro.telefone.length < 13 ? '(99) 9999-9999' : '(99) 99999-9999'"
+                                            placeholder="(00) 00000-0000" type="tel" id="telefoneFuncionario"
                                                 name="telefoneFuncionario"
                                                 class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
-                                        <div class="col-1 p-0 d-flex align-items-center">
+                                        <div class="col-md-2 col-lg-1 align-items-center">
                                             <label for="cargoFuncionario" class="fw-bold">Cargo:</label>
                                         </div>
-                                        <div class="col-5">
+                                        <div class="col-md-10 col-lg-5">
                                             <select x-model="registro.cargo" id="cargoFuncionario"
                                                 name="cargoFuncionario"
                                                 class="w-100 shadow-inside h-100 border-1 rounded-2">
@@ -259,14 +300,14 @@
                                     </button>
                                 </div>
                                 <div class=" col-4">
-                                        <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                            @click="salvarRegistro(); tela = 'GER'">
-                                            ADICIONAR
-                                        </button>
+                                    <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                        @click="salvarRegistro(); tela = 'GER'">
+                                        ADICIONAR
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>
@@ -282,46 +323,41 @@
                 buscarDados() {
                     axios.get('/listarFuncionarios')
                         .then(resp => {
-                            this.dados = resp.data;
+                            this.dados = resp.data.map(dado => ({
+                                ...dado,
+                                imagem: dado.imagem ? `/uploads/${dado.imagem}` : null // Ensure the image path is correct
+                            }));
                         })
                         .catch(error => {
                             console.log(error);
-                        })
-                        .finally(function () {
-
                         });
                 },
                 salvarRegistro() {
-                    console.log(this.registro);
-                    axios.post('/salvarFuncionario', this.registro)
+                    const formData = new FormData();
+                    const fileInput = document.getElementById('input_img');
+                    if (fileInput.files[0]) {
+                        formData.append('file', fileInput.files[0]);
+                    }
+                    formData.append('nome', this.registro.nome);
+                    formData.append('cpf', this.registro.cpf);
+                    formData.append('telefone', this.registro.telefone);
+                    formData.append('cargo', this.registro.cargo);
+                    formData.append('id', this.registro.id);
+
+                    axios.post('/salvarFuncionario', formData)
                         .then(resp => {
-                            if (this.registro.id > 0) {
-                                console.log('Editando Registro');
-                                var i = this.dados.findIndex(item => item.id = resp.data.id);
-                                console.log(i);
-                                this.dados[i] = resp.data;
-                                this.limparRegistro();
-                            }
-                            else {
-                                console.log('Adicionando Registro');
-                                this.dados.push(resp.data);
-                                this.limparRegistro();
-                            }
+                            this.buscarDados();
+                            this.limparRegistro(); // Clear the form after saving
                         })
                         .catch(error => {
                             console.log(error);
-                        })
-                        .finally(function () {
-
                         });
                 },
                 deletarRegistro(_id) {
-                    console.log(_id);
                     axios.post('/deletarFuncionario', { id: _id })
                         .then(resp => {
-                            if (resp.data != null) {
-                                var i = this.dados.findIndex(item => item.id == _id);
-                                if (i !== -1) this.dados.splice(i, 1);
+                            if (resp.data == -1) {
+                                this.buscarDados();
                             }
                         })
                         .catch(error => {
@@ -329,14 +365,47 @@
                         });
                 },
                 editarRegistro(index) {
-                    this.registro = this.dados[index];
-                    console.log(this.registro);
+                    this.registro.id = this.dados[index].idfuncionario;
+                    this.registro.nome = this.dados[index].nome;
+                    this.registro.cpf = this.dados[index].cpf;
+                    this.registro.telefone = this.dados[index].telefone;
+                    this.registro.cargo = this.dados[index].idcargo;
+                    this.registro.imagem = this.dados[index].imagem ? this.dados[index].imagem : null; // Ensure the image path is correct
+                    document.getElementById("selectedImage").src = this.registro.imagem || '../src/img/user-icon-placeholder.jpg'; // Update the displayed image
+                    document.getElementById("input_img").value = ''; // Limpa o input de imagem
                 },
                 limparRegistro() {
-                    this.registro = { nome: '', cpf: '', telefone: '', cargo: '' };
+                    this.registro = { id: -1, nome: '', cpf: '', telefone: '', cargo: '' };
+                    document.getElementById("selectedImage").src = '../src/img/user-icon-placeholder.jpg'; // Limpa a imagem exibida
+                    document.getElementById("input_img").value = ''; // Limpa o input de imagem
                 },
             }
         }
+
+        // Função para simular o clique no input de tipo file
+        document.getElementById("btn_addImg").addEventListener("click", function() {
+            document.getElementById("input_img").click(); // Abre o seletor de arquivos
+        });
+
+        // Função chamada quando a imagem é selecionada
+        document.getElementById("input_img").addEventListener("change", function(event) {
+            const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
+            if (file) {
+                const reader = new FileReader();
+
+                // Quando a leitura do arquivo for concluída
+                reader.onload = function(e) {
+                    const imagemSelecionada = e.target.result; // A URL da imagem em base64
+
+                    // Mostra a imagem
+                    const selectedImage = document.getElementById("selectedImage");
+                    selectedImage.src = imagemSelecionada; // Exibe a imagem na tag <img>
+                };
+
+                // Lê o arquivo como uma URL de dados (base64)
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
