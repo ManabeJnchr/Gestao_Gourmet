@@ -1,4 +1,5 @@
 import FuncionarioModel from "../models/FuncionarioModel";
+import AuthenticationService from "./AuthenticationService";
 
 interface FuncionarioDTO {
     cargo: any,
@@ -21,9 +22,15 @@ class FuncionarioService {
             }
 
             if ((id == -1)) {
-                return FuncionarioModel.adicionarFuncionario(cpf, cargo, nome, telefone, imagem);
+                const result = await FuncionarioModel.adicionarFuncionario(cpf, cargo, nome, telefone, imagem);
+
+                const idFuncionario = result.idfuncionario;
+                const senha = cpf;
+                const login = await AuthenticationService.registrar({cpf, senha, idFuncionario});
+
+                return result;
             } else {
-                return FuncionarioModel.atualizarFuncionario(id, cpf, cargo, nome, telefone, imagem);
+                return await FuncionarioModel.atualizarFuncionario(id, cpf, cargo, nome, telefone, imagem);
             }
 
         } catch (err: any) {

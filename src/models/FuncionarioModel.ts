@@ -25,7 +25,7 @@ class FuncionarioModel {
             `, [nome, cpf, cargo, telefone, imagem]);
             console.log("Resultado da inserção:", result.rows); // Log do resultado da inserção
             console.log("Query de inserção executada com sucesso"); // Log após a execução da query
-            return result.rows;
+            return result.rows[0];
 
         } catch (err) {
             console.error("Erro ao cadastrar funcionário", err);
