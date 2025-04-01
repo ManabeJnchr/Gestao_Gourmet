@@ -1,4 +1,5 @@
-import pool from "../database/index"
+import pool from "../database/index";
+import path from 'path';
 
 class FuncionarioModel {
     static async listarFuncionarios() {
@@ -8,15 +9,19 @@ class FuncionarioModel {
                 FROM funcionario f 
                 LEFT JOIN cargo c on c.idcargo = f.idcargo 
                 ORDER BY f.nome, cargo asc`);
-
-            return result.rows
+    
+            // Update image path to include 'uploads' directory
+            return result.rows.map((row: any) => ({
+                ...row,
+                imagem: row.imagem ? row.imagem : null
+            }));
         } catch (err: any) {
             console.error("Erro ao listar funcionários", err);
-            throw new Error("Erro ao listar funcionários, tente novamente")
+            throw new Error("Erro ao listar funcionários, tente novamente");
         }
     }
 
-    static async adicionarFuncionario(cpf: string, cargo: number, nome: string, telefone: string, imagem?: string) {
+    static async adicionarFuncionario(cpf: string, cargo: number, nome: string, telefone: string, imagePath: string) {
         try {
             console.log("Dados recebidos para adicionar funcionário:", { nome, cpf, cargo, telefone, imagem }); // Log dos dados recebidos
             const result = await pool.query(`
@@ -33,21 +38,35 @@ class FuncionarioModel {
         }
     }
 
-    static async atualizarFuncionario(id: number, cpf: string, cargo: number, nome: string, telefone: string, imagem?: string) {
+    static async atualizarFuncionario(id: number, cpf: string, cargo: number, nome: string, telefone: string, imagePath: string | null) {
         try {
-            console.log("Dados recebidos para atualizar funcionário:", { id, nome, cpf, cargo, telefone, imagem }); // Log dos dados recebidos
-            const result = await pool.query(`
-                UPDATE funcionario
-                SET nome = $1, cpf = $2, idcargo = $3, telefone = $4, imagem = $5
-                WHERE idfuncionario = $6
-                RETURNING *
-            `, [nome, cpf, cargo, telefone, imagem, id]);
-            console.log("Query de atualização executada com sucesso"); // Log após a execução da query
-            return result.rows;
+            let query: string;
+            let values: any[];
 
+            if (imagePath !== null) {
+                query = `
+                    UPDATE funcionario
+                    SET nome = $1, cpf = $2, idcargo = $3, telefone = $4, imagem = $5
+                    WHERE idfuncionario = $6
+                    RETURNING *
+                `;
+                values = [nome, cpf, cargo, telefone, imagePath, id];
+            } else {
+                query = `
+                    UPDATE funcionario
+                    SET nome = $1, cpf = $2, idcargo = $3, telefone = $4
+                    WHERE idfuncionario = $5
+                    RETURNING *
+                `;
+                values = [nome, cpf, cargo, telefone, id];
+            }
+
+            const result = await pool.query(query, values);
+
+            return result.rows[0];
         } catch (err) {
             console.error("Erro ao atualizar funcionário", err);
-            throw new Error("Erro ao atualizar funcionário, tente novamente.")
+            throw new Error("Erro ao atualizar funcionário, tente novamente.");
         }
     }
 
@@ -68,6 +87,20 @@ class FuncionarioModel {
             throw new Error("Erro ao deletar funcionário, tente novamente.")
         }
     }
+
+    static async getFuncionarioImage(id: any) {
+        try {
+            const result = await pool.query(`
+                SELECT imagem FROM funcionario
+                WHERE idfuncionario = $1
+            `, [id]);
+
+            return result.rows[0];
+        } catch (err) {
+            console.error("Erro ao buscar imagem do funcionário", err);
+            throw new Error("Erro ao buscar imagem do funcionário, tente novamente.");
+        }
+    }
 }
 
-export default FuncionarioModel
+export default FuncionarioModel;
