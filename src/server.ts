@@ -19,7 +19,7 @@ const PORT = 3001;
     app.use(routes);
 
     app.get('/', function (req: Request, res: Response) {
-        res.sendFile(path.join(__dirname, "..", "public", "html", "index.html"))
+        res.sendFile(path.join(__dirname, "..", "public", "html", "telaLogin.html"))
     })
 
     app.listen(PORT, function () {
