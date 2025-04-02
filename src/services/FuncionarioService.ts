@@ -1,5 +1,6 @@
 import FuncionarioModel from "../models/FuncionarioModel";
 import path from 'path';
+import AuthenticationService from "./AuthenticationService";
 
 interface FuncionarioDTO {
     cargo: any,
@@ -22,7 +23,13 @@ class FuncionarioService {
             }
 
             if (id === -1) {
-                return await FuncionarioModel.adicionarFuncionario(cpf, cargo, nome, telefone, imagePath || '');
+                const result = await FuncionarioModel.adicionarFuncionario(cpf, cargo, nome, telefone, imagePath || '');
+
+                const senha = cpf;
+                const idFuncionario = result.idfuncionario;
+                const account = await AuthenticationService.registrar({ cpf, senha, idFuncionario});
+
+                return result;
             } else {
                 const funcionario = await FuncionarioModel.atualizarFuncionario(id, cpf, cargo, nome, telefone, imagePath !== undefined ? imagePath : await this.getFuncionarioImagePath(id));
                 return {

@@ -8,8 +8,6 @@ export const login = async (req: express.Request, res: express.Response) => {
         res.cookie("AUTH-GESTAO-GOURMET", result, { domain: 'localhost', path: '/' });
         res.status(200).json(result);
 
-        console.log("logado", result);
-
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
