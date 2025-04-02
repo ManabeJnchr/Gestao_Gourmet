@@ -1,44 +1,47 @@
 import express from 'express';
-import pool from '../database';
-import { authentication, random } from '../helpers';
+import AuthenticationService from '../services/AuthenticationService';
 
 export const login = async (req: express.Request, res: express.Response) => {
     try {
+        const result = await AuthenticationService.login(req.body);
 
-    } catch (err) {
+        res.cookie("AUTH-GESTAO-GOURMET", result, { domain: 'localhost', path: '/' });
+        res.status(200).json(result);
+
+        console.log("logado", result);
+
+    } catch (err : any) {
+        res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
-export const register = async (req: express.Request, res: express.Response) => {
+
+export const logout = async (req: express.Request, res: express.Response) => {
     try {
-        const { usuario, senha, idFuncionario } = req.body;
+        res.cookie("AUTH-GESTAO-GOURMET", "", {domain: 'localhost', path: '/', expires: new Date(0)})
 
-        if (!usuario || !senha || !idFuncionario) { // Faltam dados
-            return res.sendStatus(400)
-        }
+        res.redirect("/login");
 
-        const usuarioExiste = await pool.query(`
-            SELECT id FROM login
-            WHERE usuario = $1 OR funcionario_id = $2
-            `, [usuario, idFuncionario]);
+    } catch (err : any) {
+        res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        
+    }
+}
 
-        if (usuarioExiste.rowCount) { // Usuário já cadastrado
-            return res.sendStatus(400);
-        }
+export const getIdentity = async (req: express.Request, res: express.Response) => {
+    try {
+        const result = await AuthenticationService.getIdentity(req.cookies["AUTH-GESTAO-GOURMET"]);
 
-        const salt = random()
+        res.status(200).json(result);
 
-        const novoUsuario = await pool.query(`
-            INSERT INTO login (usuario, senha_de_acesso, funcionario_id) 
-
-            VALUES ($1, $2, $3)
-            RETURNING *
-            `, [usuario, authentication(salt, senha), idFuncionario])
-
-        return res.sendStatus(200).json(novoUsuario).end();
-
-    } catch (err) {
-        console.error(err);
-        return res.sendStatus(400);
+    } catch (err : any) {
+        res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        
     }
 }

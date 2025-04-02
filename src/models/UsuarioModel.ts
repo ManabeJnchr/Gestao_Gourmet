@@ -32,6 +32,21 @@ class UsuarioModel {
         }
     }
 
+    static async buscarUsuarioPorAuthToken(authToken: string) {
+        try {
+            const result = await pool.query(`
+                SELECT * FROM login 
+                WHERE sessionToken = $1;
+                `, [authToken]);
+
+            return result.rows[0];
+
+        } catch (err) {
+            console.error("Erro ao buscar usuário", err);
+            throw new Error("Erro ao buscar usuário, tente novamente.")
+        }
+    }
+
     static async login (usuarioId:string, authToken:any) {
         try {
             const result = await pool.query(`

@@ -71,6 +71,30 @@ class AuthenticationService {
 
     }
 
+    static async getIdentity (authToken: string) {
+        try {
+            if (!authToken) { // If there is no authToken, then identity is empty
+                return {}
+            }
+
+            const result = await UsuarioModel.buscarUsuarioPorAuthToken(authToken);
+
+            if (!result) {
+                return {};
+            }
+
+            return result;
+            
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
 
 }
 
