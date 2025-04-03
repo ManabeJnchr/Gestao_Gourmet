@@ -22,8 +22,8 @@ class UsuarioModel {
             const result = await pool.query(`
                 SELECT * FROM login 
                 WHERE cpf = $1;
-            `, [cpf]);
-
+                `, [cpf]);
+                
             return result.rows[0];
 
         } catch (err) {

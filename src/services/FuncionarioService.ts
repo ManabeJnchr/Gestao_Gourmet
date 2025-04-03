@@ -25,7 +25,7 @@ class FuncionarioService {
             if (id_funcionario === -1) {
                 const result = await FuncionarioModel.adicionarFuncionario(cpf, id_cargo, nome, telefone, imagePath || '');
 
-                const senha = cpf;
+                const senha = cpf.replace(/[\.-]/g, "");;
                 const id_funcionario = result.id_funcionario;
                 const account = await AuthenticationService.registrar({ cpf, senha, id_funcionario });
 
@@ -63,7 +63,7 @@ class FuncionarioService {
         }
     }
 
-    static async deletarFuncionario({ id_funcionario }: FuncionarioDTO) {
+    static async deletarFuncionario(id_funcionario : any) {
         try {
             if (!id_funcionario || isNaN(Number(id_funcionario))) {
                 throw { statusCode: 400, message: "Argumento inválido" }

@@ -52,7 +52,6 @@ export const atualizarFuncionario = async (req: express.Request, res: express.Re
 export const salvarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
         const { id_cargo, cpf, id_funcionario, nome, telefone } = req.body;
-        console.log(req.body);
 
         if (!id_cargo || !cpf || !id_funcionario || !nome || !telefone) {
             res.json({ "erro": "Algum argumento está faltando" });
@@ -83,11 +82,10 @@ export const listarFuncionarios = async (req: express.Request, res: express.Resp
 
 export const deletarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
-        console.log(req.body);
         const { id_funcionario } = req.body;
 
         const imagePath = await FuncionarioService.getFuncionarioImagePath(id_funcionario);
-        await FuncionarioService.deletarFuncionario({ id_funcionario, id_cargo: '', cpf: '', nome: '', telefone: '' });
+        await FuncionarioService.deletarFuncionario(id_funcionario);
 
         if (imagePath) {
             fs.unlink(path.join('uploads', imagePath), (err) => {

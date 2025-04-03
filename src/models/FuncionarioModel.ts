@@ -36,7 +36,7 @@ class FuncionarioModel {
         }
     }
 
-    static async atualizarFuncionario(id: number, cpf: string, id_cargo: number, nome: string, telefone: string, imagePath: string | null) {
+    static async atualizarFuncionario(id_funcionario: number, cpf: string, id_cargo: number, nome: string, telefone: string, imagePath: string | null) {
         try {
             let query: string;
             let values: any[];
@@ -48,7 +48,7 @@ class FuncionarioModel {
                     WHERE id_funcionario = $6
                     RETURNING *
                 `;
-                values = [nome, cpf, id_cargo, telefone, imagePath, id];
+                values = [nome, cpf, id_cargo, telefone, imagePath, id_funcionario];
             } else {
                 query = `
                     UPDATE funcionario
@@ -56,7 +56,7 @@ class FuncionarioModel {
                     WHERE id_funcionario = $5
                     RETURNING *
                 `;
-                values = [nome, cpf, id_cargo, telefone, id];
+                values = [nome, cpf, id_cargo, telefone, id_funcionario];
             }
 
             const result = await pool.query(query, values);
@@ -68,15 +68,20 @@ class FuncionarioModel {
         }
     }
 
-    static async deletarFuncionario(id: any) {
+    static async deletarFuncionario(id_funcionario: any) {
         try {
-            const result = await pool.query(`
-                DELETE FROM funcionario
-                WHERE id_funcionario = $1
-                RETURNING *;
-            `, [id]);
+            const deleteLogin = await pool.query(`
+                DELETE FROM login
+                WHERE id_funcionario = $1;
+            `, [id_funcionario]);
 
-            return result.rows[0];
+            const deleteFuncionario = await pool.query(`
+                DELETE FROM funcionario
+                WHERE id_funcionario = $1;
+            `, [id_funcionario]);
+
+
+            return deleteFuncionario.rows[0];
         } catch (err) {
             console.error("Erro ao deletar funcionário", err);
             throw new Error("Erro ao deletar funcionário, tente novamente.");

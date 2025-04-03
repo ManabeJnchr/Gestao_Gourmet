@@ -14,7 +14,9 @@ class AuthenticationService {
                 throw { statusCode: 400, message: "Algum argumento não foi especificado" }
             }
 
-            const usuario = await UsuarioModel.buscarUsuarioPorCpf(cpf);
+            const cpfFormatado = cpf.replace(/[\.-]/g, "");
+
+            const usuario = await UsuarioModel.buscarUsuarioPorCpf(cpfFormatado);
 
             if (!usuario) { // Usuário incorreto
                 throw { statusCode: 400, message: "Usuário ou senha incorretos"}
