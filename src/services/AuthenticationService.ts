@@ -4,7 +4,7 @@ import { authentication, random } from "../helpers";
 interface AuthDTO {
     cpf: string,
     senha: string,
-    idFuncionario: any,
+    id_funcionario: any,
 }
 
 class AuthenticationService {
@@ -25,12 +25,12 @@ class AuthenticationService {
                 throw { statusCode: 400, message: "Usuário ou senha incorretos"}
             }
 
-            const usuarioId = usuario.idlogin;
+            const id_usuario = usuario.id_login;
             const salt = random();
 
-            const tokenAutenticacao = authentication(salt, usuarioId)
+            const tokenAutenticacao = authentication(salt, id_usuario)
 
-            await UsuarioModel.login(usuarioId, tokenAutenticacao);
+            await UsuarioModel.login(id_usuario, tokenAutenticacao);
             
             return tokenAutenticacao;
 
@@ -43,12 +43,11 @@ class AuthenticationService {
 
             throw { statusCode: 500, message: "Erro interno no servidor" }
         }
-
     }
 
-    static async registrar({ cpf, senha, idFuncionario }: AuthDTO) {
+    static async registrar({ cpf, senha, id_funcionario }: AuthDTO) {
         try {
-            if (!cpf || !senha || !idFuncionario) {
+            if (!cpf || !senha || !id_funcionario) {
                 throw { statusCode: 400, message: "Algum argumento não foi especificado" }
             }
 
@@ -56,7 +55,7 @@ class AuthenticationService {
             const salt = random();
             const senhaFormatada = authentication(salt, senha);
 
-            const result = await UsuarioModel.adicionarUsuario(cpfFormatado, senhaFormatada, salt, idFuncionario);
+            const result = await UsuarioModel.adicionarUsuario(cpfFormatado, senhaFormatada, salt, id_funcionario);
 
             return result;
         } catch (err: any) {

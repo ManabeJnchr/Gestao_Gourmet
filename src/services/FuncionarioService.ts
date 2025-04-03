@@ -3,35 +3,35 @@ import path from 'path';
 import AuthenticationService from "./AuthenticationService";
 
 interface FuncionarioDTO {
-    cargo: any,
+    id_cargo: any,
     cpf: string,
-    id?: any,
+    id_funcionario?: any,
     nome: string,
     telefone: string,
     imagePath?: string | null // Update this line
 }
 
 class FuncionarioService {
-    static async salvarFuncionario({ id, cpf, cargo, nome, telefone, imagePath }: FuncionarioDTO) {
+    static async salvarFuncionario({ id_funcionario, cpf, id_cargo, nome, telefone, imagePath }: FuncionarioDTO) {
         try {
-            if (!cargo || !cpf || !nome || !telefone) {
+            if (!id_cargo || !cpf || !nome || !telefone) {
                 throw { statusCode: 400, message: "Algum argumento não foi especificado" }
             }
 
-            if (isNaN(Number(cargo)) || (id !== undefined && isNaN(Number(id)))) {
+            if (isNaN(Number(id_cargo)) || (id_funcionario !== undefined && isNaN(Number(id_funcionario)))) {
                 throw { statusCode: 400, message: "Argumento inválido" }
             }
 
-            if (id === -1) {
-                const result = await FuncionarioModel.adicionarFuncionario(cpf, cargo, nome, telefone, imagePath || '');
+            if (id_funcionario === -1) {
+                const result = await FuncionarioModel.adicionarFuncionario(cpf, id_cargo, nome, telefone, imagePath || '');
 
                 const senha = cpf;
-                const idFuncionario = result.idfuncionario;
-                const account = await AuthenticationService.registrar({ cpf, senha, idFuncionario});
+                const id_funcionario = result.id_funcionario;
+                const account = await AuthenticationService.registrar({ cpf, senha, id_funcionario });
 
                 return result;
             } else {
-                const funcionario = await FuncionarioModel.atualizarFuncionario(id, cpf, cargo, nome, telefone, imagePath !== undefined ? imagePath : await this.getFuncionarioImagePath(id));
+                const funcionario = await FuncionarioModel.atualizarFuncionario(id_funcionario, cpf, id_cargo, nome, telefone, imagePath !== undefined ? imagePath : await this.getFuncionarioImagePath(id_funcionario));
                 return {
                     ...funcionario,
                     imagem: funcionario.imagem ? funcionario.imagem : null // Ensure the image path is correct
@@ -63,13 +63,13 @@ class FuncionarioService {
         }
     }
 
-    static async deletarFuncionario({ id }: FuncionarioDTO) {
+    static async deletarFuncionario({ id_funcionario }: FuncionarioDTO) {
         try {
-            if (!id || isNaN(Number(id))) {
+            if (!id_funcionario || isNaN(Number(id_funcionario))) {
                 throw { statusCode: 400, message: "Argumento inválido" }
             }
 
-            return await FuncionarioModel.deletarFuncionario(id);
+            return await FuncionarioModel.deletarFuncionario(id_funcionario);
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
@@ -81,9 +81,9 @@ class FuncionarioService {
         }
     }
 
-    static async getFuncionarioImagePath(id: any) {
+    static async getFuncionarioImagePath(id_funcionario: any) {
         try {
-            const result = await FuncionarioModel.getFuncionarioImage(id);
+            const result = await FuncionarioModel.getFuncionarioImage(id_funcionario);
             if (result) {
                 return result.imagem; // Return only the image name
             }

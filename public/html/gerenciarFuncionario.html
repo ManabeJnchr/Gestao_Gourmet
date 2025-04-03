@@ -199,7 +199,7 @@
                                         max-width: fit-content;">
                                             <div class="row">
                                                 <div class="col">
-                                                    <a href="#" @click.prevent="deletarRegistro(dado.idfuncionario)">
+                                                    <a href="#" @click.prevent="deletarRegistro(dado.id_funcionario)">
                                                         <img src="../src/img/trash-solid.svg" alt="icon"
                                                             class="img_bigIcon" srcset="">
                                                     </a>
@@ -257,7 +257,9 @@
                                             <label for="cpfFuncionario" class="fw-bold">CPF:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-3">
-                                            <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'" placeholder="000.000.000-00" type="text" id="cpfFuncionario"
+                                            <!-- <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'" placeholder="000.000.000-00" type="text" id="cpfFuncionario"
+                                                name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2"> -->
+                                            <input x-model="registro.cpf" type="text" id="cpfFuncionario"
                                                 name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
                                     </div>
@@ -275,7 +277,7 @@
                                             <label for="cargoFuncionario" class="fw-bold">Cargo:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-5">
-                                            <select x-model="registro.cargo" id="cargoFuncionario"
+                                            <select x-model="registro.id_cargo" id="cargoFuncionario"
                                                 name="cargoFuncionario"
                                                 class="w-100 shadow-inside h-100 border-1 rounded-2">
                                                 <option value="" selected disabled>
@@ -330,7 +332,7 @@
         function Funcionarios() {
             return {
                 tela: 'GER',
-                registro: { id: -1, nome: '', cpf: '', telefone: '', cargo: '' },
+                registro: { id_funcionario: -1, nome: '', cpf: '', telefone: '', id_cargo: '' },
                 dados: [],
                 dadoSelecionado: [],
                 buscarDados() {
@@ -354,8 +356,8 @@
                     formData.append('nome', this.registro.nome);
                     formData.append('cpf', this.registro.cpf);
                     formData.append('telefone', this.registro.telefone);
-                    formData.append('cargo', this.registro.cargo);
-                    formData.append('id', this.registro.id);
+                    formData.append('id_cargo', this.registro.id_cargo);
+                    formData.append('id_funcionario', this.registro.id_funcionario);
 
                     axios.post('/salvarFuncionario', formData)
                         .then(resp => {
@@ -366,8 +368,8 @@
                             console.log(error);
                         });
                 },
-                deletarRegistro(_id) {
-                    axios.post('/deletarFuncionario', { id: _id })
+                deletarRegistro(id) {
+                    axios.post('/deletarFuncionario', { id_funcionario: id })
                         .then(resp => {
                             if (resp.data == -1) {
                                 this.buscarDados();
@@ -378,17 +380,17 @@
                         });
                 },
                 editarRegistro(index) {
-                    this.registro.id = this.dados[index].idfuncionario;
+                    this.registro.id_funcionario = this.dados[index].id_funcionario;
                     this.registro.nome = this.dados[index].nome;
                     this.registro.cpf = this.dados[index].cpf;
                     this.registro.telefone = this.dados[index].telefone;
-                    this.registro.cargo = this.dados[index].idcargo;
+                    this.registro.id_cargo = this.dados[index].id_cargo;
                     this.registro.imagem = this.dados[index].imagem ? this.dados[index].imagem : null; // Ensure the image path is correct
                     document.getElementById("selectedImage").src = this.registro.imagem || '../src/img/user-icon-placeholder.jpg'; // Update the displayed image
                     document.getElementById("input_img").value = ''; // Limpa o input de imagem
                 },
                 limparRegistro() {
-                    this.registro = { id: -1, nome: '', cpf: '', telefone: '', cargo: '' };
+                    this.registro = { id_funcionario: -1, nome: '', cpf: '', telefone: '', id_cargo: '' };
                     document.getElementById("selectedImage").src = '../src/img/user-icon-placeholder.jpg'; // Limpa a imagem exibida
                     document.getElementById("input_img").value = ''; // Limpa o input de imagem
                 },

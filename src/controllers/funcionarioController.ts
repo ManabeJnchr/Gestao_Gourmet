@@ -9,10 +9,10 @@ const upload = multer(multerConfig);
 
 export const adicionarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
-        const { cargo, cpf, nome, telefone } = req.body;
+        const { id_cargo, cpf, nome, telefone } = req.body;
         const imagePath: string | undefined = req.file ? req.file.filename : undefined;
 
-        const result = await FuncionarioService.salvarFuncionario({ id: -1, cargo, cpf, nome, telefone, imagePath });
+        const result = await FuncionarioService.salvarFuncionario({ id_funcionario: -1, id_cargo, cpf, nome, telefone, imagePath });
         return res.json(result);
 
     } catch (err) {
@@ -23,11 +23,11 @@ export const adicionarFuncionario = async (req: express.Request, res: express.Re
 
 export const atualizarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
-        const { cargo, cpf, id, nome, telefone } = req.body;
+        const { id_cargo, cpf, id_funcionario, nome, telefone } = req.body;
         let imagePath: string | null = req.file ? req.file.filename : (req.body.imagem || null);
 
         if (req.file) {
-            const oldImagePath = await FuncionarioService.getFuncionarioImagePath(id);
+            const oldImagePath = await FuncionarioService.getFuncionarioImagePath(id_funcionario);
             if (oldImagePath) {
                 fs.unlink(path.join('uploads', oldImagePath), (err) => {
                     if (err) {
@@ -37,7 +37,7 @@ export const atualizarFuncionario = async (req: express.Request, res: express.Re
             }
         }
 
-        const result = await FuncionarioService.salvarFuncionario({ id, cpf, cargo, nome, telefone, imagePath });
+        const result = await FuncionarioService.salvarFuncionario({ id_funcionario, cpf, id_cargo, nome, telefone, imagePath });
         return res.json({
             ...result,
             imagem: result.imagem ? `/uploads/${result.imagem}` : null // Ensure the image path is correct
@@ -51,15 +51,15 @@ export const atualizarFuncionario = async (req: express.Request, res: express.Re
 
 export const salvarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
-        const { cargo, cpf, id, nome, telefone } = req.body;
+        const { id_cargo, cpf, id_funcionario, nome, telefone } = req.body;
         console.log(req.body);
 
-        if (!cargo || !cpf || !id || !nome || !telefone) {
+        if (!id_cargo || !cpf || !id_funcionario || !nome || !telefone) {
             res.json({ "erro": "Algum argumento está faltando" });
             return;
         }
 
-        if (id === -1) {
+        if (id_funcionario === -1) {
             await adicionarFuncionario(req, res);
         } else {
             await atualizarFuncionario(req, res);
@@ -84,10 +84,10 @@ export const listarFuncionarios = async (req: express.Request, res: express.Resp
 export const deletarFuncionario = async (req: express.Request, res: express.Response) => {
     try {
         console.log(req.body);
-        const { id } = req.body;
+        const { id_funcionario } = req.body;
 
-        const imagePath = await FuncionarioService.getFuncionarioImagePath(id);
-        await FuncionarioService.deletarFuncionario({ id, cargo: '', cpf: '', nome: '', telefone: '' });
+        const imagePath = await FuncionarioService.getFuncionarioImagePath(id_funcionario);
+        await FuncionarioService.deletarFuncionario({ id_funcionario, id_cargo: '', cpf: '', nome: '', telefone: '' });
 
         if (imagePath) {
             fs.unlink(path.join('uploads', imagePath), (err) => {
@@ -110,15 +110,15 @@ export const uploadFuncionario = [
     upload.single('file'),
     async (req: express.Request, res: express.Response) => {
         try {
-            const { cargo, cpf, nome, telefone, id } = req.body;
+            const { id_cargo, cpf, nome, telefone, id_funcionario } = req.body;
             const imagePath: string | undefined = req.file ? req.file.filename : req.body.imagem;
 
-            if (!cargo || !cpf || !nome || !telefone) {
+            if (!id_cargo || !cpf || !nome || !telefone) {
                 res.status(400).json({ message: 'Algum argumento está faltando' });
                 return;
             }
 
-            if (id === '-1') {
+            if (id_funcionario === '-1') {
                 await adicionarFuncionario(req, res);
             } else {
                 await atualizarFuncionario(req, res);

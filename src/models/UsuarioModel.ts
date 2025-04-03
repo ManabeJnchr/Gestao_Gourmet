@@ -2,12 +2,12 @@ import pool from "../database/index"
 
 class UsuarioModel {
 
-    static async adicionarUsuario(cpf: string, senha: any, salt: string, idFuncionario: number) {
+    static async adicionarUsuario(cpf: string, senha: any, salt: string, id_funcionario: number) {
         try {
             const result = await pool.query(`
-                INSERT INTO login (usuario, senha, salt, idfuncionario) 
+                INSERT INTO login (cpf, senha, salt, id_funcionario) 
                 VALUES ($1, $2, $3, $4) RETURNING *
-            `, [cpf, senha, salt, idFuncionario]);
+            `, [cpf, senha, salt, id_funcionario]);
 
             return result.rows;
 
@@ -21,8 +21,8 @@ class UsuarioModel {
         try {
             const result = await pool.query(`
                 SELECT * FROM login 
-                WHERE usuario = $1;
-                `, [cpf]);
+                WHERE cpf = $1;
+            `, [cpf]);
 
             return result.rows[0];
 
@@ -35,11 +35,12 @@ class UsuarioModel {
     static async buscarUsuarioPorAuthToken(authToken: string) {
         try {
             const result = await pool.query(`
-                SELECT login.usuario, f.nome AS funcionarionome, f.cpf, f.idcargo, f.imagem, c.nome AS cargonome FROM login 
-                    LEFT JOIN funcionario as f ON login.idfuncionario = f.idfuncionario
-                    LEFT JOIN cargo as c ON f.idcargo = c.idcargo
-                    WHERE login.sessionToken = $1;
-                `, [authToken]);
+                SELECT login.cpf, f.nome AS funcionarionome, f.cpf AS funcionario_cpf, f.id_cargo, f.imagem, c.nome AS cargonome 
+                FROM login 
+                LEFT JOIN funcionario AS f ON login.id_funcionario = f.id_funcionario
+                LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
+                WHERE login.session_token = $1;
+            `, [authToken]);
 
             return result.rows[0];
 
@@ -49,13 +50,13 @@ class UsuarioModel {
         }
     }
 
-    static async login (usuarioId:string, authToken:any) {
+    static async login (id_usuario:string, authToken:any) {
         try {
             const result = await pool.query(`
                 UPDATE login 
-                SET sessionToken = $1
-                WHERE idlogin = $2;
-                `, [authToken, usuarioId]);
+                SET session_token = $1
+                WHERE id_login = $2;
+            `, [authToken, id_usuario]);
 
             return result.rows[0];
 
@@ -64,7 +65,6 @@ class UsuarioModel {
             throw new Error("Erro ao atualizar usuário, tente novamente.")
         }
     }
-
 }
 
 export default UsuarioModel

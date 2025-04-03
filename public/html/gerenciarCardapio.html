@@ -254,13 +254,13 @@
                                             <label for="nomeCardapio" class="fw-bold">Nome:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-6">
-                                            <input x-data="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio" class="w-100 shadow-inside border-1 rounded-2">
+                                            <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio" class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
                                         <div class="col-md-2 col-lg-1">
                                             <label for="precoCardapio" class="fw-bold">Preço:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-3">
-                                            <input x-data="registro.preco" type="number" id="nomeCardapio" name="nomeCardapio" class="w-100 shadow-inside border-1 rounded-2">
+                                            <input x-model="registro.valor" type="number" id="precoCardapio" name="precoCardapio" class="w-100 shadow-inside border-1 rounded-2">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -268,69 +268,42 @@
                                             <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
                                         </div>
                                         <div class="col-md-10 col-lg-10">
-                                            <textarea x-data="registro.descricao" id="descricaoCardapio" name="descricaoCardapio" class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
+                                            <textarea x-model="registro.descricao" id="descricaoCardapio" name="descricaoCardapio" class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <hr class="mb-1">
                             <div class="row d-flex justify-content-between">
-                                <div class="col-3">
-                                    <h1>Adicionais</h1>
+                                <div class="col-3 align-content-center">
+                                    <h1 class="m-0">Adicionais</h1>
                                 </div>
                                 <div class="col-1 text-end">
-                                    <a href="../html/gerenciarCardapio/addCardapio.html">
+                                    <button type="button" class="btn bg-transparent py-1" @click.prevent="incluirAdicional()">
                                         <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
                                             srcset="">
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                             <hr class="m-0 mb-1">
                             <div class="row mb-3">
                                 <div class="col">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item p-1 ps-0">
-                                            <div class="row d-flex justify-content-between">
-                                                <div class="col-10">
-                                                    <img src="../src/img/caret-right-solid.svg" alt="icon" class="img_xsmallIcon m-0 me-2">
-                                                    <span>Hamburger Extra</span>
+                                        <template x-for="(adicional, index) in adicionais" :key="index">
+                                            <li class="list-group-item p-1 ps-0">
+                                                <div class="row d-flex justify-content-between">
+                                                    <div class="col-10">
+                                                        <img src="../src/img/caret-right-solid.svg" alt="icon" class="img_xsmallIcon m-0 me-2">
+                                                        <input type="text" x-model="adicional.descricao" class="w-75 shadow-inside border-1 rounded-2" placeholder="Digite o nome do item adicional...">
+                                                    </div>
+                                                    <div class="col-1 d-flex justify-content-end align-content-center">
+                                                        <button type="button" class="btn bg-transparent py-1" @click.prevent="adicionais.splice(index, 1)">
+                                                            <img src="../src/img/trash-solid.svg" alt="icon" class="img_mediumIcon">
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-1 d-flex justify-content-end align-content-center">
-                                                    <a href="../html/gerenciarCardapio/addCardapio.html">
-                                                        <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_mediumIcon"
-                                                            srcset="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item p-1 ps-0">
-                                            <div class="row d-flex justify-content-between">
-                                                <div class="col-10">
-                                                    <img src="../src/img/caret-right-solid.svg" alt="icon" class="img_xsmallIcon m-0 me-2">
-                                                    <span>Molho Adicional</span>
-                                                </div>
-                                                <div class="col-1 d-flex justify-content-end align-content-center">
-                                                    <a href="../html/gerenciarCardapio/addCardapio.html">
-                                                        <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_mediumIcon"
-                                                            srcset="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item p-1 ps-0">
-                                            <div class="row d-flex justify-content-between">
-                                                <div class="col-10">
-                                                    <img src="../src/img/caret-right-solid.svg" alt="icon" class="img_xsmallIcon m-0 me-2">
-                                                    <span>Adicionais</span>
-                                                </div>
-                                                <div class="col-1 d-flex justify-content-end align-content-center">
-                                                    <a href="../html/gerenciarCardapio/addCardapio.html">
-                                                        <img src="../src/img/pen-to-square-solid.svg" alt="icon" class="img_mediumIcon"
-                                                            srcset="">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        </template>
                                     </ul>
                                 </div>
                             </div>
@@ -362,6 +335,7 @@
                 registro: { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: ''},
                 dados: [],
                 dadoSelecionado: [],
+                adicionais: [],
                 buscarDados() {
                     axios.get('/listarCardapio')
                         .then(resp => {
@@ -407,6 +381,10 @@
                 },
                 limparRegistro() {
                     this.registro = { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: ''};
+                },
+                incluirAdicional() {
+                    this.adicionais.push({ descricao: '' });
+                    console.log(this.adicionais);
                 },
             }
         }

@@ -5,12 +5,13 @@ class FuncionarioModel {
     static async listarFuncionarios() {
         try {
             const result = await pool.query(
-                `SELECT f.idfuncionario, f.nome, f.cpf, f.idcargo, c.nome cargo, f.telefone, f.imagem 
+                `SELECT f.id_funcionario, f.nome, f.cpf, f.id_cargo, c.nome AS cargo, f.telefone, f.imagem 
                 FROM funcionario f 
-                LEFT JOIN cargo c on c.idcargo = f.idcargo 
-                ORDER BY f.nome, cargo asc`);
-    
-            // Update image path to include 'uploads' directory
+                LEFT JOIN cargo c ON c.id_cargo = f.id_cargo 
+                ORDER BY f.nome, cargo ASC`
+            );
+
+            // Atualizar o caminho da imagem para incluir o diretório 'uploads'
             return result.rows.map((row: any) => ({
                 ...row,
                 imagem: row.imagem ? row.imagem : null
@@ -21,13 +22,13 @@ class FuncionarioModel {
         }
     }
 
-    static async adicionarFuncionario(cpf: string, cargo: number, nome: string, telefone: string, imagePath: string) {
+    static async adicionarFuncionario(cpf: string, id_cargo: number, nome: string, telefone: string, imagePath: string) {
         try {
             const result = await pool.query(`
-                INSERT INTO funcionario (nome, cpf, idcargo, telefone, imagem) 
+                INSERT INTO funcionario (nome, cpf, id_cargo, telefone, imagem) 
                 VALUES ($1, $2, $3, $4, $5) RETURNING *
-            `, [nome, cpf, cargo, telefone, imagePath]);
-    
+            `, [nome, cpf, id_cargo, telefone, imagePath]);
+
             return result.rows[0];
         } catch (err) {
             console.error("Erro ao cadastrar funcionário", err);
@@ -35,7 +36,7 @@ class FuncionarioModel {
         }
     }
 
-    static async atualizarFuncionario(id: number, cpf: string, cargo: number, nome: string, telefone: string, imagePath: string | null) {
+    static async atualizarFuncionario(id: number, cpf: string, id_cargo: number, nome: string, telefone: string, imagePath: string | null) {
         try {
             let query: string;
             let values: any[];
@@ -43,19 +44,19 @@ class FuncionarioModel {
             if (imagePath !== null) {
                 query = `
                     UPDATE funcionario
-                    SET nome = $1, cpf = $2, idcargo = $3, telefone = $4, imagem = $5
-                    WHERE idfuncionario = $6
+                    SET nome = $1, cpf = $2, id_cargo = $3, telefone = $4, imagem = $5
+                    WHERE id_funcionario = $6
                     RETURNING *
                 `;
-                values = [nome, cpf, cargo, telefone, imagePath, id];
+                values = [nome, cpf, id_cargo, telefone, imagePath, id];
             } else {
                 query = `
                     UPDATE funcionario
-                    SET nome = $1, cpf = $2, idcargo = $3, telefone = $4
-                    WHERE idfuncionario = $5
+                    SET nome = $1, cpf = $2, id_cargo = $3, telefone = $4
+                    WHERE id_funcionario = $5
                     RETURNING *
                 `;
-                values = [nome, cpf, cargo, telefone, id];
+                values = [nome, cpf, id_cargo, telefone, id];
             }
 
             const result = await pool.query(query, values);
@@ -71,7 +72,7 @@ class FuncionarioModel {
         try {
             const result = await pool.query(`
                 DELETE FROM funcionario
-                WHERE idfuncionario = $1
+                WHERE id_funcionario = $1
                 RETURNING *;
             `, [id]);
 
@@ -86,7 +87,7 @@ class FuncionarioModel {
         try {
             const result = await pool.query(`
                 SELECT imagem FROM funcionario
-                WHERE idfuncionario = $1
+                WHERE id_funcionario = $1
             `, [id]);
 
             return result.rows[0];
