@@ -70,6 +70,8 @@ async function initdb(pool: Pool) {
                 id_cargo INTEGER NOT NULL,
                 telefone VARCHAR(15) NOT NULL,
                 imagem VARCHAR(254),
+                data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 CONSTRAINT fk_funcionario_cargo FOREIGN KEY (id_cargo)
                     REFERENCES public.cargo (id_cargo)
             );

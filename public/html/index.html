@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div class="container-fluid vh-100 d-flex flex-column">
+    <div x-data="Index()" x-init="getIdentity()" class="container-fluid vh-100 d-flex flex-column">
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
@@ -135,10 +135,26 @@
                 </div>
             </div>
             <div class="col-12 col-lg-10" id="div_content">
-
+                
             </div>
         </main>
     </div>
+
+    <script>
+        function Index() {
+            return {
+                identity: {},
+                getIdentity() {
+                    axios.get('/identity').then(resp => {
+                        identity = resp.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                }
+            }
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

@@ -41,7 +41,6 @@ class UsuarioModel {
                 LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
                 WHERE login.session_token = $1;
             `, [authToken]);
-
             return result.rows[0];
 
         } catch (err) {

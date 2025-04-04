@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import path from "path";
 import cors from 'cors';
 import router from './routes/index';
+import cookieParser from "cookie-parser";
 import routes from "./routes/upload";
 
 const app = express();
@@ -11,6 +12,7 @@ const PORT = 3001;
     app.use(cors());
     app.use(express.json());
     app.use(express.static("public"));
+    app.use(cookieParser());
 
     // Configuração para servir arquivos estáticos
     app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
