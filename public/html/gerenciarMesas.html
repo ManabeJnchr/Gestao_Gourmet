@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
@@ -21,7 +24,8 @@
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -68,7 +72,8 @@
                                     </a>
                                 </li>
                                 <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/gerenciarFuncionarios.html" class="text-decoration-none text-black">
+                                    <a href="../html/gerenciarFuncionarios.html"
+                                        class="text-decoration-none text-black">
                                         <i class="mdi mdi-account-cog" style="font-size: 20px;"></i>
                                         <span> Gerenciar Funcionários</span>
                                     </a>
@@ -118,7 +123,8 @@
                         <div class="collapse" id="relatorios-collapse">
                             <ul class="btn-toggle-nav list-unstyled">
                                 <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/relatorioFuncionarios.html" class="text-decoration-none text-black">
+                                    <a href="../html/relatorioFuncionarios.html"
+                                        class="text-decoration-none text-black">
                                         <i class="mdi mdi-account-group" style="font-size: 20px;"></i>
                                         <span> Funcionários</span>
                                     </a>
@@ -146,11 +152,13 @@
                     <div class="col d-flex align-items-center">
                         <!-- O botão atualmente retorna a página anterior -->
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
-                            <img class="img_bigIcon" src="../src/img/arrow-left-solid.svg" alt="icon">
+                            <!-- <img class="img_bigIcon" src="../src/img/arrow-left-solid.svg" alt="icon"> -->
+                            <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
                         </button>
                         <h1 class="m-0 ms-2">GERENCIAR MESAS</h1>
-                        <img class="img_smallIcon" src="../src/img/chevron-right-solid.svg"
-                            :class="tela == 'GER' ? 'd-none' : ''">
+                        <!-- <img class="img_smallIcon" src="../src/img/chevron-right-solid.svg"
+                            :class="tela == 'GER' ? 'd-none' : ''"> -->
+                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''"></i>
                         <h2 class="m-0" :class="tela == 'CAD' ? '' : 'd-none'">
                             Criar Nova
                         </h2>
@@ -175,8 +183,10 @@
                                     <div class="col text-end" style="width: 56px;
                                     max-width: fit-content;">
                                         <a href="#" @click="tela = 'CAD'">
-                                            <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
-                                                srcset="">
+                                            <!-- <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
+                                                srcset=""> -->
+                                            <i class="mdi mdi-plus text-decoration-none text-black me-3"
+                                                style="font-size: 40px;"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -206,14 +216,17 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <a href="#" @click.prevent="deletarRegistro(dado.id_mesa)">
-                                                        <img src="../src/img/trash-solid.svg" alt="icon"
-                                                            class="img_bigIcon" srcset="">
+                                                        <!-- <img src="../src/img/trash-solid.svg" alt="icon"
+                                                            class="img_bigIcon" srcset=""> -->
+                                                        <i class="mdi mdi-delete" style="font-size: 20px;"></i>
                                                     </a>
                                                 </div>
                                                 <div class="col">
                                                     <a href="#" @click="tela = 'EDT'; editarRegistro(index)">
-                                                        <img src="../src/img/pen-to-square-solid.svg" alt="icon"
-                                                            class="img_bigIcon" srcset="">
+                                                        <!-- <img src="../src/img/pen-to-square-solid.svg" alt="icon"
+                                                            class="img_bigIcon" srcset=""> -->
+                                                        <i class="mdi mdi-square-edit-outline"
+                                                            style="font-size: 20px;"></i>
                                                     </a>
                                                 </div>
                                             </div>
@@ -247,7 +260,8 @@
                             <hr class="mb-1">
                             <div class="row mb-3">
                                 <div class="col">
-                                    <span>Atenção: Ao criar uma nova mesa, o status será definido como "ABERTA" como padrão.</span>
+                                    <span>Atenção: Ao criar uma nova mesa, o status será definido como "ABERTA" como
+                                        padrão.</span>
                                 </div>
                             </div>
                             <div class="row d-flex justify-content-end">
@@ -258,10 +272,10 @@
                                     </button>
                                 </div>
                                 <div class=" col-4">
-                                    <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                        @click="salvarRegistro(); tela = 'GER'">
-                                        ADICIONAR
-                                    </button>
+                                        <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                            @click="salvarRegistro(); tela = 'GER'">
+                                            ADICIONAR
+                                        </button>
                                 </div>
                             </div>
                         </form>
@@ -300,7 +314,7 @@
                             console.log(error);
                         })
                         .finally(function () {
-                            
+
                         });
                 },
                 deletarRegistro(id_mesa) {
@@ -323,7 +337,7 @@
                 limparRegistro() {
                     this.registro = { id_mesa: -1, numero_mesa: '', qtd_lugares: '', id_status: '' };
                 },
-                
+
             }
         } 
     </script>
