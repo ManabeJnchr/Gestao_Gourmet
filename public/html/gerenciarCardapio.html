@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
@@ -21,7 +24,8 @@
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -55,9 +59,8 @@
                     <h2 class="mb-3 fw-bold">CARGO</h2>
                     <!-- button -> aria-expanded="true"; div -> class="show"; li -> class="selected" -->
                     <div class="row">
-                        <button class="btn collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#administrativo-collapse" aria-expanded="true">
-                            <h3 class="fw-bold text-start">Administrativo</h3>
+                        <button class="btn collapsed fw-bold text-start h3" data-bs-toggle="collapse" ...>
+                            Administrativo
                         </button>
                         <div class="collapse show" id="administrativo-collapse">
                             <ul class="btn-toggle-nav list-unstyled">
@@ -68,7 +71,8 @@
                                     </a>
                                 </li>
                                 <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/gerenciarFuncionarios.html" class="text-decoration-none text-black">
+                                    <a href="../html/gerenciarFuncionarios.html"
+                                        class="text-decoration-none text-black">
                                         <i class="mdi mdi-account-cog" style="font-size: 20px;"></i>
                                         <span> Gerenciar Funcionários</span>
                                     </a>
@@ -118,7 +122,8 @@
                         <div class="collapse" id="relatorios-collapse">
                             <ul class="btn-toggle-nav list-unstyled">
                                 <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/relatorioFuncionarios.html" class="text-decoration-none text-black">
+                                    <a href="../html/relatorioFuncionarios.html"
+                                        class="text-decoration-none text-black">
                                         <i class="mdi mdi-account-group" style="font-size: 20px;"></i>
                                         <span> Funcionários</span>
                                     </a>
@@ -164,7 +169,7 @@
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                             <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
-                                <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
                                     class="img_contentThumb rounded-2">
                             </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -193,7 +198,7 @@
                             <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                                 <div class="col-md-4 d-md-block d-none align-content-center h-100"
                                     style="width: 150px;">
-                                    <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                    <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
                                         class="img_contentThumb rounded-2">
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -230,100 +235,113 @@
 
                 <div class="row p-2" :class="tela == 'GER' ? 'd-none' : ''">
                     <div class="col-12 div_contentAddItem border-4 rounded-2 py-2">
-                        <form>
-                            <div class="row">
-                                <div class="col-2 align-content-center h-100" style="width: 150px;">
-                                    <div class="row mb-1">
-                                        <div class="col">
-                                            <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                        <div class="row">
+                            <div class="col-2 align-content-center h-100" style="width: 150px;">
+                                <div class="row mb-1">
+                                    <div class="col">
+                                        <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
                                             class="img_contentThumb rounded-2">
-                                        </div>
                                     </div>
-                                    <div class="row"">
-                                        <div class="col">
-                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
-                                                <img src="../../src/img/camera-solid.svg" alt="icon" class="img_smallIconBtn me-1">
-                                                <span>Alterar Foto</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- <img src="../src/img/user-icon-placeholder.jpg" alt="user"
-                                        class="img_contentThumb rounded-2"> -->
                                 </div>
-                                <div class="col">
-                                    <div class="row mb-2">
-                                        <div class="col-md-2 col-lg-2">
-                                            <label for="nomeCardapio" class="fw-bold">Nome:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-6">
-                                            <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio" class="w-100 shadow-inside border-1 rounded-2">
-                                        </div>
-                                        <div class="col-md-2 col-lg-1">
-                                            <label for="precoCardapio" class="fw-bold">Preço:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-3">
-                                            <input x-model="registro.valor" type="number" id="precoCardapio" name="precoCardapio" class="w-100 shadow-inside border-1 rounded-2">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2 col-lg-2 align-items-center">
-                                            <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-10">
-                                            <textarea x-model="registro.descricao" id="descricaoCardapio" name="descricaoCardapio" class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
-                                        </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="button" id="btn_addImg"
+                                            class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
+                                            <img src="../../src/img/camera-solid.svg" alt="icon"
+                                                class="img_smallIconBtn me-1">
+                                            <span>Alterar Foto</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <hr class="mb-1">
-                            <div class="row d-flex justify-content-between">
-                                <div class="col-3 align-content-center">
-                                    <h1 class="m-0">Adicionais</h1>
+                            <div class="col">
+                                <div class="row mb-2">
+                                    <div class="col-md-2 col-lg-2">
+                                        <label for="nomeCardapio" class="fw-bold">Nome:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-6">
+                                        <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio"
+                                            class="w-100 shadow-inside border-1 rounded-2">
+                                    </div>
+                                    <div class="col-md-2 col-lg-1">
+                                        <label for="valorCardapio" class="fw-bold">Preço:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-3">
+                                        <input x-model="registro.valor" type="number" id="valorCardapio"
+                                            name="valorCardapio" class="w-100 shadow-inside border-1 rounded-2"
+                                            placeholder="0,00" step="0.01" min="0"
+                                            @blur="registro.valor = parseFloat(registro.valor || 0).toFixed(2)">
+                                    </div>
                                 </div>
-                                <div class="col-1 text-end">
-                                    <button type="button" class="btn bg-transparent py-1" @click.prevent="incluirAdicional()">
-                                        <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
-                                            srcset="">
-                                    </button>
+                                <div class="row">
+                                    <div class="col-md-2 col-lg-2 align-items-center">
+                                        <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-10">
+                                        <textarea x-model="registro.descricao" id="descricaoCardapio"
+                                            name="descricaoCardapio"
+                                            class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <hr class="m-0 mb-1">
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <ul class="list-group list-group-flush">
-                                        <template x-for="(adicional, index) in adicionais" :key="index">
-                                            <li class="list-group-item p-1 ps-0">
-                                                <div class="row d-flex justify-content-between">
-                                                    <div class="col-10">
-                                                        <img src="../src/img/caret-right-solid.svg" alt="icon" class="img_xsmallIcon m-0 me-2">
-                                                        <input type="text" x-model="adicional.descricao" class="w-75 shadow-inside border-1 rounded-2" placeholder="Digite o nome do item adicional...">
-                                                    </div>
-                                                    <div class="col-1 d-flex justify-content-end align-content-center">
-                                                        <button type="button" class="btn bg-transparent py-1" @click.prevent="adicionais.splice(index, 1)">
-                                                            <img src="../src/img/trash-solid.svg" alt="icon" class="img_mediumIcon">
-                                                        </button>
-                                                    </div>
+                        </div>
+
+                        <hr class="mb-1">
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-3 align-content-center">
+                                <h1 class="m-0">Adicionais</h1>
+                            </div>
+                            <div class="col-1 text-end">
+                                <button type="button" class="btn bg-transparent py-1"
+                                    @click.prevent="incluirAdicional()">
+                                    <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon" srcset="">
+                                </button>
+                            </div>
+                        </div>
+                        <hr class="m-0 mb-1">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <ul class="list-group list-group-flush">
+                                    <template x-for="(adicional, index) in registro.adicionais" :key="index">
+                                        <li class="list-group-item p-1 ps-0">
+                                            <div class="row mb-2">
+                                                <div class="col-md-12 col-lg-6">
+                                                    <img src="../src/img/caret-right-solid.svg" alt="icon"
+                                                        class="img_xsmallIcon m-0 me-2 mb-1">
+                                                    <input type="text" x-model="adicional.descricao"
+                                                        class="shadow-inside border-1 rounded-2" style="width: 95%;"
+                                                        placeholder="Digite o nome do item adicional...">
                                                 </div>
-                                            </li>
-                                        </template>
-                                    </ul>
-                                </div>
+                                                <div class="col-md-2 col-lg-1 align-items-center">
+                                                    <label for="valorAdicional" class="fw-bold">Preço:</label>
+                                                </div>
+                                                <div class="col-md-8 col-lg-3">
+                                                    <input type="number" x-model="adicional.valor" id="valorAdicional"
+                                                        name="adicionalValor"
+                                                        class="w-100 shadow-inside border-1 rounded-2"
+                                                        placeholder="0,00"
+                                                        @blur="adicional.valor = parseFloat(adicional.valor || 0).toFixed(2)">
+                                                </div>
+                                                <div class="col-md-2 col-lg-2 text-end">
+                                                    <button type="button" class="btn btn-danger btn-sm w-100"
+                                                        @click="excluirAdicional(index)">Excluir</button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
                             </div>
-                            <div class="row d-flex justify-content-end">
-                                <div class="col-sm-6 col-md-4 mb-1">
-                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white"
-                                        @click="tela = 'GER'; limparRegistro()"">
-                                        CANCELAR
-                                    </button>
-                                </div>
-                                <div class="col-sm-6 col-md-4">
-                                    <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                        @click="salvarRegistro(); tela = 'GER'">
-                                        ADICIONAR
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="row d-flex justify-content-end">
+                            <div class="col-sm-6 col-md-4 mb-1">
+                                <button id="btn_cancelar" type="button" class="w-100 btn text-white"
+                                    @click="tela = 'GER'; limparRegistro()">CANCELAR</button>
                             </div>
-                        </form>
+                            <div class=" col-sm-6 col-md-4">
+                                <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                    @click.prevent="salvarRegistro(); tela = 'GER'">ADICIONAR</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -334,10 +352,9 @@
         function Cardapio() {
             return {
                 tela: 'GER',
-                registro: { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: ''},
+                registro: { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: '', adicionais: [] },
                 dados: [],
                 dadoSelecionado: [],
-                adicionais: [],
                 buscarDados() {
                     axios.get('/listarCardapio')
                         .then(resp => {
@@ -353,13 +370,13 @@
                 salvarRegistro() {
                     axios.post('/salvarItemCardapio', this.registro)
                         .then(resp => {
-                            this.buscarDados();
+                            console.log(resp.data);
                         })
                         .catch(error => {
-                            console.log(error);
+
                         })
-                        .finally(function () {
-                            
+                        .finally(() => {
+
                         });
                 },
                 deletarRegistro(_id) {
@@ -380,13 +397,16 @@
                     this.registro.categoria = this.dados[index].categoria;
                     this.registro.igredientes = this.dados[index].igredientes;
                     this.registro.imagem = this.dados[index].imagem;
+                    this.registro.adicionais = this.dados[index].adicionais;
                 },
                 limparRegistro() {
-                    this.registro = { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: ''};
+                    this.registro = { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: '', adicionais: [] };
                 },
                 incluirAdicional() {
-                    this.adicionais.push({ descricao: '' });
-                    console.log(this.adicionais);
+                    this.registro.adicionais.push({ id: -1, id_cardapio: this.registro.id, descricao: '', valor: '' });
+                },
+                excluirAdicional(index) {
+                    this.registro.adicionais.splice(index, 1);
                 },
             }
         }
