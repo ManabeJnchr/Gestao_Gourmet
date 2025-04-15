@@ -20,7 +20,7 @@ export const logout = async (req: express.Request, res: express.Response) => {
     try {
         res.cookie("AUTH-GESTAO-GOURMET", "", {domain: 'localhost', path: '/', expires: new Date(0)})
 
-        res.redirect("/login");
+        res.status(200).json({ success: true });
 
     } catch (err : any) {
         res

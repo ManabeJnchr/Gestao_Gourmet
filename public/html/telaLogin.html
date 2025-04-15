@@ -20,9 +20,7 @@
 	<main class="container-fluid vh-100 d-flex flex-column loginTela justify-content-center">
 		<div class="row">
 			<div class="col-12 text-center">
-				<a href="../html/index.html">
-					<img src="../src/img/logo-gestao-gourmet-text.svg" class="mb-3" alt="Logo da Gestão Gourmet" />
-				</a>
+				<img src="../src/img/logo-gestao-gourmet-text.svg" class="mb-3" alt="Logo da Gestão Gourmet" />
 			</div>
 			<div x-data="Login()" style="justify-items: center">
 				<div class="rectangleLogin pb-lg-1">
@@ -67,7 +65,11 @@
 				efetuarLogin() {
 					axios.post('/login', this.registro)
 						.then(resp => {
-
+							if(resp.status == 200) {
+								window.location.href = '/html/index.html';
+							} else {
+								alert('Login falhou!');
+							}
 						})
 						.catch(error => {
 							console.log(error);

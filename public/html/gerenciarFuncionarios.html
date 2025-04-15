@@ -57,7 +57,6 @@
             <div class="col-2 d-none d-lg-block pt-3 pb-3 border-2 border-end">
                 <div class="fit-content">
                     <h2 class="mb-3 fw-bold">CARGO</h2>
-                    <!-- button -> aria-expanded="true"; div -> class="show"; li -> class="selected" -->
                     <div class="row">
                         <button class="btn collapsed" data-bs-toggle="collapse"
                             data-bs-target="#administrativo-collapse" aria-expanded="true">
@@ -150,7 +149,6 @@
 
                 <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
-                        <!-- O botão atualmente retorna a página anterior -->
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
                             <!-- <img class="img_bigIcon" src="../src/img/arrow-left-solid.svg" alt="icon"> -->
                             <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
@@ -256,18 +254,13 @@
                                         </div>
                                     </div>
                                     <div class="row"">
-                                        <div class=" col">
-                                        <button type="button" id="btn_addImg"
-                                            class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
-                                            <!-- <img src="../src/img/camera-solid.svg" alt="icon"
-                                                class="img_smallIconBtn me-1"> -->
-                                            <i class="mdi mdi-camera text-decoration-none text-black me-1"
-                                                style="font-size: 20px;"></i>
-                                            <span>Alterar Foto</span>
-                                        </button>
-
-                                        <!-- Input de arquivo escondido -->
-                                        <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                        <div class="col">
+                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
+                                                <img src="../src/img/camera-solid.svg" alt="icon" class="img_smallIconBtn me-1">
+                                                <span>Alterar Foto</span>
+                                              </button>
+                                              <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -366,7 +359,7 @@
                         .then(resp => {
                             this.dados = resp.data.map(dado => ({
                                 ...dado,
-                                imagem: dado.imagem ? `/uploads/${dado.imagem}` : null // Ensure the image path is correct
+                                imagem: dado.imagem ? `/uploads/${dado.imagem}` : null
                             }));
                         })
                         .catch(error => {
@@ -411,39 +404,31 @@
                     this.registro.cpf = this.dados[index].cpf;
                     this.registro.telefone = this.dados[index].telefone;
                     this.registro.id_cargo = this.dados[index].id_cargo;
-                    this.registro.imagem = this.dados[index].imagem ? this.dados[index].imagem : null; // Ensure the image path is correct
-                    document.getElementById("selectedImage").src = this.registro.imagem || '../src/img/user-icon-placeholder.jpg'; // Update the displayed image
-                    document.getElementById("input_img").value = ''; // Limpa o input de imagem
+                    this.registro.imagem = this.dados[index].imagem ? this.dados[index].imagem : null; 
+                    document.getElementById("selectedImage").src = this.registro.imagem || '../src/img/user-icon-placeholder.jpg';
+                    document.getElementById("input_img").value = '';
                 },
                 limparRegistro() {
                     this.registro = { id_funcionario: -1, nome: '', cpf: '', telefone: '', id_cargo: '' };
-                    document.getElementById("selectedImage").src = '../src/img/user-icon-placeholder.jpg'; // Limpa a imagem exibida
-                    document.getElementById("input_img").value = ''; // Limpa o input de imagem
+                    document.getElementById("selectedImage").src = '../src/img/user-icon-placeholder.jpg';
+                    document.getElementById("input_img").value = ''; 
                 },
             }
         }
 
-        // Função para simular o clique no input de tipo file
-        document.getElementById("btn_addImg").addEventListener("click", function () {
-            document.getElementById("input_img").click(); // Abre o seletor de arquivos
+        document.getElementById("btn_addImg").addEventListener("click", function() {
+            document.getElementById("input_img").click();
         });
 
-        // Função chamada quando a imagem é selecionada
-        document.getElementById("input_img").addEventListener("change", function (event) {
-            const file = event.target.files[0]; // Pega o primeiro arquivo selecionado
+        document.getElementById("input_img").addEventListener("change", function(event) {
+            const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-
-                // Quando a leitura do arquivo for concluída
-                reader.onload = function (e) {
-                    const imagemSelecionada = e.target.result; // A URL da imagem em base64
-
-                    // Mostra a imagem
+                reader.onload = function(e) {
+                    const imagemSelecionada = e.target.result;
                     const selectedImage = document.getElementById("selectedImage");
-                    selectedImage.src = imagemSelecionada; // Exibe a imagem na tag <img>
+                    selectedImage.src = imagemSelecionada;
                 };
-
-                // Lê o arquivo como uma URL de dados (base64)
                 reader.readAsDataURL(file);
             }
         });
