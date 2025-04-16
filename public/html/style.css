@@ -1,0 +1,495 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Scheherazade+New:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: "Inter", sans-serif !important;
+}
+
+html,
+body {
+    height: 100% !important;
+}
+
+h1 {
+    font-size: 28px !important;
+}
+
+h2 {
+    font-size: 20px !important;
+}
+
+h3 {
+    font-size: 16px !important;
+}
+
+h4 { font-size: 12px !important;
+     color: #848484;
+}
+
+h5 {
+    font-size: 24px !important;
+}
+
+h6 {
+    font-size: 17px !important;
+}
+
+h7 {
+  font-size: 14px !important;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+header {
+    background-color: #ffffff !important;
+}
+
+.img_bigIcon {
+    width: 32px;
+    height: fit-content;
+}
+
+.img_smallIcon {
+    margin: 8px;
+    width: 15px;
+    height: fit-content;
+}
+
+.img_mediumIcon {
+    width: 20px;
+    height: fit-content;
+}
+
+.img_xsmallIcon {
+    width: 8px;
+    height: fit-content;
+}
+
+.img_smallIconBtn {
+    width: 15px;
+    height: fit-content;
+}
+
+.img_contentThumb { 
+    width: 100%;  
+    height: 100%;
+}
+
+.shadow-inside {
+    box-shadow: inset 0 1px 1px #0000004d;
+    outline: none;
+}
+
+.div_contentItem {
+    height: 150px !important;
+    background-color: white;
+    border: solid #8a8a8a;
+    /* display: flex;  */
+    /* align-items: stretch;  */
+    /* position: relative; */
+}
+
+.div_contentAddItem {
+    height: fit-content !important;
+    /* width: 96% !important; */
+    background-color: white;
+    border: solid #8a8a8a;
+    /* display: flex; */
+    /* align-items: stretch; */
+    /* position: relative; */
+}
+
+.img_menuIcon {
+    width: 22px;
+    height: auto;
+}
+
+.img_navBarIcon {
+    width: 15px;
+    height: auto;
+}
+
+.no-bold {
+    font-weight: normal;
+}
+
+.selected { background-color: #e8e8e8; }
+
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    color: var(--bs-btn-active-color);
+    background-color: var(--bs-btn-active-bg);
+    border-color: transparent !important;
+}
+
+.accordion-button {
+    border: none;
+    box-shadow: none;
+    background: none;
+}
+.accordion-button::after {
+    display: none;
+}
+
+.loginTela {
+    background-color: #F5F5F5;
+}
+
+.rectangleLogin {
+    width: 491px;
+    height: 400px;
+    background-color: #D9D9D9;
+    border-radius: 50px;
+    text-align: center;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .linha-branca {
+    width: 427.5px;
+    height: 1.57px;
+    background-color: #FFFFFF;
+    border: none;
+    margin: auto;
+  }
+
+  .custom-input {
+    width: 347px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .custom-label {
+    display: block;
+    text-align: left;
+    font-size: 1.5rem; 
+    margin-bottom: 5px;
+  }
+
+/* Reduz a margem do grupo de inputs */
+.input-group {
+    margin: 0 auto; /* Centraliza horizontalmente */
+    width: 420px;   /* Largura fixa definida */
+    flex: none;
+}
+  
+  
+  /* Ajusta o padding do span que contém o símbolo @ e aplica bordas arredondadas */
+  .input-group-text {
+    padding: 10px 25px; /* Diminui o padding ao redor do símbolo @ */
+    border-radius: 25px; /* Borda arredondada */
+    height: 50px; /* Define a altura do elemento */
+    justify-content: center;
+  }
+  
+  /* Ajusta o padding do input, aplica bordas arredondadas e remove o foco padrão */
+  .input-group>.form-control {
+    padding: 0.25rem 0.5rem; /* Diminui o padding dentro do input */
+    border-radius: 25px; /* Borda arredondada */
+    border: 1px solid #ced4da; /* Define a cor da borda */
+    width: 300px !important; /* Sobrescreve a largura com !important */
+    height: 50px; /* Define a altura do input */
+  }
+  
+  /* Adiciona efeito de borda arredondada quando o input está em foco */
+  .form-control:focus {
+    border-color: #858788; /* Cor de borda quando em foco */
+    outline: none; /* Remove o contorno padrão */
+    box-shadow: 0 0 0 0.2rem rgba(184, 184, 184, 0.205); /* Efeito de sombra no foco */
+  }
+  
+  .btn-login {
+    background-color: #454545 !important; /* Cor de fundo */
+    width: 253px !important;              /* Largura desejada */
+    height: 47px !important;              /* Altura desejada */
+    border: none;                         /* Remove a borda */
+    color: #fff;                          /* Cor do texto */
+    font-size: 16px;                      /* Tamanho da fonte */
+    display: flex;                        /* Habilita Flexbox para centralizar o texto */
+    justify-content: center;              /* Centraliza horizontalmente o conteúdo interno */
+    align-items: center;                  /* Centraliza verticalmente o conteúdo interno */
+    margin: 0 auto;   
+    
+  }
+  
+  .rectangleRedefinirSenha {
+    width: 1000px;
+    height: 478px;
+    background-color: #D9D9D9;
+    border-radius: 50px;
+    text-align: center;
+    position: relative;  /* Cria contexto para posicionamento absoluto */
+    overflow: hidden;    /* Impede que os elementos internos ultrapassem seus limites */
+    border-radius: 40px;
+  }
+  
+  .empurra-direita {
+    margin-left: 140px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita2 {
+    margin-left: 110px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita3 {
+    margin-left: 15px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita4 {
+    margin-left: 660px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita5 {
+    margin-left: 550px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita6 {
+    margin-left: 560px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita7 {
+    margin-left: 514px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita8 {
+    margin-left: 500px; /* Ajuste o valor conforme necessário */
+  }
+
+  .empurra-direita9 {
+    margin-left: 530px; /* Ajuste o valor conforme necessário */
+  }
+
+  .vertical-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;      /* Posiciona no centro horizontalmente */
+    width: 3px;     /* Espessura da linha */
+    background-color: #FFFFFF; /* Cor branca */
+    transform: translateX(-50%); /* Centraliza a linha no meio */
+  }
+
+  .btn-login {
+    background-color: #454545 !important; /* Cor de fundo */
+    width: 380px !important;              /* Largura desejada */
+    height: 47px !important;              /* Altura desejada */
+    border: none;                         /* Remove a borda */
+    color: #fff;                          /* Cor do texto */
+    font-size: 16px;                      /* Tamanho da fonte */
+    display: flex;                        /* Habilita Flexbox para centralizar o texto */
+    justify-content: center;              /* Centraliza horizontalmente o conteúdo interno */
+    align-items: center;                  /* Centraliza verticalmente o conteúdo interno */
+    margin: 0 auto;   
+    
+  }
+
+  .rectangleConfirmarRedefinirSenha {
+    width: 430px;
+    height: 83px;
+    background-color: #2C5744;
+    border-radius: 50px;
+    border: 1px solid #06D20E;
+    text-align: center;
+    position: relative;  /* Cria contexto para posicionamento absoluto */
+    overflow: hidden;    /* Impede que os elementos internos ultrapassem seus limites */
+    border-radius: 16px;
+  }
+
+#btn_addImg {
+    box-shadow: inset 0 1px 1px #0000004d;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#btn_cancelar {
+    background-color: #adadad !important;
+}
+
+#btn_adicionar {
+    background-color: #06d20e !important;
+}
+
+#div_content {
+    background-color: #f5f5f5;
+}
+
+#div_contentHeader {
+    background-color: white;
+    border-color: #e8e8e8;
+}
+
+#img_userIcon {
+    width: 40px;
+}
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    /* width: 200px; */
+    /* margin: 10px; */
+    background-color: white;
+    overflow: hidden;
+   
+}
+.menu-item img {
+    width: 100%;  
+    height: 100%;  
+    object-fit: cover;
+    padding: 10px;
+}
+.item-name{
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+}
+.item-ingredients{
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: gray;
+}
+.item-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+.price {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #382BD2;
+}
+.add-to-cart {
+    font-family: 'Inter', sans-serif;
+    background-color: #06D20E;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.add-to-cart:hover {
+    background-color: #45a049;
+}
+ 
+.menu-itemp {
+    display: flex;
+    align-items: center; /* Alinha imagem e texto na mesma linha */
+    width: 100%; /* Mantém responsivo */
+    max-width: 300px; /* Define um tamanho máximo */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.menu-itemp img {
+    width: 110px; /* Reduz o tamanho da imagem */
+    height: auto; /* Mantém a proporção */
+    object-fit: contain; /* Evita cortes */
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+
+.item-detailsp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Mantém os elementos alinhados verticalmente */
+    flex-grow: 1; /* Faz o texto ocupar o espaço restante */
+}
+
+.item-namep {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: black;
+}
+
+.item-ingredientsp {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: gray;
+}
+
+.pricep {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #382BD2;
+}
+
+.add-to-cartp {
+    font-family: 'Inter', sans-serif;
+    background-color: #D20606; /* Vermelho para exclusão */
+    color: white;
+    padding: 6px 10px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10px;
+    margin-top: 5px; /* Pequeno espaçamento acima do botão */
+    width: 100px; /* Define um tamanho fixo para o botão */
+}
+
+.add-to-cartp:hover {
+    background-color: #A00404;
+}
+.item-un{
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+.valor-total{
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: green;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+.add-to-cartF {
+    font-family: 'Inter', sans-serif;
+    background-color: #06D20E;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    
+}
+.add-to-cartF:hover {
+    background-color: #45a049;
+}
+.btn-outline-success {
+    --bs-btn-color: #06D20E;
+    --bs-btn-border-color: #06D20E;
+    --bs-btn-hover-color: #fff ;
+    --bs-btn-hover-bg: #06D20E;
+    --bs-btn-hover-border-color: #06D20E;
+    --bs-btn-focus-shadow-rgb: 25, 135, 84;
+    --bs-btn-active-color: #fff; /* Alterado para branco */
+    --bs-btn-active-bg: #06D20E;
+    --bs-btn-active-border-color: #06D20E;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #06D20E;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #06D20E;
+    --bs-gradient: none;
+}
