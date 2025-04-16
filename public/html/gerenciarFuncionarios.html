@@ -150,14 +150,10 @@
                 <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
-                            <!-- <img class="img_bigIcon" src="../src/img/arrow-left-solid.svg" alt="icon"> -->
                             <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
                         </button>
                         <h1 class="m-0 ms-2">GERENCIAR FUNCIONÁRIO</h1>
-                        <!-- <img class="img_smallIcon" src="../src/img/chevron-right-solid.svg"
-                            :class="tela == 'GER' ? 'd-none' : ''"> -->
-                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''"
-                            style="font-size: 30px;"></i>
+                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''" style="font-size: 30px;"></i>
                         <h2 class="m-0" :class="tela == 'CAD' ? '' : 'd-none'">
                             Criar Novo
                         </h2>
@@ -176,17 +172,13 @@
                             </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                 <div class="row">
-                                    <div class="col text-truncate" style="align-content: center;">
-                                        <h4 class="h2 m-0 text-truncate">Novo Funcionário</h4>
-                                    </div>
-                                    <div class="col text-end" style="width: 56px;
-                                    max-width: fit-content;">
-                                        <a href="#" @click="tela = 'CAD'">
-                                            <!-- <img src="../src/img/plus-solid.svg" alt="icon" class="img_bigIcon"
-                                                srcset=""> -->
-                                            <i class="mdi mdi-account-multiple-plus-outline text-decoration-none text-black me-3"
-                                                style="font-size: 40px;"></i>
-                                        </a>
+                                    <div class="col d-inline-flex justify-content-between">
+                                        <h4 class="h2 text-truncate">Novo Funcionário</h4>
+                                        <div>
+                                            <button style="background: none; border: none;" @click.prevent="tela = 'CAD'">
+                                                <span class="mdi mdi-account-multiple-plus-outline text-decoration-none text-black" style="font-size: 30px;"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -207,28 +199,15 @@
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                     <div class="row">
-                                        <div class="col text-truncate">
+                                        <div class="col d-inline-flex justify-content-between">
                                             <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
-                                        </div>
-                                        <div class="col text-end" style="width: 56px;
-                                        max-width: fit-content;">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <a href="#" @click.prevent="deletarRegistro(dado.id_funcionario)">
-                                                        <!-- <img src="../src/img/trash-solid.svg" alt="icon"
-                                                            class="img_bigIcon" srcset=""> -->
-                                                        <i class="mdi mdi-delete text-decoration-none text-black me-3"
-                                                            style="font-size: 30px;"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col">
-                                                    <a href="#" @click="tela = 'EDT'; editarRegistro(index)">
-                                                        <!-- <img src="../src/img/pen-to-square-solid.svg" alt="icon"
-                                                            class="img_bigIcon" srcset=""> -->
-                                                        <i class="mdi mdi-square-edit-outline text-decoration-none text-black me-3"
-                                                            style="font-size: 30px;"></i>
-                                                    </a>
-                                                </div>
+                                            <div>
+                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_funcionario)">
+                                                    <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                </button>
+                                                <button style="background: none; border: none;" @click="tela = 'EDT'; editarRegistro(index)">
+                                                    <span class="mdi mdi-square-edit-outline text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -256,39 +235,35 @@
                                     <div class="row"">
                                         <div class="col">
                                             <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
-                                                <img src="../src/img/camera-solid.svg" alt="icon" class="img_smallIconBtn me-1">
-                                                <span>Alterar Foto</span>
-                                              </button>
-                                              <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                                <span class="mdi mdi-camera text-decoration-none text-black"> Alterar Foto</span>
+                                            </button>
+                                            <input type="file" id="input_img" style="display: none;" accept="image/*">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col">
-                                <div class="row mb-2">
-                                    <div class="col-md-2 col-lg-2">
-                                        <label for="nomeFuncionario" class="fw-bold">Nome:</label>
+                                <div class="col">
+                                    <div class="row mb-2">
+                                        <div class="col-md-2 col-lg-2">
+                                            <label for="nomeFuncionario" class="fw-bold">Nome:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-6">
+                                            <input x-model="registro.nome" type="text" id="nomeFuncionario"
+                                                name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                        <div class="col-md-2 col-lg-1">
+                                            <label for="cpfFuncionario" class="fw-bold">CPF:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-3">
+                                            <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'" placeholder="000.000.000-00" type="text" id="cpfFuncionario"
+                                                name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
                                     </div>
-                                    <div class="col-md-10 col-lg-6">
-                                        <input x-model="registro.nome" type="text" id="nomeFuncionario"
-                                            name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                    </div>
-                                    <div class="col-md-2 col-lg-1">
-                                        <label for="cpfFuncionario" class="fw-bold">CPF:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-3">
-                                        <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'"
-                                            placeholder="000.000.000-00" type="text" id="cpfFuncionario"
-                                            name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 col-lg-2 align-items-center">
-                                        <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-4">
-                                        <input x-model="registro.telefone"
-                                            x-mask:dynamic="registro.telefone.length < 13 ? '(99) 9999-9999' : '(99) 99999-9999'"
+                                    <div class="row">
+                                        <div class="col-md-2 col-lg-2 align-items-center">
+                                            <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-4">
+                                            <input x-model="registro.telefone" x-mask:dynamic="registro.telefone.length < 13 ? '(99) 9999-9999' : '(99) 99999-9999'"
                                             placeholder="(00) 00000-0000" type="tel" id="telefoneFuncionario"
                                             name="telefoneFuncionario" class="w-100 shadow-inside border-1 rounded-2">
                                     </div>
