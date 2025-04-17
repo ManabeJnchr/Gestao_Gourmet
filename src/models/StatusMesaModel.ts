@@ -5,7 +5,7 @@ class StatusMesaModel {
         try {
             const result = await pool.query(
                 `SELECT * 
-                 FROM mesastatus
+                 FROM statusmesa
                  `
             );
 
@@ -20,7 +20,7 @@ class StatusMesaModel {
         try {
             const result = await pool.query(
                 `SELECT * 
-                 FROM mesastatus
+                 FROM statusmesa
                  WHERE id_status = $1
                  `, [id_status]
             );
