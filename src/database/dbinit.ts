@@ -18,6 +18,21 @@ async function initdb(pool: Pool) {
         await pool.query(`
             BEGIN;
 
+                CREATE OR REPLACE FUNCTION public.atualizar_data_alteracao()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+BEGIN
+    NEW.dataalteracao = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$BODY$;
+
+ALTER FUNCTION public.atualizar_data_alteracao()
+    OWNER TO postgres;
+
 CREATE TABLE public.cardapio (
     id_cardapio integer NOT NULL,
     nome character varying(100) NOT NULL,
@@ -826,7 +841,6 @@ ALTER TABLE ONLY public.pedido
 
 ALTER TABLE ONLY public.pedido
     ADD CONSTRAINT fk_pedido_garcom FOREIGN KEY (id_garcom) REFERENCES public.funcionario(id_funcionario);
-
 
 --
 -- TOC entry 4777 (class 2606 OID 32929)
