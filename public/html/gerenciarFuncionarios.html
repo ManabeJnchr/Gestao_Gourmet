@@ -241,84 +241,84 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col">
+                                    <div class="row mb-2">
+                                        <div class="col-md-2 col-lg-2">
+                                            <label for="nomeFuncionario" class="fw-bold">Nome:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-6">
+                                            <input x-model="registro.nome" type="text" id="nomeFuncionario"
+                                                name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                        <div class="col-md-2 col-lg-1">
+                                            <label for="cpfFuncionario" class="fw-bold">CPF:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-3">
+                                            <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'"
+                                                placeholder="000.000.000-00" type="text" id="cpfFuncionario"
+                                                name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-lg-2 align-items-center">
+                                            <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-4">
+                                            <input x-model="registro.telefone"
+                                                x-mask:dynamic="registro.telefone.length < 13 ? '(99) 9999-9999' : '(99) 99999-9999'"
+                                                placeholder="(00) 00000-0000" type="tel" id="telefoneFuncionario"
+                                                name="telefoneFuncionario" class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                        <div class="col-md-2 col-lg-1 align-items-center">
+                                            <label for="cargoFuncionario" class="fw-bold">Cargo:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-5">
+                                            <select x-model="registro.id_cargo" id="cargoFuncionario"
+                                                name="cargoFuncionario"
+                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                <option value="" selected disabled>
+                                                    Selecione um cargo
+                                                </option>
+                                                <option value=1>
+                                                    Administrador
+                                                </option>
+                                                <option value=2>
+                                                    Caixa / Atendente
+                                                </option>
+                                                <option value=3>
+                                                    Garçom
+                                                </option>
+                                                <option value=4>
+                                                    Gerente
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col">
-                                <div class="row mb-2">
-                                    <div class="col-md-2 col-lg-2">
-                                        <label for="nomeFuncionario" class="fw-bold">Nome:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-6">
-                                        <input x-model="registro.nome" type="text" id="nomeFuncionario"
-                                            name="nomeFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                    </div>
-                                    <div class="col-md-2 col-lg-1">
-                                        <label for="cpfFuncionario" class="fw-bold">CPF:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-3">
-                                        <input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'"
-                                            placeholder="000.000.000-00" type="text" id="cpfFuncionario"
-                                            name="cpfFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 col-lg-2 align-items-center">
-                                        <label for="telefoneFuncionario" class="fw-bold">Telefone:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-4">
-                                        <input x-model="registro.telefone"
-                                            x-mask:dynamic="registro.telefone.length < 13 ? '(99) 9999-9999' : '(99) 99999-9999'"
-                                            placeholder="(00) 00000-0000" type="tel" id="telefoneFuncionario"
-                                            name="telefoneFuncionario" class="w-100 shadow-inside border-1 rounded-2">
-                                    </div>
-                                    <div class="col-md-2 col-lg-1 align-items-center">
-                                        <label for="cargoFuncionario" class="fw-bold">Cargo:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-5">
-                                        <select x-model="registro.id_cargo" id="cargoFuncionario"
-                                            name="cargoFuncionario"
-                                            class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                            <option value="" selected disabled>
-                                                Selecione um cargo
-                                            </option>
-                                            <option value=1>
-                                                Administrador
-                                            </option>
-                                            <option value=2>
-                                                Caixa / Atendente
-                                            </option>
-                                            <option value=3>
-                                                Garçom
-                                            </option>
-                                            <option value=4>
-                                                Gerente
-                                            </option>
-                                        </select>
-                                    </div>
+                            <hr class="mb-1">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <span>Atenção: Ao criar um novo funcionário, será definida uma senha provisória de
+                                        acesso igual ao CPF.</span>
                                 </div>
                             </div>
-                    </div>
-                    <hr class="mb-1">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <span>Atenção: Ao criar um novo funcionário, será definida uma senha provisória de
-                                acesso igual ao CPF.</span>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-4">
-                            <button id="btn_cancelar" type="button" class="w-100 btn text-white"
-                                @click="tela = 'GER'; limparRegistro()"">
-                                        CANCELAR
-                                    </button>
+                            <div class="row d-flex justify-content-end">
+                                <div class="col-4">
+                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white"
+                                        @click="tela = 'GER'; limparRegistro()"">
+                                                CANCELAR
+                                            </button>
+                                        </div>
+                                        <div class=" col-4">
+                                        <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                            @click="salvarRegistro(); tela = 'GER'">
+                                            ADICIONAR
+                                        </button>
                                 </div>
-                                <div class=" col-4">
-                                <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                    @click="salvarRegistro(); tela = 'GER'">
-                                    ADICIONAR
-                                </button>
-                        </div>
+                            </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
     </div>
