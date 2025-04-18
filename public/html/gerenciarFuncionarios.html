@@ -144,7 +144,7 @@
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                             <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
-                                <img src="../src/img/user-icon-placeholder.jpg" alt="user"
+                                <img src="../src/img/add-funcionario-icon.jpg" alt="user"
                                     class="img_contentThumb rounded-2">
                             </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -159,7 +159,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12 h5 no-bold" style="margin-top: 5px;">
+                                    <div class="col-12 h5 no-bold">
                                         Acrescentar novo funcionário.
                                     </div>
                                 </div>
@@ -178,7 +178,7 @@
                                     <div class="row">
                                         <div class="col d-inline-flex justify-content-between">
                                             <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
-                                            <div>
+                                            <div style="min-width: 89px;">
                                                 <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_funcionario)">
                                                     <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
                                                 </button>
@@ -211,7 +211,7 @@
                                     </div>
                                     <div class="row"">
                                         <div class="col">
-                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0">
+                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100">
                                                 <span class="mdi mdi-camera text-decoration-none text-black"> Alterar Foto</span>
                                             </button>
                                             <input type="file" id="input_img" style="display: none;" accept="image/*">
@@ -289,7 +289,7 @@
                                 </div>
                                 <div class=" col-4">
                                     <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                        @click="salvarRegistro(); tela = 'GER'">
+                                        @click="salvarRegistro();">
                                         ADICIONAR
                                     </button>
                                 </div>
@@ -300,6 +300,8 @@
             </div>
     </div>
     </main>
+    <!-- Toast Container -->
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
     <script>
@@ -340,6 +342,24 @@
             }
         }
 
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-bg-${type} border-0 show`;
+            toast.role = 'alert';
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
         function Funcionarios() {
             return {
                 tela: 'GER',
@@ -372,11 +392,19 @@
 
                     axios.post('/salvarFuncionario', formData)
                         .then(resp => {
-                            this.buscarDados();
-                            this.limparRegistro(); // Clear the form after saving
+                            if (resp.data.erro || resp.data.message) {
+                                const errorMessage = resp.data.erro?.message || resp.data.message || 'Erro desconhecido.';
+                                showToast(errorMessage, 'danger');
+                            } else {
+                                this.buscarDados();
+                                this.limparRegistro();
+                                this.tela = 'GER';
+                                showToast('Funcionário salvo com sucesso!', 'success');
+                            }
                         })
                         .catch(error => {
-                            console.log(error);
+                            const errorMessage = error.response?.data?.erro?.message || error.response?.data?.message || 'Erro ao salvar funcionário.';
+                            showToast(errorMessage, 'danger');
                         });
                 },
                 deletarRegistro(id) {
@@ -384,10 +412,15 @@
                         .then(resp => {
                             if (resp.data == -1) {
                                 this.buscarDados();
+                                showToast('Funcionário deletado com sucesso!', 'success');
+                            } else if (resp.data.erro || resp.data.message) {
+                                const errorMessage = resp.data.erro?.message || resp.data.message || 'Erro desconhecido.';
+                                showToast(errorMessage, 'danger');
                             }
                         })
                         .catch(error => {
-                            console.log(error);
+                            const errorMessage = error.response?.data?.erro?.message || error.response?.data?.message || 'Erro ao deletar funcionário.';
+                            showToast(errorMessage, 'danger');
                         });
                 },
                 editarRegistro(index) {
