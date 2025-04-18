@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div x-data="Index()" x-init="getIdentity()" class="container-fluid vh-100 d-flex flex-column">
+    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column d-none">
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
@@ -37,9 +37,7 @@
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><a class="dropdown-item" href="#">Alterar Senha</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -54,91 +52,77 @@
                 <div class="fit-content">
                     <h3 class="mb-3 fw-bold" x-text="identity.cargonome.toUpperCase()">CARGO</h3>
                     <div class="row" x-show="identity.id_cargo == 1 || identity.id_cargo == 4">
-                        <button class="btn collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#administrativo-collapse" aria-expanded="false">
-                            <h3 class="fw-bold text-start">Administrativo</h3>
-                        </button>
-                        <div class="collapse" id="administrativo-collapse">
-                            <ul class="btn-toggle-nav list-unstyled">
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/gerenciarCardapio.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-book-open" style="font-size: 20px;"></i>
-                                        <span> Gerenciar Cardápio</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/gerenciarFuncionarios.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-account-cog" style="font-size: 20px;"></i>
-                                        <span> Gerenciar Funcionários</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/gerenciarMesas.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-table-furniture" style="font-size: 20px;"></i>
-                                        <span> Gerenciar Mesas</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 mb-3 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
-                                        <span> Redifinição de Senhas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h3 class="fw-bold text-start">Administrativo</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/gerenciarCardapio.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-book-open" style="font-size: 20px;"></i>
+                                    <span> Gerenciar Cardápio</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/gerenciarFuncionarios.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-account-cog" style="font-size: 20px;"></i>
+                                    <span> Gerenciar Funcionários</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/gerenciarMesas.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-table-furniture" style="font-size: 20px;"></i>
+                                    <span> Gerenciar Mesas</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="redefinicaoSenhaAdm.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
+                                    <span> Redifinição de Senhas</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="row">
-                        <button class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#cardapio-collapse"
-                            aria-expanded="false">
-                            <h3 class="fw-bold text-start">Operacional</h3>
-                        </button>
-                        <div class="collapse" id="cardapio-collapse">
-                            <ul class="btn-toggle-nav list-unstyled">
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
-                                        <span> Efetuar Pagamento</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/efetuarPedido.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-silverware" style="font-size: 20px;"></i>
-                                        <span> Efetuar Pedido</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h3 class="fw-bold text-start">Operacional</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 3">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
+                                    <span> Efetuar Pagamento</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 2">
+                                <a href="../html/efetuarPedido.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-silverware" style="font-size: 20px;"></i>
+                                    <span> Efetuar Pedido</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="row" x-show="identity.id_cargo == 1 || identity.id_cargo == 4">
-                        <button class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#relatorios-collapse"
-                            aria-expanded="false">
-                            <h3 class="fw-bold text-start">Relatórios</h3>
-                        </button>
-                        <div class="collapse" id="relatorios-collapse">
-                            <ul class="btn-toggle-nav list-unstyled">
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/relatorioFuncionarios.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-account-group" style="font-size: 20px;"></i>
-                                        <span> Funcionários</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="../html/relatorioPedidos.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-order-bool-ascending-variant" style="font-size: 20px;"></i>
-                                        <span> Pedidos</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 mb-3 p-1 rounded-2">
-                                    <a href="../html/relatorioReservas.html" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-text-box-search" style="font-size: 20px;"></i>
-                                        <span> Reservas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h3 class="fw-bold text-start">Relatórios</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/relatorioFuncionarios.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-account-group" style="font-size: 20px;"></i>
+                                    <span> Funcionários</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/relatorioPedidos.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-order-bool-ascending-variant" style="font-size: 20px;"></i>
+                                    <span> Pedidos</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 mb-3 p-1 rounded-2">
+                                <a href="../html/relatorioReservas.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-text-box-search" style="font-size: 20px;"></i>
+                                    <span> Reservas</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+
             <div class="col-12 col-lg-10" id="div_content">
                 
             </div>
@@ -157,6 +141,12 @@
                         this.identity.funcionarionome = resp.data.funcionarionome;
                         this.identity.id_cargo = resp.data.id_cargo;
                         this.identity.imagem = `/uploads/${resp.data.imagem}`;
+
+                        if(this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
+                            document.getElementById('div_auth').classList.remove('d-none');
+                        } else {
+                            window.location.href = "/";
+                        }
                     })
                     .catch(error => {
                         console.log(error);

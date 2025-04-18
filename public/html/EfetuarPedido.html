@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
@@ -18,11 +18,12 @@
 </head>
 
 <body>
-    <div class="container-fluid vh-100">
+    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-none">
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -254,11 +255,46 @@
     </div>
 
     <script>
+        function Index() {
+            return {
+                identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
+                getIdentity() {
+                    axios.get('/identity').then(resp => {
+                        this.identity.cargonome = resp.data.cargonome;
+                        this.identity.cpf = resp.data.cpf;
+                        this.identity.funcionario_cpf = resp.data.funcionario_cpf;
+                        this.identity.funcionarionome = resp.data.funcionarionome;
+                        this.identity.id_cargo = resp.data.id_cargo;
+                        this.identity.imagem = `/uploads/${resp.data.imagem}`;
 
+                        if (this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
+                            if (this.identity.id_cargo == 1 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
+                                document.getElementById('div_auth').classList.remove('d-none');
+                            } else {
+                                window.location.href = "/html/index.html";
+                            }
+                        } else {
+                            window.location.href = "/";
+                        }
+                    })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                },
+                logout() {
+                    axios.get('/logout').then(resp => {
+                        window.location.href = "/";
+                    })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }
+            }
+        }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
 
 </body>

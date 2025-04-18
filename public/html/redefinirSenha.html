@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
@@ -15,91 +14,106 @@
 
     <title>Gestão Gourmet</title>
     <link rel="shortcut icon" href="../src/img/logo-gestao-gourmet-icon.svg">
-  </head>
-  <body>
-    <main class="container-fluid vh-100 d-flex flex-column loginTela justify-content-center">
-      <div class="row">
-        <!-- Container do formulário -->
-        <div class="container text-start">
-          <div class="rectangleRedefinirSenha">
-            <div class="col-12 text-start empurra-direita">
-              <img
-                src="/public/src/img/logo-redefinir-senha.svg"
-                alt="Logo da Gestão Gourmet Horizontal"
-                style="width: 25%; margin-top: -10px;"
-              />
-            </div>
-            <div class="col-12 text-start empurra-direita2" style="margin-top: -40px;">
-              <h1 class="fw-bold">Redefinição de senha</h1>
-            </div>
-            <div class="col-12 text-start empurra-direita3" style="margin-top: 20px;">
-              <h5 class="d-inline-block">Esqueceu ou precisa alterar a sua senha?</h5>
-            </div>
-            <div class="col-12 text-start empurra-direita2">
-              <h5 class="d-inline-block">Aqui você poderá solicitar!</h5>
-            </div>
-            <div class="col-12 text-start empurra-direita4" style="margin-top: -220px;">
-              <h1 class="fw-bold">Redefinir senha</h1>
-            </div>
-            <div>
-              <form>
-                <!-- Campo de CPF -->
-                <label for="email-input" class="visually-hidden">CPF</label>
-                <div class="input-group empurra-direita5" style="margin-top: 40px;">
-                  <span class="input-group-text" id="addon-wrapping">
-                    <!-- SVG para CPF -->
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                    >
-                      <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com 
-                          License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                      <path
-                        d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"
-                      />
-                    </svg>
-                  </span>
-                  <input
-                    id="email-input"
-                    type="email"
-                    class="form-control"
-                    placeholder="Insira o seu CPF"
-                    aria-label="Email"
-                    aria-describedby="addon-wrapping"
-                  />
+</head>
+
+<body>
+    <main x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column loginTela justify-content-center d-none">
+        <div class="row">
+            <!-- Container do formulário -->
+            <div class="container text-start">
+                <div class="rectangleRedefinirSenha">
+                    <div class="col-12 text-start empurra-direita">
+                        <img src="/public/src/img/logo-redefinir-senha.svg" alt="Logo da Gestão Gourmet Horizontal"
+                            style="width: 25%; margin-top: -10px;" />
+                    </div>
+                    <div class="col-12 text-start empurra-direita2" style="margin-top: -40px;">
+                        <h1 class="fw-bold">Redefinição de senha</h1>
+                    </div>
+                    <div class="col-12 text-start empurra-direita3" style="margin-top: 20px;">
+                        <h5 class="d-inline-block">Esqueceu ou precisa alterar a sua senha?</h5>
+                    </div>
+                    <div class="col-12 text-start empurra-direita2">
+                        <h5 class="d-inline-block">Aqui você poderá solicitar!</h5>
+                    </div>
+                    <div class="col-12 text-start empurra-direita4" style="margin-top: -220px;">
+                        <h1 class="fw-bold">Redefinir senha</h1>
+                    </div>
+                    <div>
+                        <form>
+                            <!-- Campo de CPF -->
+                            <label for="email-input" class="visually-hidden">CPF</label>
+                            <div class="input-group empurra-direita5" style="margin-top: 40px;">
+                                <span class="input-group-text" id="addon-wrapping">
+                                    <!-- SVG para CPF -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16"
+                                        fill="currentColor">
+                                        <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com 
+                        License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                        <path
+                                            d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                                    </svg>
+                                </span>
+                                <input id="email-input" type="email" class="form-control" placeholder="Insira o seu CPF"
+                                    aria-label="Email" aria-describedby="addon-wrapping" />
+                            </div>
+                        </form>
+                        <div class="col-12 text-start empurra-direita6" style="margin-top: 20px;">
+                            <h6 class="d-inline-block">
+                                Ao inserir um CPF cadastrado, seu supervisor irá<br />
+                                receber a sua solicitação de alteração de senha
+                            </h6>
+                        </div>
+                        <div class="form-container empurra-direita7" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-login">REDEFINIR SENHA</button>
+                        </div>
+                        <div class="text text-center empurra-direita8" style="margin-top: 20px;">
+                            <a href="#" class="d-inline-block text-decoration-underline" style="color: #848484;">Lembrou
+                                da sua senha?
+                                Fazer login</a>
+                        </div>
+                    </div>
+                    <div class="vertical-divider"></div>
                 </div>
-              </form>
-              <div class="col-12 text-start empurra-direita6" style="margin-top: 20px;">
-                <h6 class="d-inline-block">
-                  Ao inserir um CPF cadastrado, seu supervisor irá<br /> 
-                  receber a sua solicitação de alteração de senha
-                </h6>
-              </div>
-              <div class="form-container empurra-direita7" style="margin-top: 20px;">
-                <button type="submit" class="btn btn-login">REDEFINIR SENHA</button>
-              </div>
-              <div class="text text-center empurra-direita8" style="margin-top: 20px;">
-                <a
-                  href="#"
-                  class="d-inline-block text-decoration-underline"
-                  style="color: #848484;"
-                  >Lembrou da sua senha? Fazer login</a
-                >
-              </div>
             </div>
-            <div class="vertical-divider"></div>
-          </div>
         </div>
-      </div>
     </main>
-    <!-- Bootstrap JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+
+    <script>
+        function Index() {
+            return {
+                identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
+                getIdentity() {
+                    axios.get('/identity').then(resp => {
+                        this.identity.cargonome = resp.data.cargonome;
+                        this.identity.cpf = resp.data.cpf;
+                        this.identity.funcionario_cpf = resp.data.funcionario_cpf;
+                        this.identity.funcionarionome = resp.data.funcionarionome;
+                        this.identity.id_cargo = resp.data.id_cargo;
+                        this.identity.imagem = `/uploads/${resp.data.imagem}`;
+
+                        if(this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
+                            document.getElementById('div_auth').classList.remove('d-none');
+                        } else {
+                            window.location.href = "/html/index.html";
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+                logout() {
+                    axios.get('/logout').then(resp => {
+                        window.location.href = "/";
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+
 </html>
