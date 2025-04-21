@@ -9,7 +9,7 @@ interface MesaDTO {
 }
 
 class MesaService {
-    static async salvarMesa({ id_mesa, numero_mesa, qtd_lugares, id_status=1 }: MesaDTO) {
+    static async salvarMesa({ id_mesa, numero_mesa, qtd_lugares, id_status=4 }: MesaDTO) {
         try {
             if (!id_mesa || !numero_mesa || !qtd_lugares) {
                 throw { statusCode: 400, message: "Algum argumento não foi especificado" }
@@ -44,7 +44,7 @@ class MesaService {
                 this.adicionarMesa({ numero_mesa:number_numero_mesa, qtd_lugares:number_qtd_lugares});
 
             } else { // Atualizar mesa
-
+                this.atualizarMesa({ id_mesa:number_id_mesa, numero_mesa:number_numero_mesa, qtd_lugares:number_qtd_lugares, id_status:number_id_status })
             }
 
         } catch (err: any) {
@@ -75,6 +75,21 @@ class MesaService {
     static async adicionarMesa ({ numero_mesa, qtd_lugares }: MesaDTO) {
         try {
             return await MesaModel.adicionarMesa(numero_mesa, qtd_lugares, 4); // status 4 = "Aberta"
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async atualizarMesa ({ id_mesa, numero_mesa, qtd_lugares, id_status }: MesaDTO) {
+        try {
+            return await MesaModel.atualizarMesa(id_mesa, numero_mesa, qtd_lugares, id_status);
 
         } catch (err: any) {
             console.error("Erro no service: ", err);
