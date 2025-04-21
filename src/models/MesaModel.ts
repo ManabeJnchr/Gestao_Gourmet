@@ -65,7 +65,7 @@ class MesaModel {
         try {
             const result = await pool.query(
                 `DELETE FROM mesa 
-                 WHERE m.id_mesa = $1`,
+                 WHERE id_mesa = $1`,
                  [id_mesa]
             );
 
