@@ -101,23 +101,30 @@ class MesaService {
             throw { statusCode: 500, message: "Erro interno no servidor" }
         }
     }
-    // static async deletarFuncionario(id_funcionario : any) {
-    //     try {
-    //         if (!id_funcionario || isNaN(Number(id_funcionario))) {
-    //             throw { statusCode: 400, message: "Argumento inválido" }
-    //         }
 
-    //         return await FuncionarioModel.deletarFuncionario(id_funcionario);
-    //     } catch (err: any) {
-    //         console.error("Erro no service: ", err);
+    static async deletarMesa({id_mesa} : MesaDTO) {
+        try {
+            if (!id_mesa) {
+                throw { statusCode: 400, message: "ID da mesa não especificado" }
+            }
+            
+            const number_id_mesa = Number(id_mesa);
+            
+            if (isNaN(number_id_mesa)) {
+                throw { statusCode: 400, message: "ID da mesa inválido" }
+            }
 
-    //         if (err.statusCode) {
-    //             throw err;
-    //         }
+            return await MesaModel.deletarMesa(number_id_mesa);
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
 
-    //         throw { statusCode: 500, message: "Erro interno no servidor" }
-    //     }
-    // }
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
 
 }
 

@@ -6,7 +6,7 @@ class MesaModel {
     static async listarMesas() {
         try {
             const result = await pool.query(
-                `SELECT m.id_mesa, m.numero_mesa, m.qtd_lugares, sm.status 
+                `SELECT m.id_mesa, m.numero_mesa, m.qtd_lugares, m.id_status, sm.status 
                  FROM mesa m
                  LEFT JOIN statusmesa sm ON sm.id_status = m.id_status 
                  ORDER BY m.numero_mesa ASC`
@@ -47,7 +47,7 @@ class MesaModel {
             );
 
             const result = await pool.query(
-                `SELECT m.id_mesa, m.numero_mesa, m.qtd_lugares, sm.status 
+                `SELECT m.id_mesa, m.numero_mesa, m.qtd_lugares, m.id_status, sm.status 
                  FROM mesa m
                  LEFT JOIN statusmesa sm ON sm.id_status = m.id_status 
                  WHERE m.id_mesa = $1`,
@@ -58,6 +58,21 @@ class MesaModel {
         } catch (err: any) {
             console.error("Erro no model", err);
             throw {statusCode:500, message:"Erro ao atualizar mesa, tente novamente"};
+        }
+    }
+
+    static async deletarMesa(id_mesa: Number) {
+        try {
+            const result = await pool.query(
+                `DELETE FROM mesa 
+                 WHERE m.id_mesa = $1`,
+                 [id_mesa]
+            );
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao deletar mesa, tente novamente"};
         }
     }
 }
