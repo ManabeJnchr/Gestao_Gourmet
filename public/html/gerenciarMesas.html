@@ -220,6 +220,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="d-inline-flex">
+                                    <span class="fw-bold me-5">Status da Mesa:</span>
+                                    <div class="form-check ms-5 me-3">
+                                        <input name="statusMesa" class="form-check-input" type="radio" x-model="registro.id_status" value="Desativada" id="statusDesativadaMesa">
+                                        <label class="form-check-label" for="statusDesativadaMesa">
+                                            Desativada
+                                        </label>
+                                    </div>
+                                    <div class="form-check me-3">
+                                        <input name="statusMesa" class="form-check-input" type="radio" x-model="registro.id_status" value="Aberta" id="statusAbertaMesa">
+                                        <label class="form-check-label" for="statusAbertaMesa">
+                                            Aberta
+                                        </label>
+                                    </div>
+                                    <div class="form-check me-3">
+                                        <input name="statusMesa" class="form-check-input" type="radio" x-model="registro.id_status" value="Reservada" id="statusReservadaMesa">
+                                        <label class="form-check-label" for="statusReservadaMesa">
+                                            Reservada
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input name="statusMesa" class="form-check-input" type="radio" x-model="registro.id_status" value="Fechada" id="statusFechadaMesa">
+                                        <label class="form-check-label" for="statusFechadaMesa">
+                                            Fechada
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <hr class="mb-1">
                             <div class="row mb-3">
                                 <div class="col">
@@ -289,7 +318,7 @@
         function Mesas() {
             return {
                 tela: 'GER',
-                registro: { id_mesa: -1, numero_mesa: '', qtd_lugares: '', id_status: '' },
+                registro: { id_mesa: -1, numero_mesa: '', qtd_lugares: '', id_status: 'Aberta' },
                 dados: [],
                 dadoSelecionado: [],
                 buscarDados() {

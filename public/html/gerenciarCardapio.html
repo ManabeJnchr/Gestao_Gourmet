@@ -218,12 +218,56 @@
                             </div>
                             <div class="col">
                                 <div class="row mb-2">
-                                    <div class="col-md-2 col-lg-2">
+                                    <div class="col-md-2 col-lg-2 align-items-center">
                                         <label for="nomeCardapio" class="fw-bold">Nome:</label>
                                     </div>
-                                    <div class="col-md-10 col-lg-6">
+                                    <div class="col-md-10 col-lg-10">
                                         <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio"
                                             class="w-100 shadow-inside border-1 rounded-2">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-2 col-lg-2">
+                                        <label for="categoriaCardapio" class="fw-bold">Categoria:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-6">
+                                        <select x-model="registro.categoria" id="categoriaCardapio"
+                                                name="categoriaCardapio"
+                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                <option value="" selected disabled>
+                                                    Selecione uma categoria
+                                                </option>
+                                                <option value="Aperitivos">
+                                                    Aperitivos
+                                                </option>
+                                                <option value="Aves">
+                                                    Aves
+                                                </option>
+                                                <option value="Bebidas Alcoólicas">
+                                                    Bebidas Alcoólicas
+                                                </option>
+                                                <option value="Bebidas Quentes">
+                                                    Bebidas Quentes
+                                                </option>
+                                                <option value="Carnes">
+                                                    Carnes
+                                                </option>
+                                                <option value="Massas">
+                                                    Massas
+                                                </option>
+                                                <option value="Refrigerantes">
+                                                    Refrigerantes
+                                                </option>
+                                                <option value="Saladas">
+                                                    Saladas
+                                                </option>
+                                                <option value="Sopas">
+                                                    Sopas
+                                                </option>
+                                                <option value="Sucos">
+                                                    Sucos
+                                                </option>
+                                            </select>
                                     </div>
                                     <div class="col-md-2 col-lg-1">
                                         <label for="valorCardapio" class="fw-bold">Preço:</label>
@@ -351,7 +395,7 @@
         function Cardapio() {
             return {
                 tela: 'GER',
-                registro: { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: '', adicionais: [] },
+                registro: { id: -1, nome: '', valor: '', categoria: '', imagem: '', adicionais: [] },
                 dados: [],
                 dadoSelecionado: [],
                 buscarDados() {
@@ -394,7 +438,6 @@
                     this.registro.nome = this.dados[index].nome;
                     this.registro.valor = this.dados[index].valor;
                     this.registro.categoria = this.dados[index].categoria;
-                    this.registro.igredientes = this.dados[index].igredientes;
                     this.registro.imagem = this.dados[index].imagem;
                     this.registro.adicionais = this.dados[index].adicionais;
                 },

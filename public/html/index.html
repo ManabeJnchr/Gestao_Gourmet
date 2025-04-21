@@ -143,10 +143,11 @@
                         this.identity.imagem = `/uploads/${resp.data.imagem}`;
 
                         if(this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
-                            document.getElementById('div_auth').classList.remove('d-none');
                         } else {
                             window.location.href = "/";
                         }
+                        console.log(this.identity);
+                        document.getElementById('div_auth').classList.remove('d-none');
                     })
                     .catch(error => {
                         console.log(error);
