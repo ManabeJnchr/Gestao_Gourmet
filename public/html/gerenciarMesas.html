@@ -177,9 +177,9 @@
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                     <div class="row">
                                         <div class="col d-inline-flex justify-content-between">
-                                            <h4 class="h2 text-truncate">Mesa <span x-text="dado.id_mesa"></span></h4>
+                                            <h4 class="h2 text-truncate">Mesa <span x-text="dado.numero_mesa"></span></h4>
                                             <div style="min-width: 89px;">
-                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_funcionario)">
+                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_mesa)">
                                                     <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
                                                 </button>
                                                 <button style="background: none; border: none;" @click="tela = 'EDT'; editarRegistro(index)">
