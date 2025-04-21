@@ -549,11 +549,11 @@ INSERT INTO public.cargo (id_cargo, nome) VALUES (4, 'Gerente') ON CONFLICT DO N
 -- Data for Name: statusmesa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.statusmesa (id_status, status) VALUES (1, 'Inativa') ON CONFLICT DO NOTHING;
 INSERT INTO public.statusmesa (id_status, status) VALUES (2, 'Disponível') ON CONFLICT DO NOTHING;
 INSERT INTO public.statusmesa (id_status, status) VALUES (3, 'Reservada') ON CONFLICT DO NOTHING;
 INSERT INTO public.statusmesa (id_status, status) VALUES (4, 'Aberta') ON CONFLICT DO NOTHING;
 INSERT INTO public.statusmesa (id_status, status) VALUES (5, 'Fechada') ON CONFLICT DO NOTHING;
-INSERT INTO public.statusmesa (id_status, status) VALUES (1, 'Inativa') ON CONFLICT DO NOTHING;
 
 
 --

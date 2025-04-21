@@ -1,6 +1,4 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
 import MesaService from '../services/MesaService';
 
 
@@ -14,6 +12,7 @@ export const salvarMesa = async (req: express.Request, res: express.Response) =>
 
         if (err.statusCode) {
             res.status(err.statusCode).json({ "erro": err.message})
+            return;
         }
 
         res.status(500).json({"erro": "Erro interno no servidor" })
@@ -29,6 +28,7 @@ export const listarMesas = async (req: express.Request, res: express.Response) =
 
         if (err.statusCode) {
             res.status(err.statusCode).json({ "erro": err.message})
+            return;
         }
 
         res.status(500).json({"erro": "Erro interno no servidor" })
