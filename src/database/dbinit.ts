@@ -104,9 +104,17 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
+            CREATE SEQUENCE public.cargo_id_cargo_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
 
             ALTER SEQUENCE public.cargo_id_cargo_seq OWNER TO postgres;
 
+            ALTER SEQUENCE public.cargo_id_cargo_seq OWNED BY public.cargo.id_cargo;
             ALTER SEQUENCE public.cargo_id_cargo_seq OWNED BY public.cargo.id_cargo;
 
             -- FIM CREATE CARGO
@@ -156,6 +164,13 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
+            CREATE SEQUENCE public.checkin_id_checkin_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
 
             ALTER SEQUENCE public.checkin_id_checkin_seq OWNER TO postgres;
 
@@ -180,6 +195,13 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.funcionario OWNER TO postgres;
 
+            CREATE SEQUENCE public.funcionario_id_funcionario_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
             CREATE SEQUENCE public.funcionario_id_funcionario_seq
                 AS integer
                 START WITH 1
@@ -218,6 +240,13 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
+            CREATE SEQUENCE public.login_id_login_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
 
             ALTER SEQUENCE public.login_id_login_seq OWNER TO postgres;
 
@@ -238,6 +267,13 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.mesa OWNER TO postgres;
 
+            CREATE SEQUENCE public.mesa_id_mesa_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
             CREATE SEQUENCE public.mesa_id_mesa_seq
                 AS integer
                 START WITH 1
@@ -269,6 +305,13 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.pagamento OWNER TO postgres;
 
+            CREATE SEQUENCE public.pagamento_id_pagamento_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
             CREATE SEQUENCE public.pagamento_id_pagamento_seq
                 AS integer
                 START WITH 1
@@ -309,6 +352,13 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
+            CREATE SEQUENCE public.pedido_id_pedido_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
 
             ALTER SEQUENCE public.pedido_id_pedido_seq OWNER TO postgres;
 
@@ -334,9 +384,17 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
+            CREATE SEQUENCE public.statusmesa_id_status_seq
+                AS integer
+                START WITH 1
+                INCREMENT BY 1
+                NO MINVALUE
+                NO MAXVALUE
+                CACHE 1;
 
             ALTER SEQUENCE public.statusmesa_id_status_seq OWNER TO postgres;
 
+            ALTER SEQUENCE public.statusmesa_id_status_seq OWNED BY public.statusmesa.id_status;
             ALTER SEQUENCE public.statusmesa_id_status_seq OWNED BY public.statusmesa.id_status;
 
             -- FIM CREATE STATUSMESA
@@ -360,11 +418,16 @@ async function initdb(pool: Pool) {
             ALTER TABLE ONLY public.pedido ALTER COLUMN id_pedido SET DEFAULT nextval('public.pedido_id_pedido_seq'::regclass);
 
             ALTER TABLE ONLY public.statusmesa ALTER COLUMN id_status SET DEFAULT nextval('public.statusmesa_id_status_seq'::regclass);
+            ALTER TABLE ONLY public.statusmesa ALTER COLUMN id_status SET DEFAULT nextval('public.statusmesa_id_status_seq'::regclass);
 
 
 
             -- INÍCIO INSERT INTO CARGO
 
+            INSERT INTO public.cargo (id_cargo, nome) VALUES (1, 'Administrador') ON CONFLICT DO NOTHING;
+            INSERT INTO public.cargo (id_cargo, nome) VALUES (2, 'Atendente') ON CONFLICT DO NOTHING;
+            INSERT INTO public.cargo (id_cargo, nome) VALUES (3, 'Garçom') ON CONFLICT DO NOTHING;
+            INSERT INTO public.cargo (id_cargo, nome) VALUES (4, 'Gerente') ON CONFLICT DO NOTHING;
             INSERT INTO public.cargo (id_cargo, nome) VALUES (1, 'Administrador') ON CONFLICT DO NOTHING;
             INSERT INTO public.cargo (id_cargo, nome) VALUES (2, 'Atendente') ON CONFLICT DO NOTHING;
             INSERT INTO public.cargo (id_cargo, nome) VALUES (3, 'Garçom') ON CONFLICT DO NOTHING;
@@ -420,6 +483,7 @@ async function initdb(pool: Pool) {
             SELECT pg_catalog.setval('public.pedido_id_pedido_seq', 1, false);
 
             SELECT pg_catalog.setval('public.statusmesa_id_status_seq', 5, true);
+            SELECT pg_catalog.setval('public.statusmesa_id_status_seq', 5, true);
 
 
 
@@ -470,6 +534,8 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.checkin
                 ADD CONSTRAINT fk_checkin_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
+            ALTER TABLE ONLY public.checkin
+                ADD CONSTRAINT fk_checkin_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
 
             ALTER TABLE ONLY public.funcionario
                 ADD CONSTRAINT fk_funcionario_cargo FOREIGN KEY (id_cargo) REFERENCES public.cargo(id_cargo);
@@ -477,6 +543,8 @@ async function initdb(pool: Pool) {
             ALTER TABLE ONLY public.adicional
                 ADD CONSTRAINT fk_itemcardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_cardapio) NOT VALID;
 
+            ALTER TABLE ONLY public.login
+                ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
             ALTER TABLE ONLY public.login
                 ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
 
@@ -492,6 +560,8 @@ async function initdb(pool: Pool) {
             ALTER TABLE ONLY public.pedido
                 ADD CONSTRAINT fk_pedido_cardapio FOREIGN KEY (id_cardapio) REFERENCES public.itemcardapio(id_cardapio);
 
+            ALTER TABLE ONLY public.pedido
+                ADD CONSTRAINT fk_pedido_garcom FOREIGN KEY (id_garcom) REFERENCES public.funcionario(id_funcionario);
             ALTER TABLE ONLY public.pedido
                 ADD CONSTRAINT fk_pedido_garcom FOREIGN KEY (id_garcom) REFERENCES public.funcionario(id_funcionario);
 
