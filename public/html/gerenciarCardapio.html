@@ -271,8 +271,7 @@
                                 <h1 class="m-0">Adicionais</h1>
                             </div>
                             <div class="col-1 text-end">
-                                <button type="button" class="btn bg-transparent py-0"
-                                    @click.prevent="incluirAdicional()">
+                                <button type="button" class="btn bg-transparent py-0" @click.prevent="incluirAdicional()">
                                     <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
                                 </button>
                             </div>
@@ -400,6 +399,9 @@
                     axios.post('/salvarItemCardapio', this.registro)
                         .then(resp => {
                             console.log(resp.data);
+                            this.buscarDados();
+                            this.limparRegistro();
+                            this.tela = 'GER';
                         })
                         .catch(error => {
 
@@ -428,10 +430,13 @@
                     this.registro.adicionais = this.dados[index].adicionais;
                 },
                 limparRegistro() {
-                    this.registro = { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', igredientes: '', imagem: '', adicionais: [] };
+                    this.registro = { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', imagem: '', adicionais: [] };
                 },
                 incluirAdicional() {
-                    this.registro.adicionais.push({ id_adicional: -1, id_itemcardapio: this.registro.id, nome: '', valor: '' });
+                    if (!this.registro.adicionais) {
+                        this.registro.adicionais = []; 
+                    }
+                    this.registro.adicionais.push({ id_adicional: -1, id_itemcardapio: this.registro.id_itemcardapio, nome: '', valor: '' });
                 },
                 excluirAdicional(index) {
                     this.registro.adicionais.splice(index, 1);
