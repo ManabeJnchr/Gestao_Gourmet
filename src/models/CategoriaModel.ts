@@ -6,6 +6,7 @@ class CategoriaModel {
             const result = await pool.query(
                 `SELECT * 
                  FROM categoria
+                 ORDER BY nome ASC
                  `
             );
 
