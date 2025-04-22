@@ -411,7 +411,7 @@
                         });
                 },
                 deletarRegistro(_id) {
-                    axios.post('/deletarItemCardapio', { id: _id })
+                    axios.post('/deletarItemCardapio', { id_itemcardapio: _id })
                         .then(resp => {
                             if (resp.data == -1) {
                                 this.buscarDados();

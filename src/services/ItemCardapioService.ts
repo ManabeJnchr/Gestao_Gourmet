@@ -8,12 +8,14 @@ interface itemCardapioDTO {
     id_categoria?: any,
     descricao?: string,
     imagem?: string,
+    adicionais?: Array<string>,
 }
 
 class MesaService {
-    static async salvarItemCardapio({ id_itemcardapio, nome, valor, id_categoria, descricao, imagem }: itemCardapioDTO) {
+    static async salvarItemCardapio({ id_itemcardapio, nome, valor, id_categoria, descricao, imagem, adicionais }: itemCardapioDTO) {
         try {
 
+            
             if (!id_itemcardapio || !nome || !valor || !id_categoria || !descricao) {
                 throw { statusCode: 400, message: "Faltam argumentos" }
             }
@@ -114,19 +116,19 @@ class MesaService {
         }
     }
 
-    static async deletarItemCardapio({} : itemCardapioDTO) {
+    static async deletarItemCardapio({id_itemcardapio} : itemCardapioDTO) {
         try {
-            // if (!id_mesa) {
-            //     throw { statusCode: 400, message: "ID da mesa não especificado" }
-            // }
+            if (!id_itemcardapio) {
+                throw { statusCode: 400, message: "ID do item não especificado" }
+            }
             
-            // const number_id_mesa = Number(id_mesa);
+            const numero_id_itemcardapio = Number(id_itemcardapio);
             
-            // if (isNaN(number_id_mesa)) {
-            //     throw { statusCode: 400, message: "ID da mesa inválido" }
-            // }
+            if (isNaN(numero_id_itemcardapio)) {
+                throw { statusCode: 400, message: "ID do item inválido" }
+            }
 
-            // return await MesaModel.deletarMesa(number_id_mesa);
+            return await ItemCardapioModel.deletarItemCardapio(numero_id_itemcardapio);
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
