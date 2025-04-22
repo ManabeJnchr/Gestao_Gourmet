@@ -238,7 +238,7 @@
                                                     Selecione uma categoria
                                                 </option>
                                                 <template x-for="categoria in categorias">
-                                                    <option value="categoria.id_categoria" x-text="categoria.nome"></option>
+                                                    <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
                                                 </template>
                                             </select>
                                     </div>
