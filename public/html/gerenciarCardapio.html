@@ -123,7 +123,7 @@
                 </div>
             </div>
 
-            <div x-data="Cardapio()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="Cardapio()" x-init="buscarCategorias(); buscarDados()" class="col-12 col-lg-10" id="div_content">
                 <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
@@ -152,7 +152,7 @@
                                     <div class="col d-inline-flex justify-content-between">
                                         <h4 class="h2 text-truncate">Novo Item</h4>
                                         <div>
-                                            <button style="background: none; border: none;" @click.prevent="buscarCategorias(); tela = 'CAD'">
+                                            <button style="background: none; border: none;" @click.prevent="tela = 'CAD'">
                                                 <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
                                             </button>
                                         </div>
@@ -367,7 +367,7 @@
         function Cardapio() {
             return {
                 tela: 'GER',
-                registro: { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', imagem: '', adicionais: [] },
+                registro: { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', descricao: '', imagem: '', adicionais: [] },
                 categorias: [],
                 dados: [],
                 dadoSelecionado: [],
@@ -428,9 +428,10 @@
                     this.registro.id_categoria = this.dados[index].id_categoria;
                     this.registro.imagem = this.dados[index].imagem;
                     this.registro.adicionais = this.dados[index].adicionais;
+                    this.registro.descricao = this.dados[index].descricao;
                 },
                 limparRegistro() {
-                    this.registro = { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', imagem: '', adicionais: [] };
+                    this.registro = { id_itemcardapio: -1, nome: '', valor: '', descricao: '', id_categoria: '', imagem: '', adicionais: [] };
                 },
                 incluirAdicional() {
                     if (!this.registro.adicionais) {
