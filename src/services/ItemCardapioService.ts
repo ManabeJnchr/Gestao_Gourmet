@@ -1,5 +1,6 @@
 import ItemCardapioModel from "../models/ItemCardapioModel";
 import CategoriaService from "./CategoriaService";
+import pool from "../database/index";
 
 interface itemCardapioDTO {
     id_itemcardapio?: any,
@@ -85,39 +86,61 @@ class MesaService {
     }
 
     static async adicionarItemCardapio ({nome, valor, id_categoria, descricao, imagem}: itemCardapioDTO) {
-        try {
-            const result = await ItemCardapioModel.adicionarItemCardapio(nome, valor, id_categoria, descricao, imagem)
+        const client = await pool.connect();
 
+        try {
+            await client.query("BEGIN");
+
+            const result = await ItemCardapioModel.adicionarItemCardapio(nome, valor, id_categoria, descricao, imagem, client)
+
+            await client.query("COMMIT");
             return result;
         } catch (err: any) {
             console.error("Erro no service: ", err);
+
+            await client.query("ROLLBACK");
 
             if (err.statusCode) {
                 throw err;
             }
 
             throw { statusCode: 500, message: "Erro interno no servidor" }
+        } finally {
+            client.release();
         }
     }
 
     static async atualizarItemCardapio ({id_itemcardapio, nome, valor, id_categoria, descricao, imagem}: itemCardapioDTO) {
-        try { 
-            const result = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagem)
+        const client = await pool.connect();
 
+        try { 
+            await client.query("BEGIN");
+
+            const result = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagem, client)
+
+            await client.query("COMMIT");
             return result;
         } catch (err: any) {
             console.error("Erro no service: ", err);
+
+            await client.query("ROLLBACK");
 
             if (err.statusCode) {
                 throw err;
             }
 
             throw { statusCode: 500, message: "Erro interno no servidor" }
+        } finally {
+            client.release();
         }
     }
 
     static async deletarItemCardapio({id_itemcardapio} : itemCardapioDTO) {
+        const client = await pool.connect();
+
         try {
+            await client.query("BEGIN");
+
             if (!id_itemcardapio) {
                 throw { statusCode: 400, message: "ID do item não especificado" }
             }
@@ -128,15 +151,23 @@ class MesaService {
                 throw { statusCode: 400, message: "ID do item inválido" }
             }
 
-            return await ItemCardapioModel.deletarItemCardapio(numero_id_itemcardapio);
+            const result = await ItemCardapioModel.deletarItemCardapio(numero_id_itemcardapio, client)
+
+            await client.query("COMMIT");
+
+            return result
         } catch (err: any) {
             console.error("Erro no service: ", err);
+
+            await client.query("ROLLBACK");
 
             if (err.statusCode) {
                 throw err;
             }
 
             throw { statusCode: 500, message: "Erro interno no servidor" }
+        } finally {
+            client.release();
         }
     }
 

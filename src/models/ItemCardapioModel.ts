@@ -1,4 +1,7 @@
 import pool from "../database/index";
+import { Pool, PoolClient } from "pg";
+
+type PgClient = Pool | PoolClient;
 
 class ItemCardapioModel {
     
@@ -18,7 +21,7 @@ class ItemCardapioModel {
         }
     }
 
-    static async adicionarItemCardapio(nome: any, valor: Number, id_categoria: Number, descricao: any, imagem: any, client=pool) {
+    static async adicionarItemCardapio(nome: any, valor: number, id_categoria: number, descricao: any, imagem: any, client : PgClient = pool) {
         try {
             const result = await client.query(
                 `INSERT INTO itemcardapio (nome, valor, id_categoria, descricao, imagem)
@@ -34,7 +37,7 @@ class ItemCardapioModel {
         }
     }
 
-    static async atualizarItemCardapio(id_itemcardapio: Number, nome: any, valor: Number, id_categoria: Number, descricao: any, imagem: any, client=pool) {
+    static async atualizarItemCardapio(id_itemcardapio: number, nome: any, valor: number, id_categoria: number, descricao: any, imagem: any, client : PgClient =pool) {
         try {
             const resultUpdate = await client.query(
                 `UPDATE itemcardapio 
@@ -60,7 +63,7 @@ class ItemCardapioModel {
         }
     }
 
-    static async deletarItemCardapio(id_itemcardapio: Number, client=pool) {
+    static async deletarItemCardapio(id_itemcardapio: number, client : PgClient = pool) {
         try {
             const result = await client.query(
                 `DELETE FROM itemcardapio 
