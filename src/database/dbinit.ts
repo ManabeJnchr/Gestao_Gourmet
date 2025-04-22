@@ -41,7 +41,10 @@ async function initdb(pool: Pool) {
                 valor numeric(10,2) NOT NULL,
                 id_categoria integer NOT NULL,
                 descricao text,
-                imagem character varying(254)
+                imagem character varying(254),
+                datacadastro timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                dataalteracao timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                ativo boolean NOT NULL DEFAULT true
             );
 
             ALTER TABLE public.itemcardapio OWNER TO postgres;
@@ -67,7 +70,10 @@ async function initdb(pool: Pool) {
                 id_adicional integer NOT NULL,
                 id_itemcardapio integer NOT NULL,
                 nome character varying(50) NOT NULL,
-                valor numeric(10,2) NOT NULL
+                valor numeric(10,2) NOT NULL,
+                datacadastro timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                dataalteracao timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                ativo boolean NOT NULL DEFAULT true
             );
 
             ALTER TABLE public.adicional OWNER TO postgres;
@@ -234,7 +240,10 @@ async function initdb(pool: Pool) {
                 id_mesa integer NOT NULL,
                 numero_mesa integer NOT NULL,
                 qtd_lugares integer NOT NULL,
-                id_status integer NOT NULL
+                id_status integer NOT NULL,
+                datacadastro timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                dataalteracao timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                ativo boolean NOT NULL DEFAULT true
             );
 
             ALTER TABLE public.mesa OWNER TO postgres;
@@ -473,6 +482,15 @@ async function initdb(pool: Pool) {
                 ADD CONSTRAINT statusmesa_pkey PRIMARY KEY (id_status);
 
             CREATE TRIGGER trigger_atualizar_data_alteracao BEFORE UPDATE ON public.funcionario FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+
+            -- Trigger para itemcardapio
+            CREATE TRIGGER trg_itemcardapio_dataalteracao BEFORE UPDATE ON public.itemcardapio FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+
+            -- Trigger para adicional
+            CREATE TRIGGER trg_adicional_dataalteracao BEFORE UPDATE ON public.adicional FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+
+            -- Trigger para mesa
+            CREATE TRIGGER trg_mesa_dataalteracao BEFORE UPDATE ON public.mesa FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
 
             ALTER TABLE ONLY public.checkin
                 ADD CONSTRAINT fk_checkin_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
