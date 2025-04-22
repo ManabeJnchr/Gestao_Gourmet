@@ -97,9 +97,11 @@ class MesaService {
         }
     }
 
-    static async atualizarMesa ({  }: itemCardapioDTO) {
-        try {
+    static async atualizarItemCardapio ({id_itemcardapio, nome, valor, id_categoria, descricao, imagem}: itemCardapioDTO) {
+        try { 
+            const result = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagem)
 
+            return result;
         } catch (err: any) {
             console.error("Erro no service: ", err);
 

@@ -34,7 +34,7 @@ class ItemCardapioModel {
         }
     }
 
-    static async atualizarItemCardapio(id_itemcardapio: Number, nome: String, valor: Number, id_categoria: Number, descricao: String, imagem: String) {
+    static async atualizarItemCardapio(id_itemcardapio: Number, nome: any, valor: Number, id_categoria: Number, descricao: any, imagem: any) {
         try {
             const resultUpdate = await pool.query(
                 `UPDATE itemcardapio 
