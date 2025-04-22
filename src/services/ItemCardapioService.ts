@@ -1,6 +1,7 @@
 import ItemCardapioModel from "../models/ItemCardapioModel";
 import CategoriaService from "./CategoriaService";
 import pool from "../database/index";
+import AdicionaisService from "./AdicionaisService";
 
 interface itemCardapioDTO {
     id_itemcardapio?: any,
@@ -9,15 +10,15 @@ interface itemCardapioDTO {
     id_categoria?: any,
     descricao?: string,
     imagem?: string,
-    adicionais?: Array<string>,
+    adicionais: Array<any>,
 }
 
-class MesaService {
+class ItemCardapioService {
     static async salvarItemCardapio({ id_itemcardapio, nome, valor, id_categoria, descricao, imagem, adicionais }: itemCardapioDTO) {
         try {
 
             
-            if (!id_itemcardapio || !nome || !valor || !id_categoria || !descricao) {
+            if (!id_itemcardapio || !nome || !valor || !id_categoria || !descricao || !adicionais) {
                 throw { statusCode: 400, message: "Faltam argumentos" }
             }
             
@@ -54,9 +55,9 @@ class MesaService {
             }
 
             if (numero_id_itemcardapio === -1) { // Novo item
-                return await this.adicionarItemCardapio({nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem});
+                return await this.adicionarItemCardapio({nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem, adicionais});
             } else { // Atualizar item
-                return await this.atualizarItemCardapio({id_itemcardapio:numero_id_itemcardapio, nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem});
+                return await this.atualizarItemCardapio({id_itemcardapio:numero_id_itemcardapio, nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem, adicionais});
 
             }
 
@@ -73,7 +74,14 @@ class MesaService {
 
     static async listarCardapio() {
         try {
-            return await ItemCardapioModel.listarCardapio();
+            const cardapio = await ItemCardapioModel.listarCardapio();
+
+            for (const item of cardapio) {
+                item.adicionais = await AdicionaisService.listarAdicionais({id_itemcardapio:item.id_itemcardapio});
+            }
+
+            return cardapio;
+
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
@@ -85,16 +93,28 @@ class MesaService {
         }
     }
 
-    static async adicionarItemCardapio ({nome, valor, id_categoria, descricao, imagem}: itemCardapioDTO) {
+    static async adicionarItemCardapio ({nome, valor, id_categoria, descricao, imagem, adicionais}: itemCardapioDTO) {
         const client = await pool.connect();
 
         try {
             await client.query("BEGIN");
 
-            const result = await ItemCardapioModel.adicionarItemCardapio(nome, valor, id_categoria, descricao, imagem, client)
+            const novoItem = await ItemCardapioModel.adicionarItemCardapio(nome, valor, id_categoria, descricao, imagem, client)
+
+
+            // Criar adicionais no banco de dados
+            novoItem.adicionais = [];
+            for (const adicional of adicionais) {
+                adicional.id_itemcardapio = novoItem.id_itemcardapio
+
+                const novoAdicional = await AdicionaisService.novoAdicional(adicional, client);
+                
+                novoItem.adicionais.push(novoAdicional)
+            }
 
             await client.query("COMMIT");
-            return result;
+
+            return novoItem;
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
@@ -110,16 +130,37 @@ class MesaService {
         }
     }
 
-    static async atualizarItemCardapio ({id_itemcardapio, nome, valor, id_categoria, descricao, imagem}: itemCardapioDTO) {
+    static async atualizarItemCardapio ({id_itemcardapio, nome, valor, id_categoria, descricao, imagem, adicionais}: itemCardapioDTO) {
         const client = await pool.connect();
 
         try { 
             await client.query("BEGIN");
 
-            const result = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagem, client)
+            const item = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagem, client)
 
+            const adicionaisAntigos = await AdicionaisService.listarAdicionais({id_itemcardapio});
+            const adicionaisAntigosMap = new Map(adicionaisAntigos.map(a => [a.id_adicional, a]))
+
+            for (const adicional of adicionais) {
+                if (adicional.id_adicional === -1) { // Novo adicional:
+                    const novoAdicional = await AdicionaisService.novoAdicional(adicional, client);
+
+                    adicional.id_adicional = novoAdicional.id_adicional;
+                } else if (adicionaisAntigosMap.has(adicional.id_adicional)) { // Atualizar adicional
+                    await AdicionaisService.atualizarAdicional(adicional, client);
+                    adicionaisAntigosMap.delete(adicional.id_adicional) // Já foi tratado, remover do map
+                }
+            }
+
+            // Deletar os que sobraram
+            for (const [id] of adicionaisAntigosMap) {
+                await AdicionaisService.deletarAdicional({id_adicional: id}, client);
+            }
+
+            item.adicionais = adicionais;
+            
             await client.query("COMMIT");
-            return result;
+            return item;
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
@@ -173,4 +214,4 @@ class MesaService {
 
 }
 
-export default MesaService;
+export default ItemCardapioService;

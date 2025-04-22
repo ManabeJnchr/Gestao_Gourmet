@@ -347,6 +347,8 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.itemcardapio ALTER COLUMN id_itemcardapio SET DEFAULT nextval('public.itemcardapio_id_itemcardapio_seq'::regclass);
 
+            ALTER TABLE ONLY public.adicional ALTER COLUMN id_adicional SET DEFAULT nextval('public.adicional_id_adicional_seq'::regclass);
+
             ALTER TABLE ONLY public.cargo ALTER COLUMN id_cargo SET DEFAULT nextval('public.cargo_id_cargo_seq'::regclass);
 
             ALTER TABLE ONLY public.checkin ALTER COLUMN id_checkin SET DEFAULT nextval('public.checkin_id_checkin_seq'::regclass);
