@@ -36,17 +36,17 @@ async function initdb(pool: Pool) {
             -- INÍCIO CREATE ITEMCARDAPIO
 
             CREATE TABLE public.itemcardapio (
-                id_cardapio integer NOT NULL,
+                id_itemcardapio integer NOT NULL,
                 nome character varying(100) NOT NULL,
                 valor numeric(10,2) NOT NULL,
-                categoria character varying(50) NOT NULL,
+                id_categoria integer NOT NULL,
                 descricao text,
                 imagem character varying(254)
             );
 
             ALTER TABLE public.itemcardapio OWNER TO postgres;
 
-            CREATE SEQUENCE public.itemcardapio_id_cardapio_seq
+            CREATE SEQUENCE public.itemcardapio_id_itemcardapio_seq
                 AS integer
                 START WITH 1
                 INCREMENT BY 1
@@ -54,9 +54,9 @@ async function initdb(pool: Pool) {
                 NO MAXVALUE
                 CACHE 1;
 
-            ALTER SEQUENCE public.itemcardapio_id_cardapio_seq OWNER TO postgres;
+            ALTER SEQUENCE public.itemcardapio_id_itemcardapio_seq OWNER TO postgres;
 
-            ALTER SEQUENCE public.itemcardapio_id_cardapio_seq OWNED BY public.itemcardapio.id_cardapio;
+            ALTER SEQUENCE public.itemcardapio_id_itemcardapio_seq OWNED BY public.itemcardapio.id_itemcardapio;
 
             -- FIM CREATE CARDAPIO
 
@@ -97,13 +97,6 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.cargo OWNER TO postgres;
 
-            CREATE SEQUENCE public.cargo_id_cargo_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
             CREATE SEQUENCE public.cargo_id_cargo_seq
                 AS integer
                 START WITH 1
@@ -164,13 +157,6 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
-            CREATE SEQUENCE public.checkin_id_checkin_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
 
             ALTER SEQUENCE public.checkin_id_checkin_seq OWNER TO postgres;
 
@@ -195,13 +181,6 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.funcionario OWNER TO postgres;
 
-            CREATE SEQUENCE public.funcionario_id_funcionario_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
             CREATE SEQUENCE public.funcionario_id_funcionario_seq
                 AS integer
                 START WITH 1
@@ -240,13 +219,6 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
-            CREATE SEQUENCE public.login_id_login_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
 
             ALTER SEQUENCE public.login_id_login_seq OWNER TO postgres;
 
@@ -267,13 +239,6 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.mesa OWNER TO postgres;
 
-            CREATE SEQUENCE public.mesa_id_mesa_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
             CREATE SEQUENCE public.mesa_id_mesa_seq
                 AS integer
                 START WITH 1
@@ -312,13 +277,6 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
-            CREATE SEQUENCE public.pagamento_id_pagamento_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
 
             ALTER SEQUENCE public.pagamento_id_pagamento_seq OWNER TO postgres;
 
@@ -333,7 +291,7 @@ async function initdb(pool: Pool) {
             CREATE TABLE public.pedido (
                 id_pedido integer NOT NULL,
                 id_mesa integer NOT NULL,
-                id_cardapio integer NOT NULL,
+                id_itemcardapio integer NOT NULL,
                 quantidade integer NOT NULL,
                 observacao text,
                 id_garcom integer NOT NULL,
@@ -345,13 +303,6 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE public.pedido OWNER TO postgres;
 
-            CREATE SEQUENCE public.pedido_id_pedido_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
             CREATE SEQUENCE public.pedido_id_pedido_seq
                 AS integer
                 START WITH 1
@@ -384,13 +335,6 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
-            CREATE SEQUENCE public.statusmesa_id_status_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
 
             ALTER SEQUENCE public.statusmesa_id_status_seq OWNER TO postgres;
 
@@ -401,7 +345,7 @@ async function initdb(pool: Pool) {
 
 
 
-            ALTER TABLE ONLY public.itemcardapio ALTER COLUMN id_cardapio SET DEFAULT nextval('public.itemcardapio_id_cardapio_seq'::regclass);
+            ALTER TABLE ONLY public.itemcardapio ALTER COLUMN id_itemcardapio SET DEFAULT nextval('public.itemcardapio_id_itemcardapio_seq'::regclass);
 
             ALTER TABLE ONLY public.cargo ALTER COLUMN id_cargo SET DEFAULT nextval('public.cargo_id_cargo_seq'::regclass);
 
@@ -424,10 +368,6 @@ async function initdb(pool: Pool) {
 
             -- INÍCIO INSERT INTO CARGO
 
-            INSERT INTO public.cargo (id_cargo, nome) VALUES (1, 'Administrador') ON CONFLICT DO NOTHING;
-            INSERT INTO public.cargo (id_cargo, nome) VALUES (2, 'Atendente') ON CONFLICT DO NOTHING;
-            INSERT INTO public.cargo (id_cargo, nome) VALUES (3, 'Garçom') ON CONFLICT DO NOTHING;
-            INSERT INTO public.cargo (id_cargo, nome) VALUES (4, 'Gerente') ON CONFLICT DO NOTHING;
             INSERT INTO public.cargo (id_cargo, nome) VALUES (1, 'Administrador') ON CONFLICT DO NOTHING;
             INSERT INTO public.cargo (id_cargo, nome) VALUES (2, 'Atendente') ON CONFLICT DO NOTHING;
             INSERT INTO public.cargo (id_cargo, nome) VALUES (3, 'Garçom') ON CONFLICT DO NOTHING;
@@ -466,7 +406,7 @@ async function initdb(pool: Pool) {
 
 
 
-            SELECT pg_catalog.setval('public.itemcardapio_id_cardapio_seq', 1, false);
+            SELECT pg_catalog.setval('public.itemcardapio_id_itemcardapio_seq', 1, false);
 
             SELECT pg_catalog.setval('public.cargo_id_cargo_seq', 4, true);
 
@@ -489,7 +429,7 @@ async function initdb(pool: Pool) {
 
 
             ALTER TABLE ONLY public.itemcardapio
-                ADD CONSTRAINT cardapio_pkey PRIMARY KEY (id_cardapio);
+                ADD CONSTRAINT cardapio_pkey PRIMARY KEY (id_itemcardapio);
 
             ALTER TABLE ONLY public.cargo
                 ADD CONSTRAINT cargo_nome_key UNIQUE (nome);
@@ -534,17 +474,13 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.checkin
                 ADD CONSTRAINT fk_checkin_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
-            ALTER TABLE ONLY public.checkin
-                ADD CONSTRAINT fk_checkin_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
 
             ALTER TABLE ONLY public.funcionario
                 ADD CONSTRAINT fk_funcionario_cargo FOREIGN KEY (id_cargo) REFERENCES public.cargo(id_cargo);
 
             ALTER TABLE ONLY public.adicional
-                ADD CONSTRAINT fk_itemcardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_cardapio) NOT VALID;
+                ADD CONSTRAINT fk_itemcardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_itemcardapio) NOT VALID;
 
-            ALTER TABLE ONLY public.login
-                ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
             ALTER TABLE ONLY public.login
                 ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
 
@@ -558,10 +494,8 @@ async function initdb(pool: Pool) {
                 ADD CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido) REFERENCES public.pedido(id_pedido);
 
             ALTER TABLE ONLY public.pedido
-                ADD CONSTRAINT fk_pedido_cardapio FOREIGN KEY (id_cardapio) REFERENCES public.itemcardapio(id_cardapio);
+                ADD CONSTRAINT fk_pedido_cardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_itemcardapio);
 
-            ALTER TABLE ONLY public.pedido
-                ADD CONSTRAINT fk_pedido_garcom FOREIGN KEY (id_garcom) REFERENCES public.funcionario(id_funcionario);
             ALTER TABLE ONLY public.pedido
                 ADD CONSTRAINT fk_pedido_garcom FOREIGN KEY (id_garcom) REFERENCES public.funcionario(id_funcionario);
 

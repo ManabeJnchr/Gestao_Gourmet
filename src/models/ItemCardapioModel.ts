@@ -1,0 +1,79 @@
+import pool from "../database/index";
+
+class ItemCardapioModel {
+    
+    static async listarCardapio() {
+        try {
+            const result = await pool.query(
+                `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem
+                 FROM itemcardapio i
+                 LEFT JOIN categoria c ON c.id_categoria = i.id_categoria
+                 ORDER BY i.id_itemcardapio ASC`
+            );
+
+            return result.rows;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao listar itens do cardápio, tente novamente"};
+        }
+    }
+
+    static async adicionarItemCardapio(nome: any, valor: Number, id_categoria: Number, descricao: any, imagem: any) {
+        try {
+            const result = await pool.query(
+                `INSERT INTO itemcardapio (nome, valor, id_categoria, descricao, imagem)
+                 VALUES ($1, $2, $3, $4, $5)
+                 RETURNING *`,
+                 [nome, valor, id_categoria, descricao, imagem]
+            );
+
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao adicionar item ao cardápio, tente novamente"};
+        }
+    }
+
+    static async atualizarItemCardapio(id_itemcardapio: Number, nome: String, valor: Number, id_categoria: Number, descricao: String, imagem: String) {
+        try {
+            const resultUpdate = await pool.query(
+                `UPDATE itemcardapio 
+                 SET nome = $1, valor = $2, id_categoria = $3, descricao = $4, imagem = $5
+                 WHERE id_mesa = $6
+                 RETURNING *
+                `,
+                 [nome, valor, id_categoria, descricao, imagem, id_itemcardapio]
+            );
+
+            const result = await pool.query(
+                `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem
+                 FROM itemcardapio i
+                 LEFT JOIN categoria c ON c.id_categoria = i.id_categoria
+                 WHERE i.id_itemcardapio = $1`,
+                 [id_itemcardapio]
+            );
+
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao atualizar item do cardápio, tente novamente"};
+        }
+    }
+
+    static async deletarItemCardapio(id_itemcardapio: Number) {
+        try {
+            const result = await pool.query(
+                `DELETE FROM itemcardapio 
+                 WHERE id_itemcardapio = $1`,
+                 [id_itemcardapio]
+            );
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao deletar item do cardápio, tente novamente"};
+        }
+    }
+}
+
+export default ItemCardapioModel;
