@@ -39,7 +39,7 @@ class ItemCardapioModel {
             const resultUpdate = await pool.query(
                 `UPDATE itemcardapio 
                  SET nome = $1, valor = $2, id_categoria = $3, descricao = $4, imagem = $5
-                 WHERE id_mesa = $6
+                 WHERE id_itemcardapio = $6
                  RETURNING *
                 `,
                  [nome, valor, id_categoria, descricao, imagem, id_itemcardapio]

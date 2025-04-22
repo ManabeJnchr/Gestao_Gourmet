@@ -53,6 +53,7 @@ class MesaService {
             if (numero_id_itemcardapio === -1) { // Novo item
                 return await this.adicionarItemCardapio({nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem});
             } else { // Atualizar item
+                return await this.atualizarItemCardapio({id_itemcardapio:numero_id_itemcardapio, nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem});
 
             }
 
