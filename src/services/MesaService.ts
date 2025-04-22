@@ -41,10 +41,10 @@ class MesaService {
             }
 
             if (number_id_mesa === -1) { // Nova mesa
-                this.adicionarMesa({ numero_mesa:number_numero_mesa, qtd_lugares:number_qtd_lugares});
+                return await this.adicionarMesa({ numero_mesa:number_numero_mesa, qtd_lugares:number_qtd_lugares});
 
             } else { // Atualizar mesa
-                this.atualizarMesa({ id_mesa:number_id_mesa, numero_mesa:number_numero_mesa, qtd_lugares:number_qtd_lugares, id_status:number_id_status })
+                return await this.atualizarMesa({ id_mesa:number_id_mesa, numero_mesa:number_numero_mesa, qtd_lugares:number_qtd_lugares, id_status:number_id_status })
             }
 
         } catch (err: any) {

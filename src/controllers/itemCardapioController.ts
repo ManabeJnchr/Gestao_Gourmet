@@ -1,10 +1,10 @@
 import express from 'express';
-import MesaService from '../services/MesaService';
+import ItemCardapioService from '../services/ItemCardapioService';
 
 
-export const salvarMesa = async (req: express.Request, res: express.Response) => {
+export const salvarItemCardapio = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await MesaService.salvarMesa(req.body)
+        const result = await ItemCardapioService.salvarItemCardapio(req.body)
 
         res.status(200).json(result)
     } catch (err: any) {
@@ -19,9 +19,10 @@ export const salvarMesa = async (req: express.Request, res: express.Response) =>
     }
 };
 
-export const listarMesas = async (req: express.Request, res: express.Response) => {
+export const listarCardapio = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await MesaService.listarMesas();
+        const result = await ItemCardapioService.listarCardapio();
+
         res.status(200).json(result);
     } catch (err: any) {
         console.error("Erro no controller: ", err);
@@ -35,10 +36,10 @@ export const listarMesas = async (req: express.Request, res: express.Response) =
     }
 };
 
-export const deletarMesa = async (req: express.Request, res: express.Response) => {
+export const deletarItemCardapio = async (req: express.Request, res: express.Response) => {
     try {
 
-        await MesaService.deletarMesa(req.body)
+        await ItemCardapioService.deletarItemCardapio(req.body)
 
         res.status(200).json(-1);
 
