@@ -152,7 +152,7 @@
                                     <div class="col d-inline-flex justify-content-between">
                                         <h4 class="h2 text-truncate">Novo Item</h4>
                                         <div>
-                                            <button style="background: none; border: none;" @click.prevent="tela = 'CAD'">
+                                            <button style="background: none; border: none;" @click.prevent="buscarCategorias(); tela = 'CAD'">
                                                 <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
                                             </button>
                                         </div>
@@ -179,7 +179,7 @@
                                         <div class="col d-inline-flex justify-content-between">
                                             <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
                                             <div style="min-width: 89px;">
-                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id)">
+                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_itemcardapio)">
                                                     <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
                                                 </button>
                                                 <button style="background: none; border: none;" @click="tela = 'EDT'; editarRegistro(index)">
@@ -231,42 +231,15 @@
                                         <label for="categoriaCardapio" class="fw-bold">Categoria:</label>
                                     </div>
                                     <div class="col-md-10 col-lg-6">
-                                        <select x-model="registro.categoria" id="categoriaCardapio"
+                                        <select x-model="registro.id_categoria" id="categoriaCardapio"
                                                 name="categoriaCardapio"
                                                 class="w-100 shadow-inside h-100 border-1 rounded-2">
                                                 <option value="" selected disabled>
                                                     Selecione uma categoria
                                                 </option>
-                                                <option value="Aperitivos">
-                                                    Aperitivos
-                                                </option>
-                                                <option value="Aves">
-                                                    Aves
-                                                </option>
-                                                <option value="Bebidas Alcoólicas">
-                                                    Bebidas Alcoólicas
-                                                </option>
-                                                <option value="Bebidas Quentes">
-                                                    Bebidas Quentes
-                                                </option>
-                                                <option value="Carnes">
-                                                    Carnes
-                                                </option>
-                                                <option value="Massas">
-                                                    Massas
-                                                </option>
-                                                <option value="Refrigerantes">
-                                                    Refrigerantes
-                                                </option>
-                                                <option value="Saladas">
-                                                    Saladas
-                                                </option>
-                                                <option value="Sopas">
-                                                    Sopas
-                                                </option>
-                                                <option value="Sucos">
-                                                    Sucos
-                                                </option>
+                                                <template x-for="categoria in categorias">
+                                                    <option value="categoria.id_categoria" x-text="categoria.nome"></option>
+                                                </template>
                                             </select>
                                     </div>
                                     <div class="col-md-2 col-lg-1">
@@ -284,7 +257,7 @@
                                         <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
                                     </div>
                                     <div class="col-md-10 col-lg-10">
-                                        <textarea x-model="registro.descricao" id="descricaoCardapio"
+                                        <textarea x-model="registro.nome" id="descricaoCardapio"
                                             name="descricaoCardapio"
                                             class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
                                     </div>
@@ -314,7 +287,7 @@
                                                 <div class="col-md-12 col-lg-6">
                                                     <img src="../src/img/caret-right-solid.svg" alt="icon"
                                                         class="img_xsmallIcon m-0 me-2 mb-1">
-                                                    <input type="text" x-model="adicional.descricao"
+                                                    <input type="text" x-model="adicional.nome"
                                                         class="shadow-inside border-1 rounded-2" style="width: 95%;"
                                                         placeholder="Digite o nome do item adicional...">
                                                 </div>
@@ -395,13 +368,26 @@
         function Cardapio() {
             return {
                 tela: 'GER',
-                registro: { id: -1, nome: '', valor: '', categoria: '', imagem: '', adicionais: [] },
+                registro: { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', imagem: '', adicionais: [] },
+                categorias: [],
                 dados: [],
                 dadoSelecionado: [],
                 buscarDados() {
                     axios.get('/listarCardapio')
                         .then(resp => {
                             this.dados = resp.data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally(function () {
+
+                        });
+                },
+                buscarCategorias() {
+                    axios.get('/listarCategorias')
+                        .then(resp => {
+                            this.categorias = resp.data;
                         })
                         .catch(error => {
                             console.log(error);
@@ -434,18 +420,18 @@
                         });
                 },
                 editarRegistro(index) {
-                    this.registro.id = this.dados[index].idcardapio;
+                    this.registro.id_itemcardapio = this.dados[index].id_itemcardapio;
                     this.registro.nome = this.dados[index].nome;
                     this.registro.valor = this.dados[index].valor;
-                    this.registro.categoria = this.dados[index].categoria;
+                    this.registro.id_categoria = this.dados[index].id_categoria;
                     this.registro.imagem = this.dados[index].imagem;
                     this.registro.adicionais = this.dados[index].adicionais;
                 },
                 limparRegistro() {
-                    this.registro = { id: -1, nome: '', valor: '', categoria: '', igredientes: '', imagem: '', adicionais: [] };
+                    this.registro = { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', igredientes: '', imagem: '', adicionais: [] };
                 },
                 incluirAdicional() {
-                    this.registro.adicionais.push({ id: -1, id_cardapio: this.registro.id, descricao: '', valor: '' });
+                    this.registro.adicionais.push({ id_adicional: -1, id_itemcardapio: this.registro.id, nome: '', valor: '' });
                 },
                 excluirAdicional(index) {
                     this.registro.adicionais.splice(index, 1);
