@@ -1,4 +1,7 @@
 import pool from "../database/index";
+import { Pool, PoolClient } from "pg";
+
+type PgClient = Pool | PoolClient;
 
 class ItemCardapioModel {
     
@@ -18,9 +21,9 @@ class ItemCardapioModel {
         }
     }
 
-    static async adicionarItemCardapio(nome: any, valor: Number, id_categoria: Number, descricao: any, imagem: any) {
+    static async adicionarItemCardapio(nome: any, valor: number, id_categoria: number, descricao: any, imagem: any, client : PgClient = pool) {
         try {
-            const result = await pool.query(
+            const result = await client.query(
                 `INSERT INTO itemcardapio (nome, valor, id_categoria, descricao, imagem)
                  VALUES ($1, $2, $3, $4, $5)
                  RETURNING *`,
@@ -34,9 +37,9 @@ class ItemCardapioModel {
         }
     }
 
-    static async atualizarItemCardapio(id_itemcardapio: Number, nome: any, valor: Number, id_categoria: Number, descricao: any, imagem: any) {
+    static async atualizarItemCardapio(id_itemcardapio: number, nome: any, valor: number, id_categoria: number, descricao: any, imagem: any, client : PgClient =pool) {
         try {
-            const resultUpdate = await pool.query(
+            const resultUpdate = await client.query(
                 `UPDATE itemcardapio 
                  SET nome = $1, valor = $2, id_categoria = $3, descricao = $4, imagem = $5
                  WHERE id_itemcardapio = $6
@@ -45,7 +48,7 @@ class ItemCardapioModel {
                  [nome, valor, id_categoria, descricao, imagem, id_itemcardapio]
             );
 
-            const result = await pool.query(
+            const result = await client.query(
                 `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem
                  FROM itemcardapio i
                  LEFT JOIN categoria c ON c.id_categoria = i.id_categoria
@@ -60,9 +63,9 @@ class ItemCardapioModel {
         }
     }
 
-    static async deletarItemCardapio(id_itemcardapio: Number) {
+    static async deletarItemCardapio(id_itemcardapio: number, client : PgClient = pool) {
         try {
-            const result = await pool.query(
+            const result = await client.query(
                 `DELETE FROM itemcardapio 
                  WHERE id_itemcardapio = $1`,
                  [id_itemcardapio]
