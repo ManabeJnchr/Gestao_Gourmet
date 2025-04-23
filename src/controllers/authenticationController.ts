@@ -44,9 +44,9 @@ export const getIdentity = async (req: express.Request, res: express.Response) =
     }
 }
 
-export const requestPasswordReset = async (req: express.Request, res: express.Response) => {
+export const solicitarResetSenha = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await AuthenticationService.requestPasswordReset(req.body);
+        const result = await AuthenticationService.solicitarResetSenha(req.body);
 
         res.status(200).json(result);
 
@@ -58,9 +58,9 @@ export const requestPasswordReset = async (req: express.Request, res: express.Re
     }
 }
 
-export const acceptPasswordReset = async (req: express.Request, res: express.Response) => {
+export const aceitarResetSenha = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await AuthenticationService.acceptPasswordReset(req.body);
+        const result = await AuthenticationService.aceitarResetSenha(req.body);
 
         res.status(200).json(result);
 
@@ -71,4 +71,19 @@ export const acceptPasswordReset = async (req: express.Request, res: express.Res
         
     }
 }
+
+export const changePassword = async (req: express.Request, res: express.Response) => {
+    try {
+        const result = await AuthenticationService.aceitarResetSenha(req.body);
+
+        res.status(200).json(result);
+
+    } catch (err : any) {
+        res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        
+    }
+}
+
 

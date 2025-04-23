@@ -1,10 +1,10 @@
 import express from "express";
-import { acceptPasswordReset, getIdentity, login, logout, requestPasswordReset } from "../controllers/authenticationController";
+import { aceitarResetSenha, getIdentity, login, logout, solicitarResetSenha } from "../controllers/authenticationController";
 
 export default (router: express.Router) => {
     router.post('/login', login);
     router.get('/identity', getIdentity);
     router.get('/logout', logout);
-    router.post('/requestPasswordReset', requestPasswordReset);
-    router.post('/acceptPasswordReset', acceptPasswordReset);
+    router.post('/requestPasswordReset', solicitarResetSenha);
+    router.post('/acceptPasswordReset', aceitarResetSenha);
 };

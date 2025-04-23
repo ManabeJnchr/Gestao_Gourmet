@@ -97,7 +97,7 @@ class AuthenticationService {
         }
     }
 
-    static async requestPasswordReset ({cpf}: AuthDTO) {
+    static async solicitarResetSenha ({cpf}: AuthDTO) {
         try {
             const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpf);
 
@@ -105,7 +105,7 @@ class AuthenticationService {
                 throw { statusCode: 400, message: "Usuário inexistente"}
             }
             
-            await UsuarioModel.requestPasswordReset(verificarUsuario.id_login);
+            await UsuarioModel.solicitarResetSenha(verificarUsuario.id_login);
 
             return { message: "Solicitação enviada com sucesso" };
 
@@ -120,7 +120,7 @@ class AuthenticationService {
         }
     }
 
-    static async acceptPasswordReset ({cpf}: AuthDTO) {
+    static async aceitarResetSenha ({cpf}: AuthDTO) {
         try {
             if (!cpf) {
                 throw { statusCode: 400, message: "Algum argumento não foi especificado" }
@@ -136,7 +136,7 @@ class AuthenticationService {
             const salt = random();
             const senhaFormatada = authentication(salt, cpfFormatado);
 
-            await UsuarioModel.acceptPasswordReset(verificarUsuario.id_login, senhaFormatada, salt);
+            await UsuarioModel.aceitarResetSenha(verificarUsuario.id_login, senhaFormatada, salt);
             
             return { message: "Senha reiniciada com sucesso" };
         } catch (err: any) {

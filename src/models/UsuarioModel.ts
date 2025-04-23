@@ -65,7 +65,7 @@ class UsuarioModel {
         }
     }
 
-    static async requestPasswordReset (id_usuario:string) {
+    static async solicitarResetSenha (id_usuario:string) {
         try {
             const result = await pool.query(`
                 UPDATE login 
@@ -82,7 +82,7 @@ class UsuarioModel {
         }
     }
 
-    static async acceptPasswordReset (id_usuario:string, senha:string, salt:string) {
+    static async aceitarResetSenha (id_usuario:string, senha:string, salt:string) {
         try {
             const result = await pool.query(`
                 UPDATE login 
