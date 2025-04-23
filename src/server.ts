@@ -6,9 +6,9 @@ import cookieParser from "cookie-parser";
 import routes from "./routes/upload";
 
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
-(async function main () {
+(async function main() {
     app.use(cors());
     app.use(express.json());
     app.use(express.static("public"));

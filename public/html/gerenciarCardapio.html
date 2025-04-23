@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
@@ -21,7 +22,8 @@
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -29,8 +31,8 @@
                 <div class="btn-group">
                     <button type="button" class="btn bg-transparent">
                         <span class="me-2" id="text_userName" x-text="identity.funcionarionome"></span>
-                        <img class="me-2 rounded-circle" id="img_userIcon" :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'"
-                            alt="user-icon">
+                        <img class="me-2 rounded-circle" id="img_userIcon"
+                            :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user-icon">
                     </button>
                     <button type="button" class="btn bg-transparent dropdown-toggle dropdown-toggle-split"
                         data-bs-toggle="dropdown" aria-expanded="true">
@@ -123,14 +125,16 @@
                 </div>
             </div>
 
-            <div x-data="Cardapio()" x-init="buscarCategorias(); buscarDados()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="Cardapio()" x-init="buscarCategorias(); buscarDados()" class="col-12 col-lg-10"
+                id="div_content">
                 <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
                             <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
                         </button>
                         <h1 class="m-0 ms-2">GERENCIAR CARDÁPIO</h1>
-                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''" style="font-size: 30px;"></i>
+                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''"
+                            style="font-size: 30px;"></i>
                         <h2 class="m-0" :class="tela == 'CAD' ? '' : 'd-none'">
                             Criar Novo
                         </h2>
@@ -152,8 +156,10 @@
                                     <div class="col d-inline-flex justify-content-between">
                                         <h4 class="h2 text-truncate">Novo Item</h4>
                                         <div>
-                                            <button style="background: none; border: none;" @click.prevent="tela = 'CAD'">
-                                                <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
+                                            <button style="background: none; border: none;"
+                                                @click.prevent="tela = 'CAD'">
+                                                <span class="mdi mdi-plus text-decoration-none text-black"
+                                                    style="font-size: 30px;"></span>
                                             </button>
                                         </div>
                                     </div>
@@ -171,7 +177,7 @@
                             <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                                 <div class="col-md-4 d-md-block d-none align-content-center h-100"
                                     style="width: 150px;">
-                                    <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
+                                    <img :src="dado.imagem || '../src/img/add-item-cardapio-icon.jpg'" alt="user"
                                         class="img_contentThumb rounded-2">
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -179,11 +185,16 @@
                                         <div class="col d-inline-flex justify-content-between">
                                             <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
                                             <div style="min-width: 89px;">
-                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_itemcardapio)">
-                                                    <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                <button style="background: none; border: none;"
+                                                    @click.prevent="deletarRegistro(dado.id_itemcardapio)">
+                                                    <span class="mdi mdi-delete text-decoration-none text-black"
+                                                        style="font-size: 30px;"></span>
                                                 </button>
-                                                <button style="background: none; border: none;" @click="tela = 'EDT'; editarRegistro(index)">
-                                                    <span class="mdi mdi-square-edit-outline text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                <button style="background: none; border: none;"
+                                                    @click="tela = 'EDT'; editarRegistro(index)">
+                                                    <span
+                                                        class="mdi mdi-square-edit-outline text-decoration-none text-black"
+                                                        style="font-size: 30px;"></span>
                                                 </button>
                                             </div>
                                         </div>
@@ -203,16 +214,20 @@
                             <div class="col-2 align-content-center h-100" style="width: 150px;">
                                 <div class="row mb-1">
                                     <div class="col">
-                                        <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
+                                        <img id="selectedImageCardapio"
+                                            :src="registro.imagem || '../src/img/add-item-cardapio-icon.jpg'" alt="item"
                                             class="img_contentThumb rounded-2">
                                     </div>
                                 </div>
-                                <div class="row"">
+                                <div class="row">
                                     <div class="col">
-                                        <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100">
-                                            <span class="mdi mdi-camera text-decoration-none text-black"> Alterar Foto</span>
+                                        <button type="button" id="btn_addImgCardapio"
+                                            class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 px-2">
+                                            <span class="mdi mdi-camera text-decoration-none text-black"> Alterar
+                                                Foto</span>
                                         </button>
-                                        <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                        <input type="file" id="input_imgCardapio" style="display: none;"
+                                            accept="image/*">
                                     </div>
                                 </div>
                             </div>
@@ -232,15 +247,16 @@
                                     </div>
                                     <div class="col-md-10 col-lg-6">
                                         <select x-model="registro.id_categoria" id="categoriaCardapio"
-                                                name="categoriaCardapio"
-                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                                <option value="" selected disabled>
-                                                    Selecione uma categoria
+                                            name="categoriaCardapio"
+                                            class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                            <option value="" selected disabled>
+                                                Selecione uma categoria
+                                            </option>
+                                            <template x-for="categoria in categorias">
+                                                <option :value="categoria.id_categoria" x-text="categoria.nome">
                                                 </option>
-                                                <template x-for="categoria in categorias">
-                                                    <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
-                                                </template>
-                                            </select>
+                                            </template>
+                                        </select>
                                     </div>
                                     <div class="col-md-2 col-lg-1">
                                         <label for="valorCardapio" class="fw-bold">Preço:</label>
@@ -271,8 +287,10 @@
                                 <h1 class="m-0">Adicionais</h1>
                             </div>
                             <div class="col-1 text-end">
-                                <button type="button" class="btn bg-transparent py-0" @click.prevent="incluirAdicional()">
-                                    <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
+                                <button type="button" class="btn bg-transparent py-0"
+                                    @click.prevent="incluirAdicional()">
+                                    <span class="mdi mdi-plus text-decoration-none text-black"
+                                        style="font-size: 30px;"></span>
                                 </button>
                             </div>
                         </div>
@@ -349,17 +367,17 @@
                             window.location.href = "/";
                         }
                     })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                        .catch(error => {
+                            console.log(error);
+                        });
                 },
                 logout() {
                     axios.get('/logout').then(resp => {
                         window.location.href = "/";
                     })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                        .catch(error => {
+                            console.log(error);
+                        });
                 }
             }
         }
@@ -396,18 +414,24 @@
                         });
                 },
                 salvarRegistro() {
-                    axios.post('/salvarItemCardapio', this.registro)
+                    const formData = new FormData();
+                    const fileInput = document.getElementById('input_imgCardapio');
+                    if (fileInput.files[0]) {
+                        formData.append('file', fileInput.files[0]);
+                    }
+                    formData.append('nome', this.registro.nome);
+                    formData.append('valor', this.registro.valor);
+                    formData.append('id_categoria', this.registro.id_categoria);
+                    formData.append('descricao', this.registro.descricao);
+                    formData.append('imagem', this.registro.imagem || '');
+                    axios.post('/salvarItemCardapio', formData)
                         .then(resp => {
-                            console.log(resp.data);
                             this.buscarDados();
                             this.limparRegistro();
                             this.tela = 'GER';
                         })
                         .catch(error => {
-
-                        })
-                        .finally(() => {
-
+                            console.log(error);
                         });
                 },
                 deletarRegistro(_id) {
@@ -435,7 +459,7 @@
                 },
                 incluirAdicional() {
                     if (!this.registro.adicionais) {
-                        this.registro.adicionais = []; 
+                        this.registro.adicionais = [];
                     }
                     this.registro.adicionais.push({ id_adicional: -1, id_itemcardapio: this.registro.id_itemcardapio, nome: '', valor: '' });
                 },
@@ -444,9 +468,28 @@
                 },
             }
         }
+
+        document.getElementById("btn_addImgCardapio").addEventListener("click", function () {
+            document.getElementById("input_imgCardapio").click();
+        });
+
+        document.getElementById("input_imgCardapio").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imagemSelecionada = e.target.result;
+                    const selectedImage = document.getElementById("selectedImageCardapio");
+                    selectedImage.src = imagemSelecionada;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 
 </body>
 
