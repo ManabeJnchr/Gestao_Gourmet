@@ -35,7 +35,7 @@ class UsuarioModel {
     static async buscarUsuarioPorAuthToken(authToken: string) {
         try {
             const result = await pool.query(`
-                SELECT login.cpf, f.nome AS funcionarionome, f.cpf AS funcionario_cpf, f.id_cargo, f.imagem, c.nome AS cargonome 
+                SELECT login.id_login, login.cpf, f.nome AS funcionarionome, f.cpf AS funcionario_cpf, f.id_cargo, f.imagem, c.nome AS cargonome 
                 FROM login 
                 LEFT JOIN funcionario AS f ON login.id_funcionario = f.id_funcionario
                 LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
@@ -90,6 +90,25 @@ class UsuarioModel {
                 WHERE id_login = $3
                 RETURNING *;
             `, [senha, salt, id_usuario]);
+
+            return result.rows[0];
+
+        } catch (err) {
+            console.error("Erro ao atualizar usuário", err);
+            throw new Error("Erro ao atualizar usuário, tente novamente.")
+        }
+    }
+
+    static async trocarSenha (id_usuario:string, senha:string, salt:string) {
+        try {
+            const result = await pool.query(`
+                UPDATE login 
+                SET primeiro_login = false, senha = $1, salt = $2
+                WHERE id_login = $3
+                RETURNING *;
+            `, [senha, salt, id_usuario]);
+
+            console.log(result.rows);
 
             return result.rows[0];
 
