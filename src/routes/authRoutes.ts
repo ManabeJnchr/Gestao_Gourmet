@@ -1,8 +1,11 @@
 import express from "express";
-import { getIdentity, login, logout } from "../controllers/authenticationController";
+import { aceitarResetSenha, getIdentity, login, logout, solicitarResetSenha, trocarSenha } from "../controllers/authenticationController";
 
 export default (router: express.Router) => {
     router.post('/login', login);
     router.get('/identity', getIdentity);
     router.get('/logout', logout);
+    router.post('/solicitarResetSenha', solicitarResetSenha);
+    router.post('/aceitarResetSenha', aceitarResetSenha);
+    router.post('/trocarSenha', trocarSenha);
 };

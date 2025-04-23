@@ -97,6 +97,93 @@ class AuthenticationService {
         }
     }
 
+    static async solicitarResetSenha ({cpf}: AuthDTO) {
+        try {
+            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpf);
+
+            if (!verificarUsuario) {
+                throw { statusCode: 400, message: "Usuário inexistente"}
+            }
+            
+            await UsuarioModel.solicitarResetSenha(verificarUsuario.id_login);
+
+            return { message: "Solicitação enviada com sucesso" };
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async aceitarResetSenha ({cpf}: AuthDTO) {
+        try {
+            if (!cpf) {
+                throw { statusCode: 400, message: "Algum argumento não foi especificado" }
+            }
+
+            const cpfFormatado = cpf.replace(/[\.-]/g, "");
+            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpfFormatado);
+
+            if (!verificarUsuario) {
+                throw { statusCode: 400, message: "Usuário inexistente"}
+            }
+
+            const salt = random();
+            const senhaFormatada = authentication(salt, cpfFormatado);
+
+            await UsuarioModel.aceitarResetSenha(verificarUsuario.id_login, senhaFormatada, salt);
+            
+            return { message: "Senha reiniciada com sucesso" };
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async trocarSenha ({senha}: AuthDTO, authToken: string) {
+        try {
+            if (!senha) {
+                throw { statusCode: 400, message: "Algum argumento não foi especificado" }
+            }
+
+            if (!authToken) {
+                throw { statusCode: 400, message: "Não autorizado. Faça login novamente."}
+            }
+
+            const verificarAuth = await UsuarioModel.buscarUsuarioPorAuthToken(authToken);
+            
+            if (!verificarAuth) {
+                throw { statusCode: 400, message: "Não autorizado. Faça login novamente."}
+            }
+
+            const salt =  random();
+            const senhaFormatada = authentication(salt, senha);
+
+            console.log(verificarAuth);
+            await UsuarioModel.trocarSenha(verificarAuth.id_login, senhaFormatada, salt);
+            
+            return { message: "Senha atualizada com sucesso" };
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
 }
 
 export default AuthenticationService
