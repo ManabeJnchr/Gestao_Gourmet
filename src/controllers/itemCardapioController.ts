@@ -4,8 +4,11 @@ import ItemCardapioService from '../services/ItemCardapioService';
 
 export const salvarItemCardapio = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await ItemCardapioService.salvarItemCardapio(req.body)
+        const imagemBuffer = req.file ? req.file.buffer : null;
+        
+        const result = await ItemCardapioService.salvarItemCardapio(req.body, imagemBuffer)
 
+        
         res.status(200).json(result)
     } catch (err: any) {
         console.error("Erro no controller: ", err);

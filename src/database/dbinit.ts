@@ -41,7 +41,7 @@ async function initdb(pool: Pool) {
                 valor numeric(10,2) NOT NULL,
                 id_categoria integer NOT NULL,
                 descricao text,
-                imagem character varying(254),
+                imagem BYTEA,
                 datacadastro timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 dataalteracao timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 ativo boolean NOT NULL DEFAULT true

@@ -14,9 +14,8 @@ interface itemCardapioDTO {
 }
 
 class ItemCardapioService {
-    static async salvarItemCardapio({ id_itemcardapio, nome, valor, id_categoria, descricao, imagem, adicionais }: itemCardapioDTO) {
+    static async salvarItemCardapio({ id_itemcardapio, nome, valor, id_categoria, descricao, adicionais }: itemCardapioDTO, imagemBuffer : any) {
         try {
-
             
             if (!id_itemcardapio || !nome || !valor || !id_categoria || !descricao || !adicionais) {
                 throw { statusCode: 400, message: "Faltam argumentos" }
@@ -55,9 +54,9 @@ class ItemCardapioService {
             }
 
             if (numero_id_itemcardapio === -1) { // Novo item
-                return await this.adicionarItemCardapio({nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem, adicionais});
+                return await this.adicionarItemCardapio({nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, adicionais}, imagemBuffer);
             } else { // Atualizar item
-                return await this.atualizarItemCardapio({id_itemcardapio:numero_id_itemcardapio, nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, imagem, adicionais});
+                return await this.atualizarItemCardapio({id_itemcardapio:numero_id_itemcardapio, nome:nomeFormatado, valor:numero_valor, id_categoria:numero_id_categoria, descricao:descricaoFormatada, adicionais}, imagemBuffer);
 
             }
 
@@ -93,14 +92,13 @@ class ItemCardapioService {
         }
     }
 
-    static async adicionarItemCardapio ({nome, valor, id_categoria, descricao, imagem, adicionais}: itemCardapioDTO) {
+    static async adicionarItemCardapio ({nome, valor, id_categoria, descricao, adicionais}: itemCardapioDTO, imagemBuffer : any) {
         const client = await pool.connect();
 
         try {
             await client.query("BEGIN");
 
-            const novoItem = await ItemCardapioModel.adicionarItemCardapio(nome, valor, id_categoria, descricao, imagem, client)
-
+            const novoItem = await ItemCardapioModel.adicionarItemCardapio(nome, valor, id_categoria, descricao, imagemBuffer, client)
 
             // Criar adicionais no banco de dados
             novoItem.adicionais = [];
@@ -130,13 +128,13 @@ class ItemCardapioService {
         }
     }
 
-    static async atualizarItemCardapio ({id_itemcardapio, nome, valor, id_categoria, descricao, imagem, adicionais}: itemCardapioDTO) {
+    static async atualizarItemCardapio ({id_itemcardapio, nome, valor, id_categoria, descricao, adicionais}: itemCardapioDTO, imagemBuffer : any) {
         const client = await pool.connect();
 
         try { 
             await client.query("BEGIN");
 
-            const item = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagem, client)
+            const item = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagemBuffer, client)
 
             const adicionaisAntigos = await AdicionaisService.listarAdicionais({id_itemcardapio});
             const adicionaisAntigosMap = new Map(adicionaisAntigos.map(a => [a.id_adicional, a]))
