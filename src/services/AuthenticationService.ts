@@ -97,6 +97,59 @@ class AuthenticationService {
         }
     }
 
+    static async requestPasswordReset ({cpf}: AuthDTO) {
+        try {
+            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpf);
+
+            if (!verificarUsuario) {
+                throw { statusCode: 400, message: "Usuário inexistente"}
+            }
+            
+            await UsuarioModel.requestPasswordReset(verificarUsuario.id_login);
+
+            return { message: "Solicitação enviada com sucesso" };
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async acceptPasswordReset ({cpf}: AuthDTO) {
+        try {
+            if (!cpf) {
+                throw { statusCode: 400, message: "Algum argumento não foi especificado" }
+            }
+
+            const cpfFormatado = cpf.replace(/[\.-]/g, "");
+            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpfFormatado);
+
+            if (!verificarUsuario) {
+                throw { statusCode: 400, message: "Usuário inexistente"}
+            }
+
+            const salt = random();
+            const senhaFormatada = authentication(salt, cpfFormatado);
+
+            await UsuarioModel.acceptPasswordReset(verificarUsuario.id_login, senhaFormatada, salt);
+            
+            return { message: "Senha reiniciada com sucesso" };
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
 }
 
 export default AuthenticationService

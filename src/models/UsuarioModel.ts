@@ -64,6 +64,41 @@ class UsuarioModel {
             throw new Error("Erro ao atualizar usuário, tente novamente.")
         }
     }
+
+    static async requestPasswordReset (id_usuario:string) {
+        try {
+            const result = await pool.query(`
+                UPDATE login 
+                SET redefinir_senha = true
+                WHERE id_login = $1
+                RETURNING *;
+            `, [id_usuario]);
+
+            return result.rows[0];
+
+        } catch (err) {
+            console.error("Erro ao atualizar usuário", err);
+            throw new Error("Erro ao atualizar usuário, tente novamente.")
+        }
+    }
+
+    static async acceptPasswordReset (id_usuario:string, senha:string, salt:string) {
+        try {
+            const result = await pool.query(`
+                UPDATE login 
+                SET redefinir_senha = false, primeiro_login = true, senha = $1, salt = $2
+                WHERE id_login = $3
+                RETURNING *;
+            `, [senha, salt, id_usuario]);
+
+            return result.rows[0];
+
+        } catch (err) {
+            console.error("Erro ao atualizar usuário", err);
+            throw new Error("Erro ao atualizar usuário, tente novamente.")
+        }
+    }
+
 }
 
 export default UsuarioModel
