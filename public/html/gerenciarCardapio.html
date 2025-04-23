@@ -143,10 +143,11 @@
                 <div class="row" :class="tela == 'GER' ? '' : 'd-none'">
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
-                            <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
-                                <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
-                                    class="img_contentThumb rounded-2">
-                            </div>
+                            <div class="col-md-4 d-md-block d-none align-content-center h-100"
+                                    style="width: 150px;">
+                                    <img :src="dado.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user"
+                                        class="img_contentThumb rounded-2">
+                                </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                 <div class="row">
                                     <div class="col d-inline-flex justify-content-between">
@@ -199,127 +200,129 @@
 
                 <div class="row p-2" :class="tela == 'GER' ? 'd-none' : ''">
                     <div class="col-12 div_contentAddItem border-4 rounded-2 py-2">
-                        <div class="row">
-                            <div class="col-2 align-content-center h-100" style="width: 150px;">
-                                <div class="row mb-1">
-                                    <div class="col">
-                                        <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
-                                            class="img_contentThumb rounded-2">
+                        <form id="formCardapio">
+                            <div class="row">
+                                <div class="col-2 align-content-center h-100" style="width: 150px;">
+                                    <div class="row mb-1">
+                                        <div class="col">
+                                            <img id="selectedImage"
+                                                :src="registro.imagem || '../src/img/user-icon-placeholder.jpg'"
+                                                alt="user" class="img_contentThumb rounded-2">
+                                        </div>
+                                    </div>
+                                    <div class="row"">
+                                        <div class="col">
+                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100">
+                                                <span class="mdi mdi-camera text-decoration-none text-black"> Alterar Foto</span>
+                                            </button>
+                                            <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row"">
-                                    <div class="col">
-                                        <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100">
-                                            <span class="mdi mdi-camera text-decoration-none text-black"> Alterar Foto</span>
-                                        </button>
-                                        <input type="file" id="input_img" style="display: none;" accept="image/*">
+                                <div class="col">
+                                    <div class="row mb-2">
+                                        <div class="col-md-2 col-lg-2 align-items-center">
+                                            <label for="nomeCardapio" class="fw-bold">Nome:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-10">
+                                            <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio"
+                                                class="w-100 shadow-inside border-1 rounded-2">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-2 col-lg-2">
+                                            <label for="categoriaCardapio" class="fw-bold">Categoria:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-6">
+                                            <select x-model="registro.id_categoria" id="categoriaCardapio"
+                                                    name="categoriaCardapio"
+                                                    class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                    <option value="" selected disabled>
+                                                        Selecione uma categoria
+                                                    </option>
+                                                    <template x-for="categoria in categorias">
+                                                        <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
+                                                    </template>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-2 col-lg-1">
+                                            <label for="valorCardapio" class="fw-bold">Preço:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-3">
+                                            <input x-model="registro.valor" type="number" id="valorCardapio"
+                                                name="valorCardapio" class="w-100 shadow-inside border-1 rounded-2"
+                                                placeholder="0,00" step="0.01" min="0"
+                                                @blur="registro.valor = parseFloat(registro.valor || 0).toFixed(2)">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-lg-2 align-items-center">
+                                            <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
+                                        </div>
+                                        <div class="col-md-10 col-lg-10">
+                                            <textarea x-model="registro.descricao" id="descricaoCardapio"
+                                                name="descricaoCardapio"
+                                                class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="row mb-2">
-                                    <div class="col-md-2 col-lg-2 align-items-center">
-                                        <label for="nomeCardapio" class="fw-bold">Nome:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-10">
-                                        <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio"
-                                            class="w-100 shadow-inside border-1 rounded-2">
-                                    </div>
+                            <hr class="mb-1">
+                            <div class="row d-flex justify-content-between">
+                                <div class="col-3 align-content-center">
+                                    <h1 class="m-0">Adicionais</h1>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-2 col-lg-2">
-                                        <label for="categoriaCardapio" class="fw-bold">Categoria:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-6">
-                                        <select x-model="registro.id_categoria" id="categoriaCardapio"
-                                                name="categoriaCardapio"
-                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                                <option value="" selected disabled>
-                                                    Selecione uma categoria
-                                                </option>
-                                                <template x-for="categoria in categorias">
-                                                    <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
-                                                </template>
-                                            </select>
-                                    </div>
-                                    <div class="col-md-2 col-lg-1">
-                                        <label for="valorCardapio" class="fw-bold">Preço:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-3">
-                                        <input x-model="registro.valor" type="number" id="valorCardapio"
-                                            name="valorCardapio" class="w-100 shadow-inside border-1 rounded-2"
-                                            placeholder="0,00" step="0.01" min="0"
-                                            @blur="registro.valor = parseFloat(registro.valor || 0).toFixed(2)">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2 col-lg-2 align-items-center">
-                                        <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
-                                    </div>
-                                    <div class="col-md-10 col-lg-10">
-                                        <textarea x-model="registro.descricao" id="descricaoCardapio"
-                                            name="descricaoCardapio"
-                                            class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
-                                    </div>
+                                <div class="col-1 text-end">
+                                    <button type="button" class="btn bg-transparent py-0" @click.prevent="incluirAdicional()">
+                                        <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-
-                        <hr class="mb-1">
-                        <div class="row d-flex justify-content-between">
-                            <div class="col-3 align-content-center">
-                                <h1 class="m-0">Adicionais</h1>
-                            </div>
-                            <div class="col-1 text-end">
-                                <button type="button" class="btn bg-transparent py-0" @click.prevent="incluirAdicional()">
-                                    <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
-                                </button>
-                            </div>
-                        </div>
-                        <hr class="m-0 mb-1">
-                        <div class="row mb-3">
-                            <div class="col">
-                                <ul class="list-group list-group-flush">
-                                    <template x-for="(adicional, index) in registro.adicionais" :key="index">
-                                        <li class="list-group-item p-1 ps-0">
-                                            <div class="row mb-2">
-                                                <div class="col-md-12 col-lg-6">
-                                                    <img src="../src/img/caret-right-solid.svg" alt="icon"
-                                                        class="img_xsmallIcon m-0 me-2 mb-1">
-                                                    <input type="text" x-model="adicional.nome"
-                                                        class="shadow-inside border-1 rounded-2" style="width: 95%;"
-                                                        placeholder="Digite o nome do item adicional...">
+                            <hr class="m-0 mb-1">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <ul class="list-group list-group-flush">
+                                        <template x-for="(adicional, index) in registro.adicionais" :key="index">
+                                            <li class="list-group-item p-1 ps-0">
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12 col-lg-6">
+                                                        <img src="../src/img/caret-right-solid.svg" alt="icon"
+                                                            class="img_xsmallIcon m-0 me-2 mb-1">
+                                                        <input type="text" x-model="adicional.nome"
+                                                            class="shadow-inside border-1 rounded-2" style="width: 95%;"
+                                                            placeholder="Digite o nome do item adicional...">
+                                                    </div>
+                                                    <div class="col-md-2 col-lg-1 align-items-center">
+                                                        <label for="valorAdicional" class="fw-bold">Preço:</label>
+                                                    </div>
+                                                    <div class="col-md-8 col-lg-3">
+                                                        <input type="number" x-model="adicional.valor" id="valorAdicional"
+                                                            name="adicionalValor"
+                                                            class="w-100 shadow-inside border-1 rounded-2"
+                                                            placeholder="0,00"
+                                                            @blur="adicional.valor = parseFloat(adicional.valor || 0).toFixed(2)">
+                                                    </div>
+                                                    <div class="col-md-2 col-lg-2 text-end">
+                                                        <button type="button" class="btn btn-danger btn-sm w-100"
+                                                            @click="excluirAdicional(index)">Excluir</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-2 col-lg-1 align-items-center">
-                                                    <label for="valorAdicional" class="fw-bold">Preço:</label>
-                                                </div>
-                                                <div class="col-md-8 col-lg-3">
-                                                    <input type="number" x-model="adicional.valor" id="valorAdicional"
-                                                        name="adicionalValor"
-                                                        class="w-100 shadow-inside border-1 rounded-2"
-                                                        placeholder="0,00"
-                                                        @blur="adicional.valor = parseFloat(adicional.valor || 0).toFixed(2)">
-                                                </div>
-                                                <div class="col-md-2 col-lg-2 text-end">
-                                                    <button type="button" class="btn btn-danger btn-sm w-100"
-                                                        @click="excluirAdicional(index)">Excluir</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </template>
-                                </ul>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row d-flex justify-content-end">
-                            <div class="col-sm-6 col-md-4 mb-1">
-                                <button id="btn_cancelar" type="button" class="w-100 btn text-white"
-                                    @click="tela = 'GER'; limparRegistro()">CANCELAR</button>
+                            <div class="row d-flex justify-content-end">
+                                <div class="col-sm-6 col-md-4 mb-1">
+                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white"
+                                        @click="tela = 'GER'; limparRegistro()">CANCELAR</button>
+                                </div>
+                                <div class=" col-sm-6 col-md-4">
+                                    <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                        @click.prevent="salvarRegistro(); tela = 'GER'">ADICIONAR</button>
+                                </div>
                             </div>
-                            <div class=" col-sm-6 col-md-4">
-                                <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                    @click.prevent="salvarRegistro(); tela = 'GER'">ADICIONAR</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -374,7 +377,10 @@
                 buscarDados() {
                     axios.get('/listarCardapio')
                         .then(resp => {
-                            this.dados = resp.data;
+                            this.dados = resp.data.map(dado => ({
+                                ...dado,
+                                imagem: dado.imagem ? `/uploads/${dado.imagem}` : null
+                            }));
                         })
                         .catch(error => {
                             console.log(error);
@@ -396,7 +402,19 @@
                         });
                 },
                 salvarRegistro() {
-                    axios.post('/salvarItemCardapio', this.registro)
+                    const formData = new FormData();
+                    const fileInput = document.getElementById('input_img');
+                    if (fileInput.files[0]) {
+                        formData.append('file', fileInput.files[0]);
+                    }
+                    formData.append('id_itemcardapio', this.registro.id_itemcardapio);
+                    formData.append('nome', this.registro.nome);
+                    formData.append('valor', this.registro.valor);
+                    formData.append('id_categoria', this.registro.id_categoria);
+                    formData.append('descricao', this.registro.descricao);
+                    formData.append('adicionais', JSON.stringify(this.registro.adicionais));
+
+                    axios.post('/salvarItemCardapio', formData)
                         .then(resp => {
                             console.log(resp.data);
                             this.buscarDados();
@@ -444,6 +462,23 @@
                 },
             }
         }
+
+        document.getElementById("btn_addImg").addEventListener("click", function() {
+            document.getElementById("input_img").click();
+        });
+
+        document.getElementById("input_img").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagemSelecionada = e.target.result;
+                    const selectedImage = document.getElementById("selectedImage");
+                    selectedImage.src = imagemSelecionada;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
