@@ -10,7 +10,7 @@ class AdicionalModel {
             const result = await pool.query(
                 `SELECT id_adicional, id_itemcardapio, nome, valor
                  FROM adicional 
-                 WHERE id_itemcardapio = $1
+                 WHERE id_itemcardapio = $1 AND ativo = true
                  ORDER BY id_adicional ASC`,
                  [ id_itemcardapio]
             );
@@ -59,12 +59,14 @@ class AdicionalModel {
     static async deletarAdicional(id_adicional: number, client : PgClient = pool) {
         try {
             const result = await client.query(
-                `DELETE FROM adicional 
-                 WHERE id_adicional = $1`,
+                `UPDATE adicional 
+                 SET ativo = false
+                 WHERE id_adicional = $1
+                 RETURNING *`,
                  [id_adicional]
             );
 
-            return result;
+            return result.rows[0];
         } catch (err: any) {
             console.error("Erro no model", err);
             throw {statusCode:500, message:"Erro ao deletar item do cardápio, tente novamente"};
