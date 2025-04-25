@@ -77,6 +77,11 @@ class ItemCardapioService {
 
             for (const item of cardapio) {
                 item.adicionais = await AdicionaisService.listarAdicionais({id_itemcardapio:item.id_itemcardapio});
+
+                if (item.imagem) {
+                    const base64 = item.imagem.toString('base64');
+                    item.imagemBase64 = `data:image/png;base64,${base64}`;
+                }
             }
 
             return cardapio;

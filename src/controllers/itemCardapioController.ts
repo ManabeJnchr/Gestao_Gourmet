@@ -4,9 +4,11 @@ import ItemCardapioService from '../services/ItemCardapioService';
 
 export const salvarItemCardapio = async (req: express.Request, res: express.Response) => {
     try {
-        const imagemBuffer = req.file ? req.file.buffer : null;
+        const imagem = req.file ? req.file.buffer : null;
         
-        const result = await ItemCardapioService.salvarItemCardapio(req.body, imagemBuffer)
+        const registro = JSON.parse(req.body.registro);
+
+        const result = await ItemCardapioService.salvarItemCardapio(registro, imagem)
 
         
         res.status(200).json(result)
