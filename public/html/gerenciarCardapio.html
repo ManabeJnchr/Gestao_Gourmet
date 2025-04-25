@@ -145,7 +145,7 @@
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                             <div class="col-md-4 d-md-block d-none align-content-center h-100"
                                     style="width: 150px;">
-                                    <img :src="dado.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user"
+                                    <img :src="'/src/img/add-item-cardapio-icon.jpg'" alt="user"
                                         class="img_contentThumb rounded-2">
                                 </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -172,7 +172,7 @@
                             <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                                 <div class="col-md-4 d-md-block d-none align-content-center h-100"
                                     style="width: 150px;">
-                                    <img src="../src/img/add-item-cardapio-icon.jpg" alt="user"
+                                    <img :src="dado.imagemBase64 ? dado.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'" alt="user"
                                         class="img_contentThumb rounded-2">
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
@@ -206,7 +206,7 @@
                                     <div class="row mb-1">
                                         <div class="col">
                                             <img id="selectedImage"
-                                                :src="registro.imagem || '../src/img/user-icon-placeholder.jpg'"
+                                                :src="registro.imagem ? registro.imagem : '/src/img/add-item-cardapio-icon.jpg'"
                                                 alt="user" class="img_contentThumb rounded-2">
                                         </div>
                                     </div>
@@ -407,14 +407,12 @@
                     if (fileInput.files[0]) {
                         formData.append('file', fileInput.files[0]);
                     }
-                    formData.append('id_itemcardapio', this.registro.id_itemcardapio);
-                    formData.append('nome', this.registro.nome);
-                    formData.append('valor', this.registro.valor);
-                    formData.append('id_categoria', this.registro.id_categoria);
-                    formData.append('descricao', this.registro.descricao);
-                    formData.append('adicionais', JSON.stringify(this.registro.adicionais));
+                    formData.append('registro', JSON.stringify(this.registro));
 
-                    axios.post('/salvarItemCardapio', formData)
+                    axios.post('/salvarItemCardapio', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }})
                         .then(resp => {
                             console.log(resp.data);
                             this.buscarDados();
