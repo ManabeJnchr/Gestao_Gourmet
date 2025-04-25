@@ -99,7 +99,9 @@ class AuthenticationService {
 
     static async solicitarResetSenha ({cpf}: AuthDTO) {
         try {
-            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpf);
+            const cpfFormatado = cpf.replace(/[\.-]/g, "");
+
+            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpfFormatado);
 
             if (!verificarUsuario) {
                 throw { statusCode: 400, message: "Usuário inexistente"}
