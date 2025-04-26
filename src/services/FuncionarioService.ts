@@ -1,6 +1,7 @@
 import FuncionarioModel from "../models/FuncionarioModel";
 import path from 'path';
 import AuthenticationService from "./AuthenticationService";
+import UsuarioModel from "../models/UsuarioModel";
 
 interface FuncionarioDTO {
     id_cargo: any,
@@ -32,6 +33,10 @@ class FuncionarioService {
                 return result;
             } else {
                 const funcionario = await FuncionarioModel.atualizarFuncionario(id_funcionario, cpf, id_cargo, nome, telefone, imagePath !== undefined ? imagePath : await this.getFuncionarioImagePath(id_funcionario));
+
+                const cpfFormatado = cpf.replace(/[\.-]/g, "");
+                await UsuarioModel.atualizarCPF(id_funcionario, cpfFormatado);
+
                 return {
                     ...funcionario,
                     imagem: funcionario.imagem ? funcionario.imagem : null // Ensure the image path is correct

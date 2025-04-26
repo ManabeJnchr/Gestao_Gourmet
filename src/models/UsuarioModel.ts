@@ -169,6 +169,24 @@ class UsuarioModel {
             }
         }
         
+        static async atualizarCPF (id_funcionario:string, cpf:string) {
+            try {
+                const result = await pool.query(`
+                    UPDATE login 
+                    SET cpf = $1
+                    WHERE id_funcionario = $2
+                    RETURNING *;
+                `, [cpf, id_funcionario]);
+    
+                return result.rows[0];
+    
+            } catch (err) {
+                console.error("Erro ao atualizar usuário", err);
+                throw new Error("Erro ao atualizar usuário, tente novamente.")
+            }
+        }
+        
+
 }
         
 export default UsuarioModel
