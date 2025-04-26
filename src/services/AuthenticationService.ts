@@ -201,6 +201,52 @@ class AuthenticationService {
             throw { statusCode: 500, message: "Erro interno no servidor" }
         }
     }
+
+    static async recusarResetSenha ({cpf}: AuthDTO) {
+        try {
+            if (!cpf) {
+                throw { statusCode: 400, message: "Algum argumento não foi especificado" }
+            }
+
+            const cpfFormatado = cpf.replace(/[\.-]/g, "");
+            const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpfFormatado);
+
+            if (!verificarUsuario || !verificarUsuario.redefinir_senha) {
+                throw { statusCode: 400, message: "Usuário inexistente ou inválido"}
+            }
+
+            await UsuarioModel.recusarResetSenha(verificarUsuario.id_login);
+            
+            return { message: "Reset de senha recusado" };
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async quantidadeSolicitacoesResetSenha () {
+        try {
+            const result = await UsuarioModel.quantidadeSolicitacoesResetSenha();
+
+            return {quantidade:result};
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+
+
 }
 
 export default AuthenticationService
