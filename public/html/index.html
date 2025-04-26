@@ -72,10 +72,11 @@
                                     <span> Gerenciar Mesas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2" x-data="QuantidadeSolicitacoes()" x-init="quantidadeSolicitacoesResetSenha()">
                                 <a href="redefinicaoSenhaAdm.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
                                     <span> Redifinição de Senhas</span>
+                                    <span class="badge text-bg-secondary" x-show="quantidadeSolicitacoes > 0" x-text="quantidadeSolicitacoes"></span>
                                 </a>
                             </li>
                         </ul>
@@ -84,7 +85,7 @@
                         <h3 class="fw-bold text-start">Operacional</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 3">
-                                <a href="#" class="text-decoration-none text-black">
+                                <a href="../html/efetuarPagamento.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
                                     <span> Efetuar Pagamento</span>
                                 </a>
@@ -161,6 +162,21 @@
                         console.log(error);
                     });
                 }
+            }
+        }
+
+        function QuantidadeSolicitacoes() {
+            return {
+                quantidadeSolicitacoes: 0,
+                quantidadeSolicitacoesResetSenha() {
+                    axios.get('/quantidadeSolicitacoesResetSenha').then(resp => {
+                        console.log(resp.data);
+                        this.quantidadeSolicitacoes = resp.data.quantidade;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
             }
         }
     </script>

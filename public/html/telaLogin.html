@@ -28,13 +28,13 @@
 					<h3 class="fw-bold mt-2">Entre com suas informações para realizar o login</h3>
 					<div class="linha-branca my-3"></div>
 					<form style="justify-items: center;">
-						<label for="email-input" class="visually-hidden">CPF</label>
+						<label for="cpf-input" class="visually-hidden">CPF</label>
 						<div class="input-group flex-nowrap mt-4 w-75">
 							<span class="input-group-text" id="addon-wrapping">
 								<i class="mdi mdi-email"></i>
 							</span>
 							<input x-model="registro.cpf" x-mask:dynamic="'999.999.999-99'" placeholder="CPF"
-								id="email-input" type="text" class="form-control" aria-label="CPF"
+								id="cpf-input" type="text" class="form-control rounded-end" aria-label="CPF"
 								aria-describedby="addon-wrapping">
 						</div>
 						<label for="senha-input" class="visually-hidden">Senha</label>
@@ -42,40 +42,116 @@
 							<span class="input-group-text" id="addon-wrapping2">
 								<i class="mdi mdi-key-variant"></i>
 							</span>
-							<input x-model="registro.senha" id="senha-input" type="password" class="form-control"
+							<input x-model="registro.senha" id="senha-input" type="password" class="form-control rounded-end"
 								placeholder="Insira a sua senha" aria-label="Senha" aria-describedby="addon-wrapping2">
 						</div>
 						<div class="mt-3">
-							<a href="#" class="d-inline-block text-decoration-underline" style="color: #848484;">Esqueci
-								a minha senha</a>
+							<button type="button" class="btn bg-transparent p-0" style="color: #848484;" data-bs-toggle="modal" data-bs-target="#esqueciSenhaModal">
+								<span>Esqueci a minha senha</span>
+							</button>
 						</div>
 						<div class="form-container text-center mt-4">
 							<button type="button" class="btn btn-login" @click="efetuarLogin()">LOGIN</button>
 						</div>
 					</form>
 				</div>
+
+				<div class="modal fade" id="esqueciSenhaModal" tabindex="-1" aria-labelledby="esqueciSenhaModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #454545;">
+								<h1 class="modal-title fs-5 text-white" id="esqueciSenhaModalLabel">Esqueci a minha senha</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-footer" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2" style="border-radius: 0 0 10px 10px;">
+								<div class="row">
+									<div class="col-12 text-center">
+										<span>Insira o seu CPF e clique em "Solicitar" para enviar uma solicitação de redefinição de senha.</span>
+									</div>
+									<div class="col-8" style="justify-items: center;">
+										<label for="cpf-reset-input" class="visually-hidden">CPF</label>
+										<div class="input-group flex-nowrap mt-4 w-75">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="mdi mdi-email"></i>
+											</span>
+											<input x-model="cpf" x-mask:dynamic="'999.999.999-99'" placeholder="CPF"
+												id="cpf-reset-input" type="text" class="form-control rounded-end" aria-label="CPF"
+												aria-describedby="addon-wrapping">
+										</div>
+									</div>
+									<div class="col-4 align-content-end">
+										<button id="btn_adicionar" type="button" class="btn text-white"
+                                        @click="solicitarResetSenha();">
+                                        SOLICITAR
+                                    	</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
 
+	<div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
+
 	<script>
 		function Login() {
 			return {
-				registro: { cpf: '', senha: ''},
+				registro: { cpf: '', senha: '' },
+				cpf: '',
 				efetuarLogin() {
 					axios.post('/login', this.registro)
 						.then(resp => {
-							if(resp.status == 200) {
+							if (resp.status == 200) {
 								window.location.href = '/html/index.html';
 							} else {
-								alert('Login falhou!');
+								showToast('Login falhou!', 'danger');
 							}
 						})
 						.catch(error => {
 							console.log(error);
+							showToast('Ocorreu um erro ao tentar efetuar o login.', 'danger');
+						});
+				},
+				solicitarResetSenha() {
+					axios.post('/solicitarResetSenha', { cpf: this.cpf })
+						.then(resp => {
+							if (resp.status == 200) {
+								showToast('Solicitação de redefinição de senha enviada com sucesso!', 'success');
+							} else {
+								showToast('Falha ao solicitar redefinição de senha!', 'danger');
+							}
+						})
+						.catch(error => {
+							if (error.response && error.response.data && error.response.data.erro) {
+								showToast(error.response.data.erro, 'danger');
+							} else {
+								showToast('Ocorreu um erro ao solicitar redefinição de senha.', 'danger');
+							}
+							console.log(error);
 						});
 				}
 			}
+		}
+
+		function showToast(message, type = 'success') {
+			const toastContainer = document.getElementById('toast-container');
+			const toast = document.createElement('div');
+			toast.className = `toast align-items-center text-bg-${type} border-0 show`;
+			toast.role = 'alert';
+			toast.innerHTML = `
+				<div class="d-flex">
+					<div class="toast-body">${message}</div>
+					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			`;
+			toastContainer.appendChild(toast);
+
+			setTimeout(() => {
+				toast.remove();
+			}, 3000);
 		}
 	</script>
 

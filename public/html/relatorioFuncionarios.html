@@ -122,8 +122,141 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-10" id="div_content">
 
+            <div x-data="Cardapio()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
+                <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
+                    <div class="col d-flex align-items-center">
+                        <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
+                            <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
+                        </button>
+                        <h1 class="m-0 ms-2">RELATÓRIO DE FUNCIONÁRIOS</h1>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="filter-section">
+                        <div class="row g-2">
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Insira o Nome..." />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Insira o CPF..." />
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option selected>Selecione o Cargo...</option>
+                                    <option>Garçom</option>
+                                    <option>Caixa</option>
+                                    <option>Gerente</option>
+                                    <option>Administrador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="Insira o Telefone..." />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Data e Hora Inicial</label>
+                                <input type="datetime-local" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Data e Hora Final</label>
+                                <input type="datetime-local" class="form-control" />
+                            </div>
+
+                            <div class="col-md-12 text-center mt-2">
+                                <button class="btn btn-gerar">Gerar</button>
+                            </div>
+                        </div>
+                        <div class="form-text mt-2">
+                            * Dados pré-cadastrados no sistema
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table table-bordered text-center m-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Cargo</th>
+                                    <th>Telefone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Lucas Felipe</td>
+                                    <td>238.123.543-12</td>
+                                    <td>Garçom</td>
+                                    <td>(14) 993087873</td>
+                                </tr>
+                                <tr>
+                                    <td>Lucas Samuel</td>
+                                    <td>238.123.543-13</td>
+                                    <td>Garçom</td>
+                                    <td>(14) 993087874</td>
+                                </tr>
+                                <tr>
+                                    <td>Jean Luca</td>
+                                    <td>238.123.543-14</td>
+                                    <td>Garçom</td>
+                                    <td>(14) 993087875</td>
+                                </tr>
+                                <tr>
+                                    <td>Bianca Amaral</td>
+                                    <td>238.123.543-15</td>
+                                    <td>Garçom</td>
+                                    <td>(14) 993087876</td>
+                                </tr>
+                                <tr>
+                                    <td>José Francisco</td>
+                                    <td>238.123.543-16</td>
+                                    <td>Garçom</td>
+                                    <td>(14) 993087877</td>
+                                </tr>
+                                <tr>
+                                    <td>Garçom Teste</td>
+                                    <td>000.000.000-01</td>
+                                    <td>Garçom</td>
+                                    <td>(00) 000000001</td>
+                                </tr>
+                                <tr>
+                                    <td>Gerente Teste</td>
+                                    <td>000.000.000-02</td>
+                                    <td>Gerente</td>
+                                    <td>(00) 000000000</td>
+                                </tr>
+                                <tr>
+                                    <td>Atendente Caixa Teste</td>
+                                    <td>000.000.000-00</td>
+                                    <td>Caixa</td>
+                                    <td>(00) 000000000</td>
+                                </tr>
+                                <tr>
+                                    <td>Administrador</td>
+                                    <td>999.999.999-99</td>
+                                    <td>Administrador</td>
+                                    <td>(99) 999999999</td>
+                                </tr>
+                                <!-- Linhas vazias -->
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -131,43 +264,67 @@
     <script>
         function Index() {
             return {
-                identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
+                identity: {
+                    cargonome: "",
+                    cpf: "",
+                    funcionario_cpf: "",
+                    funcionarionome: "",
+                    id_cargo: "",
+                    imagem: "",
+                },
                 getIdentity() {
-                    axios.get('/identity').then(resp => {
-                        this.identity.cargonome = resp.data.cargonome;
-                        this.identity.cpf = resp.data.cpf;
-                        this.identity.funcionario_cpf = resp.data.funcionario_cpf;
-                        this.identity.funcionarionome = resp.data.funcionarionome;
-                        this.identity.id_cargo = resp.data.id_cargo;
-                        this.identity.imagem = `/uploads/${resp.data.imagem}`;
+                    axios
+                        .get("/identity")
+                        .then((resp) => {
+                            this.identity.cargonome = resp.data.cargonome;
+                            this.identity.cpf = resp.data.cpf;
+                            this.identity.funcionario_cpf = resp.data.funcionario_cpf;
+                            this.identity.funcionarionome = resp.data.funcionarionome;
+                            this.identity.id_cargo = resp.data.id_cargo;
+                            this.identity.imagem = `/uploads/${resp.data.imagem}`;
 
-                        if (this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
-                            if (this.identity.id_cargo == 1 || this.identity.id_cargo == 4) {
-                                document.getElementById('div_auth').classList.remove('d-none');
+                            if (
+                                this.identity.id_cargo == 1 ||
+                                this.identity.id_cargo == 2 ||
+                                this.identity.id_cargo == 3 ||
+                                this.identity.id_cargo == 4
+                            ) {
+                                if (
+                                    this.identity.id_cargo == 1 ||
+                                    this.identity.id_cargo == 3 ||
+                                    this.identity.id_cargo == 4
+                                ) {
+                                    document
+                                        .getElementById("div_auth")
+                                        .classList.remove("d-none");
+                                } else {
+                                    window.location.href = "/html/index.html";
+                                }
                             } else {
-                                window.location.href = "/html/index.html";
+                                window.location.href = "/";
                             }
-                        } else {
-                            window.location.href = "/";
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 },
                 logout() {
-                    axios.get('/logout').then(resp => {
-                        window.location.href = "/";
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                }
-            }
+                    axios
+                        .get("/logout")
+                        .then((resp) => {
+                            window.location.href = "/";
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                },
+            };
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

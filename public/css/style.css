@@ -453,3 +453,168 @@ header {
     vertical-align: text-bottom;
     margin-right: 4px;
 }
+
+/* Reset Password Page */
+.reset-page-container {
+    background-color: #E5E5E5;
+    border-radius: 40px;
+    width: 1000px;
+    height: 478px;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+}
+
+.reset-page-left {
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.reset-page-left-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.reset-page-right {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.reset-page-right-content {
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.reset-page-logo {
+    width: 500px;
+    height: 350px;
+    object-fit: contain;
+    margin-bottom: -56px;
+    margin-top: -139px;
+}
+
+.reset-page-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.reset-page-subtitle {
+    font-size: 20px;
+    color: #000;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.reset-page-input-group {
+    margin: 40px 0;
+    width: 100%;
+}
+
+.reset-page-input-group .input-group-text {
+    padding: 10px 25px;
+    border-radius: 25px;
+    height: 50px;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.reset-page-input-group input {
+    padding: 0.25rem 0.5rem;
+    border-radius: 25px;
+    border: 1px solid #ced4da;
+    width: 300px !important;
+    height: 50px;
+}
+
+.reset-page-info {
+    font-size: 17px;
+    color: #000;
+    margin-top: 20px;
+    text-align: justify;
+    width: 100%;
+    text-align: center;
+}
+
+.reset-page-button {
+    background-color: #454545 !important;
+    width: 100% !important;
+    height: 47px !important;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.reset-page-link {
+    color: #848484;
+    text-decoration: underline;
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.reset-page-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background-color: #FFFFFF;
+    transform: translateX(-50%);
+}
+
+/* Efetuar Pagamento */
+.filter-section {
+    background: #ffffff;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .btn-gerar {
+    background-color: #00cc00;
+    color: #ffffff;
+    width: 100%;
+  }
+  .btn-gerar:hover {
+    background-color: #009900;
+    color: #ffffff;
+  }
+  .table-container {
+    background: #ffffff;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  th,
+  td {
+    vertical-align: middle !important;
+  }
+  .table > :not(caption) > * > * {
+    border-bottom-width: 1px;
+  }
