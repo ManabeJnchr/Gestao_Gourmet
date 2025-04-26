@@ -106,36 +106,69 @@ class UsuarioModel {
                 SET primeiro_login = false, senha = $1, salt = $2
                 WHERE id_login = $3
                 RETURNING *;
-            `, [senha, salt, id_usuario]);
-
-            console.log(result.rows);
-
-            return result.rows[0];
-
-        } catch (err) {
-            console.error("Erro ao atualizar usuário", err);
-            throw new Error("Erro ao atualizar usuário, tente novamente.")
+                `, [senha, salt, id_usuario]);
+                
+                console.log(result.rows);
+                
+                return result.rows[0];
+                
+            } catch (err) {
+                console.error("Erro ao atualizar usuário", err);
+                throw new Error("Erro ao atualizar usuário, tente novamente.")
+            }
         }
-    }
-
-    static async listarSolicitacoesResetSenha () {
-        try {
-            const result = await pool.query(`
-                SELECT login.id_login, login.cpf, f.nome AS funcionario_nome, f.cpf AS funcionario_cpf, f.telefone AS funcionario_telefone, f.id_cargo, c.nome AS cargo_nome 
-                FROM login 
-                LEFT JOIN funcionario AS f ON login.id_funcionario = f.id_funcionario
-                LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
-                WHERE redefinir_senha = true;
-            `);
-
-            return result.rows;
-
-        } catch (err) {
-            console.error("Erro ao listar solicitações de reset de senha", err);
-            throw new Error("Erro ao listar solicitações de reset de senha, tente novamente.")
+        
+        static async listarSolicitacoesResetSenha () {
+            try {
+                const result = await pool.query(`
+                    SELECT login.id_login, login.cpf, f.nome AS funcionario_nome, f.cpf AS funcionario_cpf, f.telefone AS funcionario_telefone, f.id_cargo, c.nome AS cargo_nome 
+                    FROM login 
+                    LEFT JOIN funcionario AS f ON login.id_funcionario = f.id_funcionario
+                    LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
+                    WHERE redefinir_senha = true;
+                    `);
+                    
+                return result.rows;
+                    
+            } catch (err) {
+                console.error("Erro ao listar solicitações de reset de senha", err);
+                throw new Error("Erro ao listar solicitações de reset de senha, tente novamente.")
+            }
         }
-    }
-
+        
+        static async recusarResetSenha (id_usuario:string) {
+            try {
+                const result = await pool.query(`
+                    UPDATE login 
+                    SET redefinir_senha = false
+                    WHERE id_login = $1
+                    RETURNING *;
+                `, [id_usuario]);
+    
+                return result.rows[0];
+    
+            } catch (err) {
+                console.error("Erro ao atualizar usuário", err);
+                throw new Error("Erro ao atualizar usuário, tente novamente.")
+            }
+        }
+        
+        static async quantidadeSolicitacoesResetSenha () {
+            try {
+                const result = await pool.query(`
+                    SELECT COUNT(*)
+                    FROM login
+                    WHERE redefinir_senha = true
+                `);
+    
+                return parseInt(result.rows[0].count, 10);
+    
+            } catch (err) {
+                console.error("Erro no model", err);
+                throw new Error("Erro ao contar solicitações de reset de senha, tente novamente.")
+            }
+        }
+        
 }
-
+        
 export default UsuarioModel
