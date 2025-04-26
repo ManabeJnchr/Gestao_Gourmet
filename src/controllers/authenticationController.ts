@@ -11,7 +11,7 @@ export const login = async (req: express.Request, res: express.Response) => {
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -25,7 +25,7 @@ export const logout = async (req: express.Request, res: express.Response) => {
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -39,7 +39,7 @@ export const getIdentity = async (req: express.Request, res: express.Response) =
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -53,7 +53,7 @@ export const solicitarResetSenha = async (req: express.Request, res: express.Res
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -67,7 +67,7 @@ export const aceitarResetSenha = async (req: express.Request, res: express.Respo
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -81,7 +81,7 @@ export const trocarSenha = async (req: express.Request, res: express.Response) =
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -95,7 +95,7 @@ export const listarSolicitacoesResetSenha = async (req: express.Request, res: ex
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -110,7 +110,7 @@ export const recusarResetSenha = async (req: express.Request, res: express.Respo
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
@@ -124,7 +124,7 @@ export const quantidadeSolicitacoesResetSenha = async (req: express.Request, res
     } catch (err : any) {
         res
         .status(err.statusCode || 500)
-        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        .json({"erro": err.message || "Erro interno no servidor. Por favor, tente novamente"})
         
     }
 }
