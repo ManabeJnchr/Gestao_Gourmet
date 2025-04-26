@@ -54,96 +54,81 @@
         <main class="row flex-grow-1 min-vh-100">
             <div class="col-2 d-none d-lg-block pt-3 pb-3 border-2 border-end">
                 <div class="fit-content">
-                    <h2 class="mb-3 fw-bold">CATEGORIAS</h2>
+                    <h3 class="mb-3 fw-bold">CATEGORIAS</h3>
                     <div class="row">
-                        <button class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#entradas-collapse"
-                            aria-expanded="false">
-                            <h3 class="fw-bold text-start">Entradas</h3>
-                        </button>
-                        <div class="collapse" id="entradas-collapse">
-                            <ul class="btn-toggle-nav list-unstyled">
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-sausage" style="font-size: 20px;"></i>
-                                        <span> Aperitivos</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-carrot" style="font-size: 20px;"></i>
-                                        <span> Saladas</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 mb-3 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-bowl-mix" style="font-size: 20px;"></i>
-                                        <span> Sopas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h3 class="fw-bold text-start">Entradas</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-sausage" style="font-size: 20px;"></i>
+                                    <span> Aperitivos</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-carrot" style="font-size: 20px;"></i>
+                                    <span> Saladas</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-bowl-mix" style="font-size: 20px;"></i>
+                                    <span> Sopas</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="row">
-                        <button class="btn collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#pratos-principais-collapse" aria-expanded="false">
-                            <h3 class="fw-bold text-start">Pratos Principais</h3>
-                        </button>
-                        <div class="collapse" id="pratos-principais-collapse">
-                            <ul class="btn-toggle-nav list-unstyled">
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-food-turkey" style="font-size: 20px;"></i>
-                                        <span> Aves</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-food-steak" style="font-size: 20px;"></i>
-                                        <span> Carnes</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 mb-3 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-pasta" style="font-size: 20px;"></i>
-                                        <span> Massas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h3 class="fw-bold text-start">Pratos Principais</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-food-turkey" style="font-size: 20px;"></i>
+                                    <span> Aves</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-food-steak" style="font-size: 20px;"></i>
+                                    <span> Carnes</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-pasta" style="font-size: 20px;"></i>
+                                    <span> Massas</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="row">
-                        <button class="btn collapsed" data-bs-toggle="collapse" data-bs-target="#bebidas-collapse"
-                            aria-expanded="false">
-                            <h3 class="fw-bold text-start">Bebidas</h3>
-                        </button>
-                        <div class="collapse" id="bebidas-collapse">
-                            <ul class="btn-toggle-nav list-unstyled">
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-glass-mug-variant" style="font-size: 20px;"></i>
-                                        <span> Bebidas Alcoólicas</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-tea" style="font-size: 20px;"></i>
-                                        <span> Bebidas Quentes</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-bottle-soda-classic" style="font-size: 20px;"></i>
-                                        <span> Refrigerantes</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 mb-3 p-1 rounded-2">
-                                    <a href="#" class="text-decoration-none text-black">
-                                        <i class="mdi mdi-cup" style="font-size: 20px;"></i>
-                                        <span> Sucos</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h3 class="fw-bold text-start">Bebidas</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-glass-mug-variant" style="font-size: 20px;"></i>
+                                    <span> Bebidas Alcoólicas</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-tea" style="font-size: 20px;"></i>
+                                    <span> Bebidas Quentes</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-bottle-soda-classic" style="font-size: 20px;"></i>
+                                    <span> Refrigerantes</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
+                                <a href="#" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-cup" style="font-size: 20px;"></i>
+                                    <span> Sucos</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -164,49 +149,74 @@
                                             <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
                                             <div class="item-details">
                                                 <div class="item-name">001-HAMBURGUER</div>
-                                                <div class="item-ingredients">ingredientes</div>
-                                                <P></P>
-                                                <div class="price">R$ 25,00</div>
-                                                <button class="add-to-cart">ADICIONAR AO CARRINHO</button>
+                                                <div class="price mb-2">R$ 25,00</div>
+                                                <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100" data-bs-toggle="modal" data-bs-target="#incluirAdicionalModal">
+                                                    <span class="mdi mdi-plus text-decoration-none text-black"> Adicionais</span>
+                                                </button>
+                                                
+
+                                                <div class="modal fade" id="incluirAdicionalModal" tabindex="-1" aria-labelledby="incluirAdicionalModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color: #454545;">
+                                                                <h1 class="modal-title fs-5 text-white" id="incluirAdicionalModalLabel">Adicionais</h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                                                                <button type="button" class="btn w-100 mb-2" style="background-color: #454545;"">
+                                                                    <span class="mdi mdi-plus text-white"> Inlcuir Adicional</span>
+                                                                </button>
+                                                                <div class="row">
+                                                                    <div class="col-9">
+                                                                        <select x-model="registro.id_categoria" id="categoriaCardapio"
+                                                                            name="categoriaCardapio"
+                                                                            class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                                            <option value="" selected disabled>
+                                                                                Selecione um adicional
+                                                                            </option>
+                                                                            <template x-for="categoria in categorias">
+                                                                                <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
+                                                                            </template>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <button type="button" class="btn btn-danger btn-sm w-100"
+                                                                                @click="excluirAdicional(index)">Remover</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                                                                <button type="button" class="btn bg-danger text-white"
+                                                                data-bs-dismiss="modal">
+                                                                            CANCELAR
+                                                                        </button>
+                                                                <button id="btn_adicionar" type="button" class="btn text-white"
+                                                                data-bs-dismiss="modal">
+                                                                    SALVAR
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <button class="add-to-cart mt-3">ADICIONAR AO CARRINHO</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4 p-2">
-                                        <div class="menu-item">
-                                            <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
-                                            <div class="item-details">
-                                                <div class="item-name">001-HAMBURGUER</div>
-                                                <div class="item-ingredients">ingredientes</div>
-                                                <P></P>
-                                                <div class="price">R$ 25,00</div>
-                                                <button class="add-to-cart">ADICIONAR AO CARRINHO</button>
+                                    <template>
+                                        <div class="col-4 p-2">
+                                            <div class="menu-item">
+                                                <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
+                                                <div class="item-details">
+                                                    <div class="item-name">001-HAMBURGUER</div>
+                                                    <div class="item-ingredients">ingredientes</div>
+                                                    <P></P>
+                                                    <div class="price">R$ 25,00</div>
+                                                    <button class="add-to-cart">ADICIONAR AO CARRINHO</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4 p-2">
-                                        <div class="menu-item">
-                                            <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
-                                            <div class="item-details">
-                                                <div class="item-name">001-HAMBURGUER</div>
-                                                <div class="item-ingredients">ingredientes</div>
-                                                <P></P>
-                                                <div class="price">R$ 25,00</div>
-                                                <button class="add-to-cart">ADICIONAR AO CARRINHO</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 p-2">
-                                        <div class="menu-item">
-                                            <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
-                                            <div class="item-details">
-                                                <div class="item-name">001-HAMBURGUER</div>
-                                                <div class="item-ingredients">ingredientes</div>
-                                                <P></P>
-                                                <div class="price">R$ 25,00</div>
-                                                <button class="add-to-cart">ADICIONAR AO CARRINHO</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
