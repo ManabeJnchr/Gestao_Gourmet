@@ -403,7 +403,8 @@
                 },
                 salvarRegistro() {
                     const formData = new FormData();
-                    const fileInput = document.getElementById('input_img');
+                    const fileInput = document.getElementById('input_img') || document.getElementById('selectedImage');
+
                     if (fileInput.files[0]) {
                         formData.append('file', fileInput.files[0]);
                     }
@@ -442,7 +443,7 @@
                     this.registro.nome = this.dados[index].nome;
                     this.registro.valor = this.dados[index].valor;
                     this.registro.id_categoria = this.dados[index].id_categoria;
-                    this.registro.imagem = this.dados[index].imagem;
+                    this.registro.imagem = this.dados[index].imagemBase64;
                     this.registro.adicionais = this.dados[index].adicionais;
                     this.registro.descricao = this.dados[index].descricao;
                 },
