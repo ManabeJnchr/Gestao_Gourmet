@@ -30,39 +30,19 @@ async function initdb(pool: Pool) {
                 END;
                 $BODY$;
 
+                CREATE OR REPLACE FUNCTION atualiza_dataalteracao()
+                RETURNS TRIGGER AS $$
+                BEGIN
+                IF NEW.redefinir_senha IS DISTINCT FROM OLD.redefinir_senha THEN
+                NEW.dataalteracao := CURRENT_TIMESTAMP;
+                END IF;
+                RETURN NEW;
+                END;
+                $$ LANGUAGE plpgsql;
+
+
             ALTER FUNCTION public.atualizar_data_alteracao()
             OWNER TO postgres;
-
-            -- INÍCIO CREATE ITEMCARDAPIO
-
-            CREATE TABLE public.itemcardapio (
-                id_itemcardapio integer NOT NULL,
-                nome character varying(100) NOT NULL,
-                valor numeric(10,2) NOT NULL,
-                id_categoria integer NOT NULL,
-                descricao text,
-                imagem BYTEA,
-                datacadastro timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                dataalteracao timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                ativo boolean NOT NULL DEFAULT true
-            );
-
-            ALTER TABLE public.itemcardapio OWNER TO postgres;
-
-            CREATE SEQUENCE public.itemcardapio_id_itemcardapio_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
-
-            ALTER SEQUENCE public.itemcardapio_id_itemcardapio_seq OWNER TO postgres;
-
-            ALTER SEQUENCE public.itemcardapio_id_itemcardapio_seq OWNED BY public.itemcardapio.id_itemcardapio;
-
-            -- FIM CREATE CARDAPIO
-
 
             -- INÍCIO CREATE ADICIONAL
 
@@ -205,7 +185,7 @@ async function initdb(pool: Pool) {
 
             -- INÍCIO CREATE LOGIN
 
-            CREATE TABLE public.login (
+                CREATE TABLE public.login (
                 id_login integer NOT NULL,
                 cpf character varying(50) NOT NULL,
                 senha character varying(255) NOT NULL,
@@ -213,8 +193,10 @@ async function initdb(pool: Pool) {
                 salt character varying(255),
                 session_token character varying(255),
                 primeiro_login boolean DEFAULT true NOT NULL,
-                redefinir_senha boolean DEFAULT false NOT NULL
+                redefinir_senha boolean DEFAULT false NOT NULL,
+                dataalteracao timestamp without time zone
             );
+
 
             ALTER TABLE public.login OWNER TO postgres;
 
@@ -225,6 +207,7 @@ async function initdb(pool: Pool) {
                 NO MINVALUE
                 NO MAXVALUE
                 CACHE 1;
+
 
             ALTER SEQUENCE public.login_id_login_seq OWNER TO postgres;
 
@@ -297,32 +280,29 @@ async function initdb(pool: Pool) {
 
             -- INÍCIO CREATE PEDIDO
 
-            CREATE TABLE public.pedido (
-                id_pedido integer NOT NULL,
-                id_mesa integer NOT NULL,
-                id_itemcardapio integer NOT NULL,
-                quantidade integer NOT NULL,
-                observacao text,
-                id_garcom integer NOT NULL,
-                estado_pedido character varying(50) NOT NULL,
-                data_pedido date DEFAULT CURRENT_DATE NOT NULL,
-                hora_pedido time without time zone DEFAULT CURRENT_TIME NOT NULL,
-                CONSTRAINT pedido_quantidade_check CHECK ((quantidade > 0))
-            );
+                    CREATE TABLE public.pedido (
+                    id_pedido integer NOT NULL,
+                    id_mesa integer NOT NULL,
+                    observacao text,
+                    id_funcionario integer NOT NULL,
+                    id_statuspedido character varying(50) NOT NULL,
+                    data_pedido timestamp without time zone DEFAULT CURRENT_DATE NOT NULL
+                );
 
-            ALTER TABLE public.pedido OWNER TO postgres;
 
-            CREATE SEQUENCE public.pedido_id_pedido_seq
-                AS integer
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;
+                ALTER TABLE public.pedido OWNER TO postgres;
 
-            ALTER SEQUENCE public.pedido_id_pedido_seq OWNER TO postgres;
+                CREATE SEQUENCE public.pedido_id_pedido_seq
+                    AS integer
+                    START WITH 1
+                    INCREMENT BY 1
+                    NO MINVALUE
+                    NO MAXVALUE
+                    CACHE 1;
 
-            ALTER SEQUENCE public.pedido_id_pedido_seq OWNED BY public.pedido.id_pedido;
+                ALTER SEQUENCE public.pedido_id_pedido_seq OWNER TO postgres;
+
+                ALTER SEQUENCE public.pedido_id_pedido_seq OWNED BY public.pedido.id_pedido;
 
             -- FIM CREATE PEDIDO
 
@@ -350,7 +330,117 @@ async function initdb(pool: Pool) {
             ALTER SEQUENCE public.statusmesa_id_status_seq OWNED BY public.statusmesa.id_status;
             ALTER SEQUENCE public.statusmesa_id_status_seq OWNED BY public.statusmesa.id_status;
 
-            -- FIM CREATE STATUSMESA
+    -- FIM CREATE STATUSMESA
+
+            -- INICIO CREATE ADICIONAL ITEM PEDIDO
+
+            CREATE TABLE public.adicional_itempedido (
+            id_adicional_itempedido integer NOT NULL,
+            id_itempedido integer NOT NULL,
+            id_adicional integer NOT NULL,
+            valor numeric(10,2) NOT NULL
+        );
+
+
+        ALTER TABLE public.adicional_itempedido OWNER TO postgres;
+
+        CREATE SEQUENCE public.adicional_itempedido_id_adicional_itempedido_seq
+            AS integer
+            START WITH 1
+            INCREMENT BY 1
+            NO MINVALUE
+            NO MAXVALUE
+            CACHE 1;
+
+        ALTER SEQUENCE public.adicional_itempedido_id_adicional_itempedido_seq OWNER TO postgres;
+
+        ALTER SEQUENCE public.adicional_itempedido_id_adicional_itempedido_seq OWNED BY public.adicional_itempedido.id_adicional_itempedido;
+
+        -- FIM CREATE ADICIONAL ITEM PEDIDO
+
+        -- INICIO CREATE ITEM CARDAPIO
+                
+            CREATE TABLE public.itemcardapio (
+            id_itemcardapio integer NOT NULL,
+            nome character varying(100) NOT NULL,
+            valor numeric(10,2) NOT NULL,
+            id_categoria integer NOT NULL,
+            descricao text,
+            datacadastro timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            dataalteracao timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            ativo boolean DEFAULT true NOT NULL,
+            imagem bytea
+        );
+
+
+        ALTER TABLE public.itemcardapio OWNER TO postgres;
+
+        CREATE SEQUENCE public.itemcardapio_id_itemcardapio_seq
+            AS integer
+            START WITH 1
+            INCREMENT BY 1
+            NO MINVALUE
+            NO MAXVALUE
+            CACHE 1;
+
+
+        ALTER SEQUENCE public.itemcardapio_id_itemcardapio_seq OWNER TO postgres;
+
+        ALTER SEQUENCE public.itemcardapio_id_itemcardapio_seq OWNED BY public.itemcardapio.id_itemcardapio;
+
+        -- FIM CREATE ITEM CARDAPIO
+
+        -- INICIO CREATE ITEM PEDIDO
+
+            CREATE TABLE public.itempedido (
+            id_itempedido integer NOT NULL,
+            id_pedido integer NOT NULL,
+            id_itemcardapio integer NOT NULL,
+            quantidade integer NOT NULL,
+            valor numeric(10,2) NOT NULL,
+            observacao text
+        );
+
+
+        ALTER TABLE public.itempedido OWNER TO postgres;
+
+        CREATE SEQUENCE public.itempedido_id_itempedido_seq
+            AS integer
+            START WITH 1
+            INCREMENT BY 1
+            NO MINVALUE
+            NO MAXVALUE
+            CACHE 1;
+
+        ALTER SEQUENCE public.itempedido_id_itempedido_seq OWNER TO postgres;
+
+        ALTER SEQUENCE public.itempedido_id_itempedido_seq OWNED BY public.itempedido.id_itempedido;
+
+        -- FIM CREATE ITEM PEDIDO
+
+        -- INICIO CREATE STATUS PEDIDO
+
+        CREATE TABLE public.statuspedido (
+            id_statuspedido integer NOT NULL,
+            nome character varying(24) NOT NULL
+        );
+
+
+        ALTER TABLE public.statuspedido OWNER TO postgres;
+
+        CREATE SEQUENCE public.statuspedido_id_statuspedido_seq
+            AS integer
+            START WITH 1
+            INCREMENT BY 1
+            NO MINVALUE
+            NO MAXVALUE
+            CACHE 1;
+
+        ALTER SEQUENCE public.statuspedido_id_statuspedido_seq OWNER TO postgres;
+
+        ALTER SEQUENCE public.statuspedido_id_statuspedido_seq OWNED BY public.statuspedido.id_statuspedido;
+
+        -- FIM CREATE STATUS PEDIDO
 
 
 
@@ -417,15 +507,31 @@ async function initdb(pool: Pool) {
 
 
 
-            SELECT pg_catalog.setval('public.itemcardapio_id_itemcardapio_seq', 1, false);
+            -- INICIO INSERT INTO STATUS PEDIDO
 
-            SELECT pg_catalog.setval('public.cargo_id_cargo_seq', 4, true);
+            INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (1, 'Aberto') ON CONFLICT DO NOTHING;
+            INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (2, 'Fechado') ON CONFLICT DO NOTHING;
+            INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (3, 'Concluído') ON CONFLICT DO NOTHING;
+
+            -- FIM INSERT INTO STATUS PEDIDO
+
+            SELECT pg_catalog.setval('public.adicional_id_adicional_seq', 1, false);
+
+            SELECT pg_catalog.setval('public.adicional_itempedido_id_adicional_itempedido_seq', 1, false);
+
+            SELECT pg_catalog.setval('public.cargo_id_cargo_seq', 1, true);
+
+            SELECT pg_catalog.setval('public.categoria_id_categoria_seq', 1, false);
 
             SELECT pg_catalog.setval('public.checkin_id_checkin_seq', 1, false);
 
-            SELECT pg_catalog.setval('public.funcionario_id_funcionario_seq', 13, true);
+            SELECT pg_catalog.setval('public.funcionario_id_funcionario_seq', 1, true);
 
-            SELECT pg_catalog.setval('public.login_id_login_seq', 13, true);
+            SELECT pg_catalog.setval('public.itemcardapio_id_itemcardapio_seq', 1, true);
+
+            SELECT pg_catalog.setval('public.itempedido_id_itempedido_seq', 1, false);
+
+            SELECT pg_catalog.setval('public.login_id_login_seq', 1, true);
 
             SELECT pg_catalog.setval('public.mesa_id_mesa_seq', 1, false);
 
@@ -433,11 +539,12 @@ async function initdb(pool: Pool) {
 
             SELECT pg_catalog.setval('public.pedido_id_pedido_seq', 1, false);
 
-            SELECT pg_catalog.setval('public.statusmesa_id_status_seq', 5, true);
-            SELECT pg_catalog.setval('public.statusmesa_id_status_seq', 5, true);
+            SELECT pg_catalog.setval('public.statusmesa_id_status_seq', 1, true);
 
+            SELECT pg_catalog.setval('public.statuspedido_id_statuspedido_seq', 1, false);
 
-
+            ALTER TABLE ONLY public.adicional
+                ADD CONSTRAINT adicional_pkey PRIMARY KEY (id_adicional);
 
             ALTER TABLE ONLY public.itemcardapio
                 ADD CONSTRAINT cardapio_pkey PRIMARY KEY (id_itemcardapio);
@@ -478,19 +585,30 @@ async function initdb(pool: Pool) {
             ALTER TABLE ONLY public.pedido
                 ADD CONSTRAINT pedido_pkey PRIMARY KEY (id_pedido);
 
+            ALTER TABLE ONLY public.adicional_itempedido
+                ADD CONSTRAINT pk_adicional_itempedido PRIMARY KEY (id_adicional_itempedido);
+
+            ALTER TABLE ONLY public.itempedido
+                ADD CONSTRAINT pk_itempedido PRIMARY KEY (id_itempedido);
+
             ALTER TABLE ONLY public.statusmesa
                 ADD CONSTRAINT statusmesa_pkey PRIMARY KEY (id_status);
 
-            CREATE TRIGGER trigger_atualizar_data_alteracao BEFORE UPDATE ON public.funcionario FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+            ALTER TABLE ONLY public.statuspedido
+                ADD CONSTRAINT statuspedido_pkey PRIMARY KEY (id_statuspedido);
 
-            -- Trigger para itemcardapio
-            CREATE TRIGGER trg_itemcardapio_dataalteracao BEFORE UPDATE ON public.itemcardapio FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
-
-            -- Trigger para adicional
             CREATE TRIGGER trg_adicional_dataalteracao BEFORE UPDATE ON public.adicional FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
 
-            -- Trigger para mesa
+            CREATE TRIGGER trg_itemcardapio_dataalteracao BEFORE UPDATE ON public.itemcardapio FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+
             CREATE TRIGGER trg_mesa_dataalteracao BEFORE UPDATE ON public.mesa FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+
+            CREATE TRIGGER trigger_atualizar_data_alteracao BEFORE UPDATE ON public.funcionario FOR EACH ROW EXECUTE FUNCTION public.atualizar_data_alteracao();
+
+            CREATE TRIGGER trigger_dataalteracao BEFORE UPDATE ON public.login FOR EACH ROW EXECUTE FUNCTION public.atualiza_dataalteracao();
+
+            ALTER TABLE ONLY public.adicional_itempedido
+                ADD CONSTRAINT fk_adicional FOREIGN KEY (id_adicional) REFERENCES public.adicional(id_adicional);
 
             ALTER TABLE ONLY public.checkin
                 ADD CONSTRAINT fk_checkin_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
@@ -498,8 +616,23 @@ async function initdb(pool: Pool) {
             ALTER TABLE ONLY public.funcionario
                 ADD CONSTRAINT fk_funcionario_cargo FOREIGN KEY (id_cargo) REFERENCES public.cargo(id_cargo);
 
+            ALTER TABLE ONLY public.pedido
+                ADD CONSTRAINT fk_id_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
+
+            ALTER TABLE ONLY public.itempedido
+                ADD CONSTRAINT fk_id_itemcardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_itemcardapio);
+
+            ALTER TABLE ONLY public.pedido
+                ADD CONSTRAINT fk_id_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
+
+            ALTER TABLE ONLY public.itempedido
+                ADD CONSTRAINT fk_id_pedido FOREIGN KEY (id_pedido) REFERENCES public.pedido(id_pedido);
+
             ALTER TABLE ONLY public.adicional
                 ADD CONSTRAINT fk_itemcardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_itemcardapio) NOT VALID;
+
+            ALTER TABLE ONLY public.adicional_itempedido
+                ADD CONSTRAINT fk_itempedido FOREIGN KEY (id_itempedido) REFERENCES public.itempedido(id_itempedido);
 
             ALTER TABLE ONLY public.login
                 ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
@@ -512,15 +645,6 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.pagamento
                 ADD CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido) REFERENCES public.pedido(id_pedido);
-
-            ALTER TABLE ONLY public.pedido
-                ADD CONSTRAINT fk_pedido_cardapio FOREIGN KEY (id_itemcardapio) REFERENCES public.itemcardapio(id_itemcardapio);
-
-            ALTER TABLE ONLY public.pedido
-                ADD CONSTRAINT fk_pedido_garcom FOREIGN KEY (id_garcom) REFERENCES public.funcionario(id_funcionario);
-
-            ALTER TABLE ONLY public.pedido
-                ADD CONSTRAINT fk_pedido_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
 
             COMMIT;
         `);

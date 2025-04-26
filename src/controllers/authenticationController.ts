@@ -86,4 +86,16 @@ export const trocarSenha = async (req: express.Request, res: express.Response) =
     }
 }
 
+export const listarSolicitacoesResetSenha = async (req: express.Request, res: express.Response) => {
+    try {
+        const result = await AuthenticationService.listarSolicitacoesResetSenha();
 
+        res.status(200).json(result);
+
+    } catch (err : any) {
+        res
+        .status(err.statusCode || 500)
+        .json({"erro": err.mensagem || "Erro interno no servidor. Por favor, tente novamente"})
+        
+    }
+}

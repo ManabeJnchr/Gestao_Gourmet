@@ -118,6 +118,24 @@ class UsuarioModel {
         }
     }
 
+    static async listarSolicitacoesResetSenha () {
+        try {
+            const result = await pool.query(`
+                SELECT login.id_login, login.cpf, f.nome AS funcionario_nome, f.cpf AS funcionario_cpf, f.telefone AS funcionario_telefone, f.id_cargo, c.nome AS cargo_nome 
+                FROM login 
+                LEFT JOIN funcionario AS f ON login.id_funcionario = f.id_funcionario
+                LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
+                WHERE redefinir_senha = true;
+            `);
+
+            return result.rows;
+
+        } catch (err) {
+            console.error("Erro ao listar solicitações de reset de senha", err);
+            throw new Error("Erro ao listar solicitações de reset de senha, tente novamente.")
+        }
+    }
+
 }
 
 export default UsuarioModel

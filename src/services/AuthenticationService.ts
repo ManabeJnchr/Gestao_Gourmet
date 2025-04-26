@@ -131,8 +131,8 @@ class AuthenticationService {
             const cpfFormatado = cpf.replace(/[\.-]/g, "");
             const verificarUsuario = await UsuarioModel.buscarUsuarioPorCpf(cpfFormatado);
 
-            if (!verificarUsuario) {
-                throw { statusCode: 400, message: "Usuário inexistente"}
+            if (!verificarUsuario || !verificarUsuario.redefinir_senha) {
+                throw { statusCode: 400, message: "Usuário inexistente ou inválido"}
             }
 
             const salt = random();
@@ -186,6 +186,21 @@ class AuthenticationService {
         }
     }
 
+    static async listarSolicitacoesResetSenha () {
+        try {
+            const result = await UsuarioModel.listarSolicitacoesResetSenha();
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
 }
 
 export default AuthenticationService
