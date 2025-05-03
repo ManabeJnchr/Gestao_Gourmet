@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
@@ -17,11 +18,12 @@
 </head>
 
 <body>
-    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-none">
+    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column d-none">
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -29,19 +31,24 @@
                 <div class="btn-group">
                     <button type="button" class="btn bg-transparent">
                         <span class="me-2" id="text_userName" x-text="identity.funcionarionome"></span>
-                        <img class="me-2 rounded-circle" id="img_userIcon" :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'"
-                            alt="user-icon">
+                        <img class="me-2 rounded-circle" id="img_userIcon"
+                            :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user-icon">
                     </button>
                     <button type="button" class="btn bg-transparent dropdown-toggle dropdown-toggle-split"
                         data-bs-toggle="dropdown" aria-expanded="true">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Alterar Senha</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changePasswordModal">Alterar Senha</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -72,10 +79,13 @@
                                     <span> Gerenciar Mesas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2" x-data="QuantidadeSolicitacoes()"
+                                x-init="quantidadeSolicitacoesResetSenha()">
                                 <a href="redefinicaoSenhaAdm.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
                                     <span> Redifinição de Senhas</span>
+                                    <span class="badge text-bg-secondary" x-show="quantidadeSolicitacoes > 0"
+                                        x-text="quantidadeSolicitacoes"></span>
                                 </a>
                             </li>
                         </ul>
@@ -84,7 +94,7 @@
                         <h3 class="fw-bold text-start">Operacional</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 3">
-                                <a href="#" class="text-decoration-none text-black">
+                                <a href="../html/efetuarPagamento.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
                                     <span> Efetuar Pagamento</span>
                                 </a>
@@ -179,7 +189,10 @@
                                         <div class="col d-inline-flex justify-content-between">
                                             <h4 class="h2 text-truncate">Mesa <span x-text="dado.numero_mesa"></span></h4>
                                             <div style="min-width: 89px;">
-                                                <button style="background: none; border: none;" @click.prevent="deletarRegistro(dado.id_mesa)">
+                                                <button style="background: none; border: none;" 
+                                                    @click="idMesaParaExcluir = dado.id_mesa" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#confirmDeleteModal">
                                                     <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
                                                 </button>
                                                 <button style="background: none; border: none;" @click="tela = 'EDT'; editarRegistro(index)">
@@ -279,14 +292,122 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #454545;">
+                                <h1 class="modal-title fs-5 text-white">Confirmar Exclusão</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                                <p class="confirmation-text">Tem certeza que deseja excluir esta mesa?</p>
+                                <div class="mt-4">
+                                    <button type="button" class="btn bg-danger text-white me-3" data-bs-dismiss="modal">CANCELAR</button>
+                                    <button type="button" class="btn text-white" style="background-color: #06d20e !important;" 
+                                        @click="deletarRegistro(idMesaParaExcluir)" 
+                                        data-bs-dismiss="modal">
+                                        CONFIRMAR
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
+
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #454545;">
+                        <h1 class="modal-title fs-5 text-white" id="changePasswordModalLabel">Alterar Senha</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                        <form>
+                            <div class="mb-4">
+                                <label for="currentPassword" class="form-label">Senha Atual</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.senhaAtual" type="password" class="form-control change-password-input"
+                                        id="currentPassword" required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('currentPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="newPassword" class="form-label">Nova Senha</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.novaSenha" type="password" class="form-control change-password-input" id="newPassword"
+                                        required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('newPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password" class="form-control change-password-input"
+                                        id="confirmPassword" required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('confirmPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                        <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
+                            CANCELAR
+                        </button>
+                        <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                            @click.prevent="verificarNovaSenha()">
+                            ALTERAR SENHA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #454545;">
+                        <h1 class="modal-title fs-5 text-white">Confirmar Alteração</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                        class="rounded rounded-bottom-2">
+                        <p class="confirmation-text">Tem certeza que deseja alterar sua senha?</p>
+                        <div class="mt-4">
+                            <button type="button" class="btn bg-danger text-white me-3"
+                                data-bs-dismiss="modal">CANCELAR</button>
+                            <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                                @click.prevent="trocarSenhaAtual()">CONFIRMAR</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
     <script>
         function Index() {
             return {
                 identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
+                trocarSenha: { senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' },
                 getIdentity() {
                     axios.get('/identity').then(resp => {
                         this.identity.cargonome = resp.data.cargonome;
@@ -306,19 +427,85 @@
                             window.location.href = "/";
                         }
                     })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                        .catch(error => {
+                            console.log(error);
+                        });
                 },
                 logout() {
                     axios.get('/logout').then(resp => {
                         window.location.href = "/";
                     })
-                    .catch(error => {
+                        .catch(error => {
+                            console.log(error);
+                        });
+                },
+                verificarNovaSenha() {
+                    if (this.trocarSenha.novaSenha.length < 6) {
+                        showToast('A nova senha deve ter pelo menos 6 caracteres.', 'danger');
+                        return;
+                    }
+                    if (this.trocarSenha.novaSenha !== this.trocarSenha.confirmarNovaSenha) {
+                        showToast('As senhas não coincidem.', 'danger');
+                        return;
+                    }
+                    if (!this.trocarSenha.senhaAtual || !this.trocarSenha.novaSenha || !this.trocarSenha.confirmarNovaSenha) {
+                        showToast('Preencha todos os campos!', 'warning');
+                        return;
+                    }
+
+                    const changePasswordModal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                    if (changePasswordModal) {
+                        changePasswordModal.hide();
+                    }
+
+                    const confirmModal = new bootstrap.Modal(document.getElementById('confirmChangeModal'));
+                    confirmModal.show();
+                },
+                trocarSenhaAtual() {
+                    axios.post('/trocarSenha', {
+                        senha: this.trocarSenha.novaSenha
+                    }).then(resp => {
+                        showToast('Senha alterada com sucesso!', 'success');
+                        window.location.reload();
+                    }).catch(error => {
+                        showToast('Erro ao alterar a senha.', 'danger');
                         console.log(error);
                     });
                 }
             }
+        }
+
+        function QuantidadeSolicitacoes() {
+            return {
+                quantidadeSolicitacoes: 0,
+                quantidadeSolicitacoesResetSenha() {
+                    axios.get('/quantidadeSolicitacoesResetSenha').then(resp => {
+                        console.log(resp.data);
+                        this.quantidadeSolicitacoes = resp.data.quantidade;
+                    })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                },
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-bg-${type} border-0 show`;
+            toast.role = 'alert';
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
         }
 
         function Mesas() {
@@ -327,6 +514,7 @@
                 registro: { id_mesa: -1, numero_mesa: '', qtd_lugares: '', id_status: 4 },
                 dados: [],
                 dadoSelecionado: [],
+                idMesaParaExcluir: '',
                 buscarDados() {
                     axios.get('/listarMesas')
                         .then(resp => {
@@ -381,3 +569,4 @@
 </body>
 
 </html>
+``` 
