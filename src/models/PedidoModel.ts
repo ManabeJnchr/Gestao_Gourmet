@@ -3,7 +3,7 @@ import { Pool, PoolClient } from "pg";
 
 type PgClient = Pool | PoolClient;
 
-class ItemCardapioModel {
+class PedidoModel {
     
     static async listarPedidos() {
         try {
@@ -54,7 +54,7 @@ class ItemCardapioModel {
         }
     }
 
-    static async deletarPedido(id_itemcardapio: number, client : PgClient = pool) {
+    static async deletarPedido(id_pedido: number, client : PgClient = pool) {
         try {
             // TODO: vai deletar ou setar status como desativo?
 
@@ -66,4 +66,4 @@ class ItemCardapioModel {
     }
 }
 
-export default ItemCardapioModel;
+export default PedidoModel;
