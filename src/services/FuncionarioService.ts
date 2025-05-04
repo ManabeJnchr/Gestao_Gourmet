@@ -98,6 +98,29 @@ class FuncionarioService {
             throw { statusCode: 500, message: "Erro interno no servidor" }
         }
     }
+
+    static async buscarFuncionario(id_funcionario: any) {
+        try {
+
+            if (!id_funcionario) {
+                throw { statusCode: 400, message: "ID do funcionário não especificado" }
+            }
+            
+            const number_id_funcionario = Number(id_funcionario);
+            
+            if (isNaN(number_id_funcionario)) {
+                throw { statusCode: 400, message: "ID do funcionário inválido" }
+            }
+            
+            const result = await FuncionarioModel.buscarFuncionario(id_funcionario);
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+    
 }
 
 export default FuncionarioService;

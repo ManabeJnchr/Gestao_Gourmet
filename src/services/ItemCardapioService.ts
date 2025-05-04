@@ -215,6 +215,31 @@ class ItemCardapioService {
         }
     }
 
+    static async buscarItemCardapio({id_itemcardapio} : itemCardapioDTO) {
+        try {
+            if (!id_itemcardapio) {
+                throw { statusCode: 400, message: "ID do item não especificado" }
+            }
+            
+            const numero_id_itemcardapio = Number(id_itemcardapio);            
+            if (isNaN(numero_id_itemcardapio)) {
+                throw { statusCode: 400, message: "ID do item inválido" }
+            }
+
+            const result = await ItemCardapioModel.buscarItemCardapio(numero_id_itemcardapio)
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
 }
 
 export default ItemCardapioService;

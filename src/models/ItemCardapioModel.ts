@@ -71,6 +71,23 @@ class ItemCardapioModel {
             throw {statusCode:500, message:"Erro ao deletar item do cardápio, tente novamente"};
         }
     }
+
+    static async buscarItemCardapio(id_itemcardapio: number, client : PgClient = pool) {
+        try {
+            const result = await client.query(
+                `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem
+                 FROM itemcardapio i
+                 WHERE i.ativo = true AND i.id_itemcardapio = $1
+                `,
+                [id_itemcardapio]
+            );
+
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao buscar item do cardápio, tente novamente"};
+        }
+    }
 }
 
 export default ItemCardapioModel;

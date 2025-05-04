@@ -75,6 +75,24 @@ class MesaModel {
             throw {statusCode:500, message:"Erro ao deletar mesa, tente novamente"};
         }
     }
+    
+    static async buscarMesa(id_mesa: Number) {
+        try {
+            const result = await pool.query(
+                `SELECT m.id_mesa, m.numero_mesa, m.qtd_lugares, m.id_status, sm.status 
+                 FROM mesa m
+                 LEFT JOIN statusmesa sm ON sm.id_status = m.id_status 
+                 WHERE m.id_mesa = $1`,
+                 [id_mesa]
+            );
+    
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao buscar mesa, tente novamente"};
+        }
+        
+    }
 }
 
 export default MesaModel;

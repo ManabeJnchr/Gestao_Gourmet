@@ -126,6 +126,32 @@ class MesaService {
         }
     }
 
+    static async buscarMesa({id_mesa} : MesaDTO) {
+        try {
+            if (!id_mesa) {
+                throw { statusCode: 400, message: "ID da mesa não especificado" }
+            }
+            
+            const number_id_mesa = Number(id_mesa);
+            
+            if (isNaN(number_id_mesa)) {
+                throw { statusCode: 400, message: "ID da mesa inválido" }
+            }
+
+            const result = await MesaModel.buscarMesa(number_id_mesa);
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
 }
 
 export default MesaService;

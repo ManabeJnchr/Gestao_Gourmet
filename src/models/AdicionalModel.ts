@@ -18,7 +18,7 @@ class AdicionalModel {
             return result.rows;
         } catch (err: any) {
             console.error("Erro no model", err);
-            throw {statusCode:500, message:"Erro ao listar itens do cardápio, tente novamente"};
+            throw {statusCode:500, message:"Erro ao listar adicionais do item, tente novamente"};
         }
     }
 
@@ -34,7 +34,7 @@ class AdicionalModel {
             return result.rows[0];
         } catch (err: any) {
             console.error("Erro no model", err);
-            throw {statusCode:500, message:"Erro ao adicionar item ao cardápio, tente novamente"};
+            throw {statusCode:500, message:"Erro ao criar adicional do item, tente novamente"};
         }
     }
 
@@ -52,7 +52,7 @@ class AdicionalModel {
             return result.rows[0];
         } catch (err: any) {
             console.error("Erro no model", err);
-            throw {statusCode:500, message:"Erro ao atualizar item do cardápio, tente novamente"};
+            throw {statusCode:500, message:"Erro ao atualizar adicional, tente novamente"};
         }
     }
 
@@ -69,7 +69,24 @@ class AdicionalModel {
             return result.rows[0];
         } catch (err: any) {
             console.error("Erro no model", err);
-            throw {statusCode:500, message:"Erro ao deletar item do cardápio, tente novamente"};
+            throw {statusCode:500, message:"Erro ao deletar adicional do item, tente novamente"};
+        }
+    }
+
+    static async buscarAdicional(id_adicional: number) {
+        try {
+            const result = await pool.query(
+                `SELECT id_adicional, id_itemcardapio, nome, valor
+                 FROM adicional 
+                 WHERE id_adicional = $1 AND ativo = true
+                `,
+                 [ id_adicional]
+            );
+
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao buscar adicional, tente novamente"};
         }
     }
 }

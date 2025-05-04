@@ -101,6 +101,26 @@ class FuncionarioModel {
             throw new Error("Erro ao buscar imagem do funcionário, tente novamente.");
         }
     }
+
+    static async buscarFuncionario(id_funcionario: number) {
+        try {
+            const result = await pool.query(
+                `SELECT f.id_funcionario, f.nome, f.cpf, f.id_cargo, c.nome AS cargo, f.telefone, f.imagem 
+                FROM funcionario f 
+                LEFT JOIN cargo c ON c.id_cargo = f.id_cargo 
+                WHERE f.id_funcionario = $1`,
+                [id_funcionario]
+            );
+
+            return result.rows[0]
+
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao buscar funcionário, tente novamente"};
+        }
+    }
+
+
 }
 
 export default FuncionarioModel;
