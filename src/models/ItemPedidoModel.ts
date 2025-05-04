@@ -12,7 +12,7 @@ class ItemPedidoModel {
                  ip.id_itempedido, ip.id_pedido, ip.id_itemcardapio, ip.quantidade, ip.valor, ip.observacao,
                  i.nome, i.id_categoria, i.descricao, i.imagem
                  FROM itempedido AS ip
-                 LEFT JOIN itemcardapio AS i ON  
+                 LEFT JOIN itemcardapio AS i ON ip.id_itemcardapio = i.id_itemcardapio
                  WHERE id_pedido = $1
                  ORDER BY id_itempedido ASC`,
                  [id_pedido]
