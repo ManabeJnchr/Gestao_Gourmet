@@ -512,6 +512,7 @@ async function initdb(pool: Pool) {
             INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (1, 'Aberto') ON CONFLICT DO NOTHING;
             INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (2, 'Fechado') ON CONFLICT DO NOTHING;
             INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (3, 'Concluído') ON CONFLICT DO NOTHING;
+            INSERT INTO public.statuspedido (id_statuspedido, nome) VALUES (4, 'Cancelado') ON CONFLICT DO NOTHING;
 
             -- FIM INSERT INTO STATUS PEDIDO
 
