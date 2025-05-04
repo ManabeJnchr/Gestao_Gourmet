@@ -285,7 +285,7 @@ async function initdb(pool: Pool) {
                     id_mesa integer NOT NULL,
                     observacao text,
                     id_funcionario integer NOT NULL,
-                    id_statuspedido character varying(50) NOT NULL,
+                    id_statuspedido integer NOT NULL,
                     data_pedido timestamp without time zone DEFAULT CURRENT_DATE NOT NULL
                 );
 
