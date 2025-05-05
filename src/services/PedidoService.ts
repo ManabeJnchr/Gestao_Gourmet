@@ -54,6 +54,12 @@ class PedidoService {
                 throw { statusCode: 400, message: "Mesa inválida" }
             }
 
+            // Verificar se já existe um pedido não-concluído para a mesa especificada
+            const verifPedido = await PedidoModel.buscarPedidoMesa(mesa.id_mesa);
+            if (verifPedido) {
+                throw { statusCode: 400, message: "Já há um pedido aberto nesta mesa" }
+            }
+
             // Verificar se funcionário especificado é válido
             const funcionario = await FuncionarioService.buscarFuncionario(id_funcionario);
             if (!funcionario) {
