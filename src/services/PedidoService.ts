@@ -128,6 +128,10 @@ class PedidoService {
 
             const pedido = await PedidoModel.buscarPedidoMesa(number_id_mesa);
 
+            if (!pedido) { // Se não há nenhum pedido ainda, retorna um objeto vazio
+                return {};
+            }
+
             const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
 
             for (const item of itensPedido) {
