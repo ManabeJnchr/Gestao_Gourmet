@@ -114,6 +114,44 @@ class PedidoService {
         }
     }
 
+    static async buscarPedidoMesa ({id_mesa}:pedidoDTO) {
+        try {
+
+            if (!id_mesa) {
+                throw { statusCode: 400, message: "Mesa inválida" }
+            }
+
+            const number_id_mesa = Number(id_mesa);
+            if (isNaN(number_id_mesa)) {
+                throw { statusCode: 400, message: "Mesa inválida" }
+            }
+
+            const pedido = await PedidoModel.buscarPedidoMesa(number_id_mesa);
+
+            const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
+
+            for (const item of itensPedido) {
+                const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
+
+                item.adicionais = adicionaisItem;
+            }
+
+            pedido.itens = itensPedido
+
+            return pedido;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
 }
 
 export default PedidoService;

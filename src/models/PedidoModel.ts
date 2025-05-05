@@ -20,6 +20,23 @@ class PedidoModel {
         }
     }
 
+    static async buscarPedidoMesa(id_mesa: number) {
+        try {
+            const result = await pool.query(
+                `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
+                 FROM pedido
+                 WHERE id_mesa = $1 AND id_statuspedido IN (1,2)
+                 ORDER BY id_pedido DESC`,
+                [id_mesa]
+            );
+
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao listar pedidos, tente novamente"};
+        }
+    }
+
     static async adicionarPedido(id_mesa: number, observacao: string, id_funcionario: number, id_statuspedido: number, client : PgClient = pool) {
         try {
             const result = await client.query(
