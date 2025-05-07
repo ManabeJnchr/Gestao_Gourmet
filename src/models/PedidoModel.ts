@@ -81,6 +81,25 @@ class PedidoModel {
             throw {statusCode:500, message:"Erro ao deletar pedido, tente novamente"};
         }
     }
+
+    static async buscarPedido(id_pedido: number) {
+        try {
+            const result = await pool.query(
+                `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
+                 FROM pedido
+                 WHERE id_pedido = $1
+                 ORDER BY id_pedido DESC`,
+                [id_pedido]
+            );
+
+            return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao listar pedidos, tente novamente"};
+        }
+    }
+
+
 }
 
 export default PedidoModel;

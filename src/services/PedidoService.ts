@@ -8,15 +8,24 @@ import pool from "../database";
 import FuncionarioService from "./FuncionarioService";
 import AdicionalItemPedidoModel from "../models/AdicionalItemPedidoModel";
 
-type PgClient = Pool | PoolClient;
-
 interface pedidoDTO {
     id_pedido?: any,
     id_mesa?: any,
     observacao?: string,
     id_funcionario?: any,
     id_statuspedido?: any,
-    itens: Array<any>
+    itens?: Array<itemDTO>
+}
+
+interface itemDTO {
+    id_itemcardapio?: any,
+    quantidade?: any,
+    observacao?: string,
+    adicionais?: Array<adicionalDTO>
+}
+
+interface adicionalDTO {
+    id_adicional?: any
 }
 
 class PedidoService {
@@ -40,7 +49,7 @@ class PedidoService {
 
     }
 
-    static async novoPedido ({id_mesa, observacao="", id_funcionario, id_statuspedido=1, itens}: pedidoDTO) {
+    static async novoPedido ({id_mesa, observacao="", id_funcionario, id_statuspedido=1, itens = []}: pedidoDTO) {
         const client = await pool.connect();
 
         try {
@@ -86,19 +95,22 @@ class PedidoService {
                     throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) é inválido ou foi excluído.`}
                 }
 
-                const resultItemPedido = await ItemPedidoModel.adicionarItemPedido(resultPedido.id_pedido, itemCardapio.id_itemcardapio, item.quantidade, itemCardapio.valor, item.observacao, client);
+                const resultItemPedido = await ItemPedidoModel.adicionarItemPedido(resultPedido.id_pedido, itemCardapio.id_itemcardapio, item.quantidade, itemCardapio.valor, item.observacao || "", client);
 
-                // Verifica se os adicionais são válidos e cria eles
-                for (const adicionalIndex in item.adicionais) {
-                    const adicional = await AdicionaisService.buscarAdicional(item.adicionais[adicionalIndex].id_adicional);
-                    
-                    if (!adicional) {
-                        throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) possui adicional inválido ou que foi excluído.`}
+                if (item.adicionais) {
+                    // Verifica se os adicionais são válidos e cria eles
+                    for (const adicionalIndex in item.adicionais) {
+                        const adicional = await AdicionaisService.buscarAdicional(item.adicionais[adicionalIndex].id_adicional);
+                        
+                        if (!adicional) {
+                            throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) possui adicional inválido ou que foi excluído.`}
+                        }
+    
+                        AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
+    
                     }
-
-                    AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
-
                 }
+
 
             }
 
@@ -160,6 +172,73 @@ class PedidoService {
             throw { statusCode: 500, message: "Erro interno no servidor" }
         }
 
+    }
+
+    static async adicionarItemPedido ({id_pedido}: pedidoDTO, {id_itemcardapio, quantidade=1, observacao="", adicionais=[]}: itemDTO) {
+        const client = await pool.connect();
+
+        try {
+            if (!id_pedido || !id_itemcardapio) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            // Verificar se já existe um pedido não-concluído para a mesa especificada
+            const number_id_pedido = Number(id_pedido)
+            if (isNaN(number_id_pedido)) {
+                throw { statusCode: 400, message: "ID do pedido é inválido" }
+            }
+
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+            if (!pedido) {
+                throw { statusCode: 400, message: "ID do pedido é inválido" }
+            }
+
+            if (pedido.id_statuspedido !== 1) { // Pedido não está "aberto"
+                throw { statusCode: 400, message: "Este pedido não está ABERTO" }
+            }
+
+            // Inicia a transaction
+            await client.query("BEGIN");
+
+            const numberQuantidade = quantidade ? Number(quantidade) : 1;
+            if (isNaN(numberQuantidade)) {
+                throw { statusCode: 400, message: `Quantidade do item é inválida.`}
+            }
+
+            const itemCardapio = await ItemCardapioService.buscarItemCardapio(id_itemcardapio);
+            if (!itemCardapio) {
+                throw { statusCode: 400, message: `O item é inválido ou foi excluído.`}
+            }
+
+            const resultItemPedido = await ItemPedidoModel.adicionarItemPedido(id_pedido, itemCardapio.id_itemcardapio, numberQuantidade, itemCardapio.valor, observacao, client);
+
+            // Verifica se os adicionais são válidos e cria eles
+            for (const adicionalIndex in adicionais) {
+                const adicional = await AdicionaisService.buscarAdicional(adicionais[adicionalIndex].id_adicional);
+                
+                if (!adicional) {
+                    throw { statusCode: 400, message: `O item possui adicional inválido ou que foi excluído.`}
+                }
+
+                AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
+
+            }
+
+            // Finaliza a transaction;
+            await client.query("COMMIT");
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            // Desfaz a transaction em caso de erro
+            await client.query("ROLLBACK");
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
     }
 
 }
