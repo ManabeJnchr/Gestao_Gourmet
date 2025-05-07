@@ -54,7 +54,7 @@
             </div>
         </header>
 
-        <main class="row flex-grow-1 min-vh-100">
+        <main class="row flex-grow-1">
             <div class="col-2 d-none d-lg-block pt-3 pb-3 border-2 border-end">
                 <div class="fit-content">
                     <h3 class="mb-3 fw-bold" x-text="identity.cargonome.toUpperCase()">CARGO</h3>
@@ -150,12 +150,11 @@
                     </div>
                 </div>
 
-                <div class="row" :class="tela == 'GER' ? '' : 'd-none'">
+                <div class="row" :class="tela == 'GER' ? '' : 'd-none'" style="max-height: 500px; overflow-y: auto;">
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                             <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
-                                <img src="../src/img/add-mesa-icon.jpg" alt="user"
-                                    class="img_contentThumb rounded-2">
+                                <img src="../src/img/add-mesa-icon.jpg" alt="user" class="img_contentThumb rounded-2">
                             </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                 <div class="row">
@@ -180,9 +179,9 @@
                         <div class="col-sm-12 col-md-6 p-2">
                             <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                                 <div class="col-md-4 d-md-block d-none align-content-center text-center h-100" style="width: 150px;">
-                                        <div class="h-100 align-content-center rounded-2" style="background-color: #d2d2d2;">
-                                            <span class="fw-bold text-light" style="font-size: xxx-large;" x-text="dado.numero_mesa"></span>
-                                        </div>
+                                    <div class="h-100 align-content-center rounded-2" style="background-color: #d2d2d2;">
+                                        <span class="fw-bold text-light" style="font-size: xxx-large;" x-text="dado.numero_mesa"></span>
+                                    </div>
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                     <div class="row">
@@ -569,4 +568,3 @@
 </body>
 
 </html>
-``` 
