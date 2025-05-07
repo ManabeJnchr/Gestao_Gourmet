@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column d-none">
+    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column">
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
@@ -54,7 +54,7 @@
             </div>
         </header>
 
-        <main class="row flex-grow-1 min-vh-100">
+        <main class="row flex-grow-1">
             <div class="col-2 d-none d-lg-block pt-3 pb-3 border-2 border-end">
                 <div class="fit-content">
                     <h3 class="mb-3 fw-bold" x-text="identity.cargonome.toUpperCase()">CARGO</h3>
@@ -150,14 +150,14 @@
                     </div>
                 </div>
 
-                <div class="row" :class="tela == 'GER' ? '' : 'd-none'">
+                <div class="row" :class="tela == 'GER' ? '' : 'd-none'" style="max-height: 500px; overflow-y: auto;">
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                             <div class="col-md-4 d-md-block d-none align-content-center h-100"
-                                    style="width: 150px;">
-                                    <img :src="'/src/img/add-item-cardapio-icon.jpg'" alt="user"
-                                        class="img_contentThumb rounded-2">
-                                </div>
+                                style="width: 150px;">
+                                <img :src="'/src/img/add-item-cardapio-icon.jpg'" alt="user"
+                                    class="img_contentThumb rounded-2">
+                            </div>
                             <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                 <div class="row">
                                     <div class="col d-inline-flex justify-content-between">
@@ -248,15 +248,15 @@
                                         </div>
                                         <div class="col-md-10 col-lg-6">
                                             <select x-model="registro.id_categoria" id="categoriaCardapio"
-                                                    name="categoriaCardapio"
-                                                    class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                                    <option value="" selected disabled>
-                                                        Selecione uma categoria
-                                                    </option>
-                                                    <template x-for="categoria in categorias">
-                                                        <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
-                                                    </template>
-                                                </select>
+                                                name="categoriaCardapio"
+                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                <option value="" selected disabled>
+                                                    Selecione uma categoria
+                                                </option>
+                                                <template x-for="categoria in categorias">
+                                                    <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
+                                                </template>
+                                            </select>
                                         </div>
                                         <div class="col-md-2 col-lg-1">
                                             <label for="valorCardapio" class="fw-bold">Preço:</label>

@@ -54,7 +54,7 @@
             </div>
         </header>
 
-        <main class="row flex-grow-1 min-vh-100">
+        <main class="row flex-grow-1">
             <div class="col-2 d-none d-lg-block pt-3 pb-3 border-2 border-end">
                 <div class="fit-content">
                     <h3 class="mb-3 fw-bold">CATEGORIAS</h3>
@@ -136,31 +136,28 @@
                 </div>
             </div>
 
-            <div x-data="Cardapio()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
-                <div class="col">
-                    <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
-                        <div class="col d-flex align-items-center">
-                            <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
-                                <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
-                            </button>
-                            <h1 class="m-0 ms-2">EFETUAR PAGAMENTO</h1>
-                        </div>
+            <div x-data="EfetuarPedido()" x-init="iniciarEfetuarPedido()" class="col-12 col-lg-10" id="div_content">
+
+                <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
+                    <div class="col d-flex align-items-center">
+                        <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
+                            <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
+                        </button>
+                        <h1 class="m-0 ms-2">EFETUAR PEDIDO</h1>
                     </div>
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="container mt-2">
-                                <form class="d-flex">
-                                    <input class="form-control me-2 w-100" type="search" placeholder="Buscar produto..."
-                                        aria-label="Search">
-                                    <button class="btn btn-outline-success ms-2" type="submit">Buscar</button>
-                                </form>
-                                <div class="row">
-                                    <div class="col-4 p-2">
+                </div>
+
+                <div class="row">
+                    <div class="col-9">
+                        <div class="container mt-2">
+                            <div class="row" style="max-height: 490px; overflow-y: auto;">
+                                <template x-for="item in cardapio">
+                                    <div class="col-3 p-2">
                                         <div class="menu-item">
-                                            <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
+                                            <img src="../src/img/add-item-cardapio-icon.jpg" alt="Imagem do item">
                                             <div class="item-details">
-                                                <div class="item-name">001-HAMBURGUER</div>
-                                                <div class="price mb-2">R$ 25,00</div>
+                                                <div x-text="item.nome" class="item-name text-truncate"></div>
+                                                <div class="price mb-2">R$ <span x-text="item.valor"></span></div>
                                                 <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100" data-bs-toggle="modal" data-bs-target="#incluirAdicionalModal">
                                                     <span class="mdi mdi-plus text-decoration-none text-black"> Adicionais</span>
                                                 </button>
@@ -173,8 +170,8 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
-                                                                <button type="button" class="btn w-100 mb-2" style="background-color: #454545;"">
-                                                                    <span class="mdi mdi-plus text-white"> Inlcuir Adicional</span>
+                                                                <button type="button" class="btn w-100 mb-2" style="background-color: #454545;">
+                                                                    <span class="mdi mdi-plus text-white"> Incluir Adicional</span>
                                                                 </button>
                                                                 <div class="row">
                                                                     <div class="col-9">
@@ -213,57 +210,66 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <template>
-                                        <div class="col-4 p-2">
-                                            <div class="menu-item">
-                                                <img src="../src/img/menu-item-hamburger.jpg" alt="Imagem do item">
-                                                <div class="item-details">
-                                                    <div class="item-name">001-HAMBURGUER</div>
-                                                    <div class="item-ingredients">ingredientes</div>
-                                                    <P></P>
-                                                    <div class="price">R$ 25,00</div>
-                                                    <button class="add-to-cart">ADICIONAR AO CARRINHO</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </template>
-                                </div>
+                                </template>
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="row h-100" style="background-color: white; align-content: space-between;">
-                                <div class="container mt-2 d-flex align-items-center" style="height: 50px;">
-                                    <h3>Mesa:</h3>
-                                    <div class="col"></div>
-                                    <h1>#002</h1>
+                    </div>
+                    <div class="col-3">
+                        <div class="row h-100" style="background-color: white; align-content: space-between;">
+                            <div>
+                                <div class="row p-2">
+                                    <div class="col-3">
+                                        <h3 class="m-0 me-2">Mesa:</h3>
+                                    </div>
+                                    <div class="col-9">
+                                        <select x-model="registro.id_mesa" id="mesaSelect"
+                                            name="mesaSelect"
+                                            class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                            <option value="" selected disabled>
+                                                Selecione uma mesa
+                                            </option>
+                                            <template x-for="mesa in mesas">
+                                                <option :value="mesa.id_mesa" x-text="mesa.numero_mesa"></option>
+                                            </template>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="row-6">
-                                    <div>
-                                        <div class="menu-itemp d-flex align-items-center">
-                                            <img src="../src/img/menu-item-hamburger.jpg" class="img-fluid">
-                                            <div class="item-detailsp">
-                                                <div class="item-namep">001-HAMBURGUER</div>
-                                                <div class="item-ingredientsp">ingredientes</div>
-                                                <p></p>
-                                                <div class="item-un">X 1</div>
-                                                <div class="pricep">R$ 25,00</div>
-                                                <button class="add-to-cartp">EXCLUIR</button>
-                                                <div class="col" style="background-color: #E0E0E0; height: 2px;"></div>
-                                                <!--linha-->
+                                <div class="row p-2">
+                                    <div class="col div_contentAddItem border-1 rounded-2 py-2">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <img src="../src/img/add-item-cardapio-icon.jpg" class="img-fluid">
+                                            </div>
+                                            <div class="col-7">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <span class="item-namep">001-HAMBURGUER</span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label for="quantidadeItem" class="item-namep form-label">Quantidade:</label>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="number" class="item-namep form-control" id="quantidadeItem">
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="pricep">R$ 25,00</div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button class="add-to-cartp">REMOVER</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="row"
-                                            style="background-color: white; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px;">
-                                            <div class="footer-bar">
-                                                <div class="valor-total"><span>Valor Total:</span> <span>75,00</span>
-                                                </div>
-                                                <div class="item-detailsp"><button class="add-to-cartF">FINALIZAR
-                                                        PEDIDO</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                </div>
+                            </div>
+                            <div class="row"
+                                style="background-color: white; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px;">
+                                <div class="footer-bar">
+                                    <div class="valor-total"><span>Valor Total:</span> <span>75,00</span>
+                                    </div>
+                                    <div class="item-detailsp"><button class="add-to-cartF">FINALIZAR
+                                            PEDIDO</button>
                                     </div>
                                 </div>
                             </div>
@@ -460,6 +466,33 @@
             setTimeout(() => {
                 toast.remove();
             }, 3000);
+        }
+
+        function EfetuarPedido() {
+            return {
+                cardapio: [],
+                mesas: [],
+                iniciarEfetuarPedido() {
+                    this.listarCardapio();
+                    this.listarMesas();
+                },
+                listarCardapio(){
+                    axios.get('/listarCardapio').then(resp => {
+                        this.cardapio = resp.data;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+                listarMesas() {
+                    axios.get('/listarMesas').then(resp => {
+                        this.mesas = resp.data.filter(mesa => mesa.status === 'Aberta' || mesa.status === 'Disponível');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+            }
         }
     </script>
 
