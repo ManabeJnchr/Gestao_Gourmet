@@ -11,7 +11,7 @@ class ItemCardapioModel {
                 `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem
                  FROM itemcardapio i
                  WHERE i.ativo = true
-                 ORDER BY i.id_itemcardapio ASC`
+                 ORDER BY i.nome ASC`
             );
 
             return result.rows;
