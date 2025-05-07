@@ -133,14 +133,16 @@
                 </div>
             </div>
 
-            <div x-data="Cardapio()" x-init="buscarCategorias(); buscarDados()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="Cardapio()" x-init="buscarCategorias(); buscarDados()" class="col-12 col-lg-10"
+                id="div_content">
                 <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
                             <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
                         </button>
                         <h1 class="m-0 ms-2">GERENCIAR CARDÁPIO</h1>
-                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''" style="font-size: 30px;"></i>
+                        <i class="mdi mdi-chevron-right" :class="tela == 'GER' ? 'd-none' : ''"
+                            style="font-size: 30px;"></i>
                         <h2 class="m-0" :class="tela == 'CAD' ? '' : 'd-none'">
                             Criar Novo
                         </h2>
@@ -153,8 +155,7 @@
                 <div class="row" :class="tela == 'GER' ? '' : 'd-none'" style="max-height: 500px; overflow-y: auto;">
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
-                            <div class="col-md-4 d-md-block d-none align-content-center h-100"
-                                style="width: 150px;">
+                            <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">
                                 <img :src="'/src/img/add-item-cardapio-icon.jpg'" alt="user"
                                     class="img_contentThumb rounded-2">
                             </div>
@@ -163,8 +164,10 @@
                                     <div class="col d-inline-flex justify-content-between">
                                         <h4 class="h2 text-truncate">Novo Item</h4>
                                         <div>
-                                            <button style="background: none; border: none;" @click.prevent="tela = 'CAD'">
-                                                <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
+                                            <button style="background: none; border: none;"
+                                                @click.prevent="tela = 'CAD'">
+                                                <span class="mdi mdi-plus text-decoration-none text-black"
+                                                    style="font-size: 30px;"></span>
                                             </button>
                                         </div>
                                     </div>
@@ -182,28 +185,35 @@
                             <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                                 <div class="col-md-4 d-md-block d-none align-content-center h-100"
                                     style="width: 150px;">
-                                    <img :src="dado.imagemBase64 ? dado.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'" alt="user"
-                                        class="img_contentThumb rounded-2">
+                                    <img :src="dado.imagemBase64 ? dado.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'"
+                                        alt="user" class="img_contentThumb rounded-2">
                                 </div>
                                 <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
                                     <div class="row">
                                         <div class="col d-inline-flex justify-content-between">
                                             <h4 class="h2 text-truncate" x-text="dado.nome"></h4>
                                             <div style="min-width: 89px;">
-                                                <button style="background: none; border: none;" 
-                                                    @click="idItemParaExcluir = dado.id_itemcardapio" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#confirmDeleteModal">
-                                                    <span class="mdi mdi-delete text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                <button style="background: none; border: none;"
+                                                    @click="idItemParaExcluir = dado.id_itemcardapio"
+                                                    data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                                                    <span class="mdi mdi-delete text-decoration-none text-black"
+                                                        style="font-size: 30px;"></span>
                                                 </button>
-                                                <button style="background: none; border: none;" @click="tela = 'EDT'; editarRegistro(index)">
-                                                    <span class="mdi mdi-square-edit-outline text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                <button style="background: none; border: none;"
+                                                    @click="tela = 'EDT'; editarRegistro(index)">
+                                                    <span
+                                                        class="mdi mdi-square-edit-outline text-decoration-none text-black"
+                                                        style="font-size: 30px;"></span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="h5 no-bold">R$ <span x-text="dado.valor"></span></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="h5 no-bold text-truncate"> <span x-text="dado.descricao"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -224,229 +234,233 @@
                                         </div>
                                     </div>
                                     <div class="row"">
-                                        <div class="col">
-                                            <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100">
-                                                <span class="mdi mdi-camera text-decoration-none text-black"> Alterar Foto</span>
-                                            </button>
-                                            <input type="file" id="input_img" style="display: none;" accept="image/*">
-                                        </div>
+                                        <div class=" col">
+                                        <button type="button" id="btn_addImg"
+                                            class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100">
+                                            <span class="mdi mdi-camera text-decoration-none text-black"> Alterar
+                                                Foto</span>
+                                        </button>
+                                        <input type="file" id="input_img" style="display: none;" accept="image/*">
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="row mb-2">
-                                        <div class="col-md-2 col-lg-2 align-items-center">
-                                            <label for="nomeCardapio" class="fw-bold">Nome:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-10">
-                                            <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio"
-                                                class="w-100 shadow-inside border-1 rounded-2">
-                                        </div>
+                            </div>
+                            <div class="col">
+                                <div class="row mb-2">
+                                    <div class="col-md-2 col-lg-2 align-items-center">
+                                        <label for="nomeCardapio" class="fw-bold">Nome:</label>
                                     </div>
-                                    <div class="row mb-2">
-                                        <div class="col-md-2 col-lg-2">
-                                            <label for="categoriaCardapio" class="fw-bold">Categoria:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-6">
-                                            <select x-model="registro.id_categoria" id="categoriaCardapio"
-                                                name="categoriaCardapio"
-                                                class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                                <option value="" selected disabled>
-                                                    Selecione uma categoria
+                                    <div class="col-md-10 col-lg-10">
+                                        <input x-model="registro.nome" type="text" id="nomeCardapio" name="nomeCardapio"
+                                            class="w-100 shadow-inside border-1 rounded-2">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-2 col-lg-2">
+                                        <label for="categoriaCardapio" class="fw-bold">Categoria:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-6">
+                                        <select x-model="registro.id_categoria" id="categoriaCardapio"
+                                            name="categoriaCardapio"
+                                            class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                            <option value="" selected disabled>
+                                                Selecione uma categoria
+                                            </option>
+                                            <template x-for="categoria in categorias">
+                                                <option :value="categoria.id_categoria" x-text="categoria.nome">
                                                 </option>
-                                                <template x-for="categoria in categorias">
-                                                    <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2 col-lg-1">
-                                            <label for="valorCardapio" class="fw-bold">Preço:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-3">
-                                            <input x-model="registro.valor" type="number" id="valorCardapio"
-                                                name="valorCardapio" class="w-100 shadow-inside border-1 rounded-2"
-                                                placeholder="0,00" step="0.01" min="0"
-                                                @blur="registro.valor = parseFloat(registro.valor || 0).toFixed(2)">
-                                        </div>
+                                            </template>
+                                        </select>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-2 col-lg-2 align-items-center">
-                                            <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
-                                        </div>
-                                        <div class="col-md-10 col-lg-10">
-                                            <textarea x-model="registro.descricao" id="descricaoCardapio"
-                                                name="descricaoCardapio"
-                                                class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
-                                        </div>
+                                    <div class="col-md-2 col-lg-1">
+                                        <label for="valorCardapio" class="fw-bold">Preço:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-3">
+                                        <input x-model="registro.valor" type="number" id="valorCardapio"
+                                            name="valorCardapio" class="w-100 shadow-inside border-1 rounded-2"
+                                            placeholder="0,00" step="0.01" min="0"
+                                            @blur="registro.valor = parseFloat(registro.valor || 0).toFixed(2)">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-lg-2 align-items-center">
+                                        <label for="descricaoCardapio" class="fw-bold">Descrição:</label>
+                                    </div>
+                                    <div class="col-md-10 col-lg-10">
+                                        <textarea x-model="registro.descricao" id="descricaoCardapio"
+                                            name="descricaoCardapio"
+                                            class="w-100 shadow-inside h-100 border-1 rounded-2"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <hr class="mb-1">
-                            <div class="row d-flex justify-content-between">
-                                <div class="col-3 align-content-center">
-                                    <h1 class="m-0">Adicionais</h1>
-                                </div>
-                                <div class="col-1 text-end">
-                                    <button type="button" class="btn bg-transparent py-0" @click.prevent="incluirAdicional()">
-                                        <span class="mdi mdi-plus text-decoration-none text-black" style="font-size: 30px;"></span>
-                                    </button>
-                                </div>
-                            </div>
-                            <hr class="m-0 mb-1">
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <ul class="list-group list-group-flush">
-                                        <template x-for="(adicional, index) in registro.adicionais" :key="index">
-                                            <li class="list-group-item p-1 ps-0">
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12 col-lg-6">
-                                                        <img src="../src/img/caret-right-solid.svg" alt="icon"
-                                                            class="img_xsmallIcon m-0 me-2 mb-1">
-                                                        <input type="text" x-model="adicional.nome"
-                                                            class="shadow-inside border-1 rounded-2" style="width: 95%;"
-                                                            placeholder="Digite o nome do item adicional...">
-                                                    </div>
-                                                    <div class="col-md-2 col-lg-1 align-items-center">
-                                                        <label for="valorAdicional" class="fw-bold">Preço:</label>
-                                                    </div>
-                                                    <div class="col-md-8 col-lg-3">
-                                                        <input type="number" x-model="adicional.valor" id="valorAdicional"
-                                                            name="adicionalValor"
-                                                            class="w-100 shadow-inside border-1 rounded-2"
-                                                            placeholder="0,00"
-                                                            @blur="adicional.valor = parseFloat(adicional.valor || 0).toFixed(2)">
-                                                    </div>
-                                                    <div class="col-md-2 col-lg-2 text-end">
-                                                        <button type="button" class="btn btn-danger btn-sm w-100"
-                                                            @click="excluirAdicional(index)">Excluir</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </template>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-end">
-                                <div class="col-sm-6 col-md-4 mb-1">
-                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white"
-                                        @click="tela = 'GER'; limparRegistro()">CANCELAR</button>
-                                </div>
-                                <div class=" col-sm-6 col-md-4">
-                                    <button id="btn_adicionar" type="button" class="w-100 btn text-white"
-                                        @click.prevent="salvarRegistro(); tela = 'GER'">ADICIONAR</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
+                    <hr class="mb-1">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-3 align-content-center">
+                            <h1 class="m-0">Adicionais</h1>
+                        </div>
+                        <div class="col-1 text-end">
+                            <button type="button" class="btn bg-transparent py-0" @click.prevent="incluirAdicional()">
+                                <span class="mdi mdi-plus text-decoration-none text-black"
+                                    style="font-size: 30px;"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="m-0 mb-1">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <ul class="list-group list-group-flush">
+                                <template x-for="(adicional, index) in registro.adicionais" :key="index">
+                                    <li class="list-group-item p-1 ps-0">
+                                        <div class="row mb-2">
+                                            <div class="col-md-12 col-lg-6">
+                                                <img src="../src/img/caret-right-solid.svg" alt="icon"
+                                                    class="img_xsmallIcon m-0 me-2 mb-1">
+                                                <input type="text" x-model="adicional.nome"
+                                                    class="shadow-inside border-1 rounded-2" style="width: 95%;"
+                                                    placeholder="Digite o nome do item adicional...">
+                                            </div>
+                                            <div class="col-md-2 col-lg-1 align-items-center">
+                                                <label for="valorAdicional" class="fw-bold">Preço:</label>
+                                            </div>
+                                            <div class="col-md-8 col-lg-3">
+                                                <input type="number" x-model="adicional.valor" id="valorAdicional"
+                                                    name="adicionalValor" class="w-100 shadow-inside border-1 rounded-2"
+                                                    placeholder="0,00"
+                                                    @blur="adicional.valor = parseFloat(adicional.valor || 0).toFixed(2)">
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 text-end">
+                                                <button type="button" class="btn btn-danger btn-sm w-100"
+                                                    @click="excluirAdicional(index)">Excluir</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-sm-6 col-md-4 mb-1">
+                            <button id="btn_cancelar" type="button" class="w-100 btn text-white"
+                                @click="tela = 'GER'; limparRegistro()">CANCELAR</button>
+                        </div>
+                        <div class=" col-sm-6 col-md-4">
+                            <button id="btn_adicionar" type="button" class="w-100 btn text-white"
+                                @click.prevent="salvarRegistro(); tela = 'GER'">ADICIONAR</button>
+                        </div>
+                    </div>
+                    </form>
                 </div>
+            </div>
 
-                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color: #454545;">
-                                <h1 class="modal-title fs-5 text-white">Confirmar Exclusão</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #454545;">
+                            <h1 class="modal-title fs-5 text-white">Confirmar Exclusão</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                            class="rounded rounded-bottom-2">
+                            <p class="confirmation-text">Tem certeza que deseja excluir este item do cardápio?</p>
+                            <div class="mt-4">
+                                <button type="button" class="btn bg-danger text-white me-3"
+                                    data-bs-dismiss="modal">CANCELAR</button>
+                                <button type="button" class="btn text-white"
+                                    style="background-color: #06d20e !important;"
+                                    @click="deletarRegistro(idItemParaExcluir)" data-bs-dismiss="modal">
+                                    CONFIRMAR
+                                </button>
                             </div>
-                            <div class="modal-body text-center" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
-                                <p class="confirmation-text">Tem certeza que deseja excluir este item do cardápio?</p>
-                                <div class="mt-4">
-                                    <button type="button" class="btn bg-danger text-white me-3" data-bs-dismiss="modal">CANCELAR</button>
-                                    <button type="button" class="btn text-white" style="background-color: #06d20e !important;" 
-                                        @click="deletarRegistro(idItemParaExcluir)" 
-                                        data-bs-dismiss="modal">
-                                        CONFIRMAR
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
-                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+    </div>
+    </main>
 
-        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: #454545;">
-                        <h1 class="modal-title fs-5 text-white" id="changePasswordModalLabel">Alterar Senha</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
-                        <form>
-                            <div class="mb-4">
-                                <label for="currentPassword" class="form-label">Senha Atual</label>
-                                <div class="input-group">
-                                    <input x-model="trocarSenha.senhaAtual" type="password" class="form-control change-password-input"
-                                        id="currentPassword" required>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        onclick="togglePassword('currentPassword', this)">
-                                        <i class="mdi mdi-eye"></i>
-                                    </button>
-                                </div>
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #454545;">
+                    <h1 class="modal-title fs-5 text-white" id="changePasswordModalLabel">Alterar Senha</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                    <form>
+                        <div class="mb-4">
+                            <label for="currentPassword" class="form-label">Senha Atual</label>
+                            <div class="input-group">
+                                <input x-model="trocarSenha.senhaAtual" type="password"
+                                    class="form-control change-password-input" id="currentPassword" required>
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="togglePassword('currentPassword', this)">
+                                    <i class="mdi mdi-eye"></i>
+                                </button>
                             </div>
-                            <div class="mb-4">
-                                <label for="newPassword" class="form-label">Nova Senha</label>
-                                <div class="input-group">
-                                    <input x-model="trocarSenha.novaSenha" type="password" class="form-control change-password-input" id="newPassword"
-                                        required>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        onclick="togglePassword('newPassword', this)">
-                                        <i class="mdi mdi-eye"></i>
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="newPassword" class="form-label">Nova Senha</label>
+                            <div class="input-group">
+                                <input x-model="trocarSenha.novaSenha" type="password"
+                                    class="form-control change-password-input" id="newPassword" required>
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="togglePassword('newPassword', this)">
+                                    <i class="mdi mdi-eye"></i>
+                                </button>
                             </div>
-                            <div class="mb-4">
-                                <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
-                                <div class="input-group">
-                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password" class="form-control change-password-input"
-                                        id="confirmPassword" required>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        onclick="togglePassword('confirmPassword', this)">
-                                        <i class="mdi mdi-eye"></i>
-                                    </button>
-                                </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                            <div class="input-group">
+                                <input x-model="trocarSenha.confirmarNovaSenha" type="password"
+                                    class="form-control change-password-input" id="confirmPassword" required>
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="togglePassword('confirmPassword', this)">
+                                    <i class="mdi mdi-eye"></i>
+                                </button>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
-                        <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
-                            CANCELAR
-                        </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                    <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
+                        CANCELAR
+                    </button>
+                    <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                        @click.prevent="verificarNovaSenha()">
+                        ALTERAR SENHA
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #454545;">
+                    <h1 class="modal-title fs-5 text-white">Confirmar Alteração</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                    <p class="confirmation-text">Tem certeza que deseja alterar sua senha?</p>
+                    <div class="mt-4">
+                        <button type="button" class="btn bg-danger text-white me-3"
+                            data-bs-dismiss="modal">CANCELAR</button>
                         <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
-                            @click.prevent="verificarNovaSenha()">
-                            ALTERAR SENHA
-                        </button>
+                            @click.prevent="trocarSenhaAtual()">CONFIRMAR</button>
                     </div>
+                </div>
+                <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color: #454545;">
-                        <h1 class="modal-title fs-5 text-white">Confirmar Alteração</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center" style="background-color: #d9d9d9;"
-                        class="rounded rounded-bottom-2">
-                        <p class="confirmation-text">Tem certeza que deseja alterar sua senha?</p>
-                        <div class="mt-4">
-                            <button type="button" class="btn bg-danger text-white me-3"
-                                data-bs-dismiss="modal">CANCELAR</button>
-                            <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
-                                @click.prevent="trocarSenhaAtual()">CONFIRMAR</button>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
     <script>
@@ -601,7 +615,8 @@
                     axios.post('/salvarItemCardapio', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
-                        }})
+                        }
+                    })
                         .then(resp => {
                             console.log(resp.data);
                             this.buscarDados();
@@ -640,7 +655,7 @@
                 },
                 incluirAdicional() {
                     if (!this.registro.adicionais) {
-                        this.registro.adicionais = []; 
+                        this.registro.adicionais = [];
                     }
                     this.registro.adicionais.push({ id_adicional: -1, id_itemcardapio: this.registro.id_itemcardapio, nome: '', valor: '' });
                 },
@@ -650,15 +665,15 @@
             }
         }
 
-        document.getElementById("btn_addImg").addEventListener("click", function() {
+        document.getElementById("btn_addImg").addEventListener("click", function () {
             document.getElementById("input_img").click();
         });
 
-        document.getElementById("input_img").addEventListener("change", function(event) {
+        document.getElementById("input_img").addEventListener("change", function (event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const imagemSelecionada = e.target.result;
                     const selectedImage = document.getElementById("selectedImage");
                     selectedImage.src = imagemSelecionada;
@@ -668,7 +683,9 @@
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 
 </body>
 
