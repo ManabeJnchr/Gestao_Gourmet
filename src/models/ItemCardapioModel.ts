@@ -8,8 +8,9 @@ class ItemCardapioModel {
     static async listarCardapio() {
         try {
             const result = await pool.query(
-                `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem
+                `SELECT i.id_itemcardapio, i.nome, i.valor, i.id_categoria, i.descricao, i.imagem, c.nome AS categoria
                  FROM itemcardapio i
+                 LEFT JOIN categoria c ON c.id_categoria = i.id_categoria
                  WHERE i.ativo = true
                  ORDER BY i.nome ASC`
             );
