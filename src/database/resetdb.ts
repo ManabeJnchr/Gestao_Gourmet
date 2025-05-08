@@ -43,15 +43,21 @@ async function resetdb (pool: Pool) {
 }
 
 async function criarItens () {
-    await ItemCardapioService.salvarItemCardapio({id_itemcardapio:-1, nome:"Macarronada", valor:"40", id_categoria:5, descricao:"Uma deliciosa macarronada", adicionais:[
-        {nome:"Queijo", valor:"5", id_itemcardapio:-1},
-        {nome:"Batata", valor:"6", id_itemcardapio:-1},
+    await ItemCardapioService.salvarItemCardapio({
+        id_itemcardapio:-1, 
+        nome:"Macarronada", 
+        valor:"40", 
+        id_categoria:5, 
+        descricao:"Uma deliciosa macarronada", 
+        adicionais:[
+            {nome:"Queijo", valor:"5", id_itemcardapio:-1},
+            {nome:"Batata", valor:"6", id_itemcardapio:-1},
     ]}, await downloadImageAsBuffer("https://www.sabornamesa.com.br/media/k2/items/cache/b5b56b2ae93d3dc958cf0c21c9383b18_XL.jpg"))
     await ItemCardapioService.salvarItemCardapio({
         id_itemcardapio: -1,
         nome: "Bruschetta",
         valor: "28",
-        id_categoria: "10",
+        id_categoria: "5",
         descricao: "Pão italiano fatiado, tomate, manjericão, alho, azeite, sal.",
         adicionais: [
           { nome: "Queijo de cabra", valor: "8", id_itemcardapio: -1 },
@@ -154,7 +160,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada Caesar",
         valor: "45.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Alface romana, croutons, parmesão, molho Caesar.",
         adicionais: [
             { nome: "Frango grelhado", valor: "12.00", id_itemcardapio: -1 },
@@ -167,7 +173,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada Caprese",
         valor: "52.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Tomate, muçarela de búfala, manjericão, azeite, sal.",
         adicionais: [
             { nome: "Pesto de manjericão", valor: "7.00", id_itemcardapio: -1 },
@@ -180,7 +186,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada Grega",
         valor: "50.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Pepino, tomate, cebola roxa, azeitonas, queijo feta, orégano, azeite.",
         adicionais: [
             { nome: "Pimentão assado", valor: "6.00", id_itemcardapio: -1 },
@@ -193,7 +199,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Mix de Folhas com Tomate e Pepino",
         valor: "40.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Alface, rúcula, agrião, tomate-cereja, pepino, molho simples.",
         adicionais: [
             { nome: "Tomate seco", valor: "7.00", id_itemcardapio: -1 },
@@ -206,7 +212,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada de Quinoa com Legumes",
         valor: "55.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Quinoa, cenoura, abobrinha, pimentão, ervas, azeite.",
         adicionais: [
             { nome: "Castanhas", valor: "8.00", id_itemcardapio: -1 },
@@ -219,7 +225,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada de Beterraba com Laranja",
         valor: "45.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Beterraba cozida, laranja em gomos, rúcula, nozes, azeite.",
         adicionais: [
             { nome: "Queijo de cabra", valor: "8.00", id_itemcardapio: -1 },
@@ -232,7 +238,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada de Tomate com Manjericão",
         valor: "42.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Tomate fatiado, manjericão, azeite, sal, pimenta.",
         adicionais: [
             { nome: "Muçarela de búfala", valor: "10.00", id_itemcardapio: -1 },
@@ -245,7 +251,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Salada Waldorf",
         valor: "50.00",
-        id_categoria: "1", // Saladas
+        id_categoria: "3", // Saladas
         descricao: "Maçã, uva, aipo, maionese, iogurte natural.",
         adicionais: [
             { nome: "Nozes", valor: "8.00", id_itemcardapio: -1 },
@@ -364,7 +370,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Peito de Frango Grelhado com Ervas",
         valor: "75.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Peito de frango, alecrim, tomilho, azeite, alho, sal.",
         adicionais: [
             { nome: "Queijo derretido", valor: "8.00", id_itemcardapio: -1 },
@@ -377,7 +383,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Frango à Passarinho",
         valor: "70.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Pedaços de frango, alho, limão, sal, óleo.",
         adicionais: [
             { nome: "Molho vinagrete", valor: "5.00", id_itemcardapio: -1 },
@@ -390,7 +396,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Filé de Frango Empanado",
         valor: "75.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Filé de frango, ovo, farinha de rosca, farinha de trigo, sal.",
         adicionais: [
             { nome: "Molho tártaro", valor: "5.00", id_itemcardapio: -1 },
@@ -403,8 +409,8 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Espetinho de Frango",
         valor: "72.00",
-        id_categoria: "3", // Aves
-        descricao: "Cubos de frango, azeite, sal, temperos, palito de madeira.",
+        id_categoria: "9", // Aves
+        descricao: "Cubos de frango, azeite, sal, temperos.",
         adicionais: [
             { nome: "Molho barbecue", valor: "5.00", id_itemcardapio: -1 },
             { nome: "Cebola caramelizada", valor: "7.00", id_itemcardapio: -1 },
@@ -416,7 +422,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Strogonoff de Frango",
         valor: "78.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Frango, creme de leite, molho de tomate, champignon, cebola.",
         adicionais: [
             { nome: "Batata palha extra", valor: "5.00", id_itemcardapio: -1 },
@@ -429,7 +435,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Frango ao Molho de Mostarda",
         valor: "85.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Peito de frango, creme de leite, mostarda, cebola, sal.",
         adicionais: [
             { nome: "Mel", valor: "6.00", id_itemcardapio: -1 },
@@ -442,7 +448,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Frango ao Curry",
         valor: "85.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Frango, curry, leite de coco, cebola, alho, coentro.",
         adicionais: [
             { nome: "Gengibre fresco", valor: "5.00", id_itemcardapio: -1 },
@@ -455,7 +461,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Sanduíche de Frango Desfiado",
         valor: "48.00",
-        id_categoria: "3", // Aves
+        id_categoria: "9", // Aves
         descricao: "Pão brioche, frango desfiado, maionese, alface, tomate.",
         adicionais: [
             { nome: "Queijo cheddar", valor: "7.00", id_itemcardapio: -1 },
@@ -469,7 +475,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Bife Acebolado",
         valor: "95.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Bife bovino, cebola, alho, azeite, sal, pimenta.",
         adicionais: [
             { nome: "Cebolas caramelizadas", valor: "6.00", id_itemcardapio: -1 },
@@ -482,7 +488,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Picanha Grelhada",
         valor: "150.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Picanha, sal grosso, azeite.",
         adicionais: [
             { nome: "Chimichurri", valor: "8.00", id_itemcardapio: -1 },
@@ -495,7 +501,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Filé Mignon ao Alho",
         valor: "180.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Filé mignon, alho, manteiga, sal, pimenta.",
         adicionais: [
             { nome: "Batata rústica", valor: "10.00", id_itemcardapio: -1 },
@@ -508,7 +514,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Strogonoff de Carne",
         valor: "120.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Carne em tiras, creme de leite, molho de tomate, champignon.",
         adicionais: [
             { nome: "Batata palha extra", valor: "5.00", id_itemcardapio: -1 },
@@ -521,7 +527,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Kafta de Carne Bovina",
         valor: "85.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Carne moída, cebola, alho, hortelã, especiarias, palito.",
         adicionais: [
             { nome: "Coalhada seca", valor: "6.00", id_itemcardapio: -1 },
@@ -534,7 +540,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Almôndegas ao Molho",
         valor: "80.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Carne moída, ovo, farinha de rosca, molho de tomate, ervas.",
         adicionais: [
             { nome: "Purê de batata", valor: "7.00", id_itemcardapio: -1 },
@@ -547,7 +553,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Carne de Panela com Legumes",
         valor: "90.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Carne em cubos, cenoura, batata, cebola, caldo, temperos.",
         adicionais: [
             { nome: "Arroz branco", valor: "6.00", id_itemcardapio: -1 },
@@ -560,7 +566,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Escondidinho de Carne Seca",
         valor: "110.00",
-        id_categoria: "4", // Carnes
+        id_categoria: "6", // Carnes
         descricao: "Purê de mandioca, carne seca desfiada, queijo, manteiga.",
         adicionais: [
             { nome: "Queijo gratinado extra", valor: "8.00", id_itemcardapio: -1 },
@@ -679,7 +685,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Cerveja Long Neck",
         valor: "18.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Cerveja lager 330 ml.",
         adicionais: []
     }, null);
@@ -688,7 +694,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Taça de Vinho Tinto",
         valor: "35.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Vinho tinto 200 ml.",
         adicionais: []
     }, null);
@@ -697,7 +703,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Taça de Vinho Branco",
         valor: "30.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Vinho branco 200 ml.",
         adicionais: []
     }, null);
@@ -706,7 +712,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Caipirinha de Limão",
         valor: "28.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Cachaça, limão, açúcar, gelo.",
         adicionais: []
     }, null);
@@ -715,7 +721,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Mojito",
         valor: "30.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Rum, hortelã, limão, açúcar, água com gás.",
         adicionais: []
     }, null);
@@ -724,7 +730,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Gin Tônica",
         valor: "32.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Gin, água tônica, limão, gelo.",
         adicionais: []
     }, null);
@@ -733,7 +739,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Aperol Spritz",
         valor: "35.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Aperol, prosecco, água com gás, laranja.",
         adicionais: []
     }, null);
@@ -742,7 +748,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Margarita",
         valor: "30.00",
-        id_categoria: "6", // Bebidas Alcoólicas
+        id_categoria: "8", // Bebidas Alcoólicas
         descricao: "Tequila, Cointreau, limão, sal, gelo.",
         adicionais: []
     }, null);
@@ -825,7 +831,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "CocaCola",
         valor: "8.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Refrigerante de cola 350 ml.",
         adicionais: []
     }, null);
@@ -834,7 +840,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Guaraná Antarctica",
         valor: "8.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Refrigerante de guaraná 350 ml.",
         adicionais: []
     }, null);
@@ -843,7 +849,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Fanta Laranja",
         valor: "8.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Refrigerante sabor laranja 350 ml.",
         adicionais: []
     }, null);
@@ -852,7 +858,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Sprite",
         valor: "8.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Refrigerante limão 350 ml.",
         adicionais: []
     }, null);
@@ -861,7 +867,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Schweppes Citrus",
         valor: "12.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Água tônica com infusão cítrica 350 ml.",
         adicionais: []
     }, null);
@@ -870,7 +876,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Ginger Ale",
         valor: "12.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Refrigerante de gengibre 350 ml.",
         adicionais: []
     }, null);
@@ -879,7 +885,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Soda Limão",
         valor: "8.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Água com gás sabor limão 350 ml.",
         adicionais: []
     }, null);
@@ -888,7 +894,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Água Tônica",
         valor: "12.00",
-        id_categoria: "8", // Refrigerantes
+        id_categoria: "4", // Refrigerantes
         descricao: "Água tônica 350 ml.",
         adicionais: []
     }, null);
@@ -898,7 +904,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Laranja",
         valor: "12.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Laranja espremida, água, açúcar (opcional).",
         adicionais: []
     }, null);
@@ -907,7 +913,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Limão",
         valor: "10.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Limão espremido, água, açúcar.",
         adicionais: []
     }, null);
@@ -916,7 +922,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Maracujá",
         valor: "14.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Polpa de maracujá, água, açúcar.",
         adicionais: []
     }, null);
@@ -925,7 +931,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Abacaxi com Hortelã",
         valor: "16.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Abacaxi, folhas de hortelã, água, açúcar.",
         adicionais: []
     }, null);
@@ -934,7 +940,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Manga",
         valor: "14.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Manga, água, açúcar.",
         adicionais: []
     }, null);
@@ -943,7 +949,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Melancia",
         valor: "12.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Melancia, água, açúcar.",
         adicionais: []
     }, null);
@@ -952,7 +958,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco de Morango",
         valor: "14.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Morangos, água, açúcar.",
         adicionais: []
     }, null);
@@ -961,7 +967,7 @@ async function criarItens () {
         id_itemcardapio: -1,
         nome: "Suco Verde",
         valor: "16.00",
-        id_categoria: "9", // Sucos
+        id_categoria: "1", // Sucos
         descricao: "Couve, maçã, limão, água, gengibre (opcional).",
         adicionais: []
     }, null);
