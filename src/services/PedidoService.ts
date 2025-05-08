@@ -18,6 +18,7 @@ interface pedidoDTO {
 }
 
 interface itemDTO {
+    id_itempedido?: any,
     id_itemcardapio?: any,
     quantidade?: any,
     observacao?: string,
@@ -182,7 +183,7 @@ class PedidoService {
                 throw { statusCode: 400, message: "Faltam argumentos" }
             }
 
-            // Verificar se já existe um pedido não-concluído para a mesa especificada
+            // Verificar se id do pedido é válido
             const number_id_pedido = Number(id_pedido)
             if (isNaN(number_id_pedido)) {
                 throw { statusCode: 400, message: "ID do pedido é inválido" }
@@ -193,6 +194,7 @@ class PedidoService {
                 throw { statusCode: 400, message: "ID do pedido é inválido" }
             }
 
+            // Verificar se status do pedido permite a adição de itens
             if (pedido.id_statuspedido !== 1) { // Pedido não está "aberto"
                 throw { statusCode: 400, message: "Este pedido não está ABERTO" }
             }
@@ -241,6 +243,61 @@ class PedidoService {
         }
     }
 
+    static async removerItemPedido ({id_itempedido}: itemDTO) {
+        const client = await pool.connect();
+
+        try {
+            if (!id_itempedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            // Verificar se já existe um pedido não-concluído para a mesa especificada
+            const number_id_itempedido = Number(id_itempedido);
+            if (isNaN(number_id_itempedido)) {
+                throw { statusCode: 400, message: "ID do item do pedido é inválido" }
+            }
+
+            const itemPedido = await ItemPedidoModel.buscarItemPedido(number_id_itempedido);
+            if (!itemPedido) {
+                throw { statusCode: 400, message: "ID do item do pedido é inválido" }
+            }
+
+            // Verificar se pedido em que se encontra o item é válido e permite edição
+            const pedido = await PedidoModel.buscarPedido(itemPedido.id_pedido);
+            if (pedido.id_statuspedido !== 1) { // Pedido não está "aberto"
+                throw { statusCode: 400, message: "Este pedido não está ABERTO" }
+            }
+
+            // Inicia a transaction
+            await client.query("BEGIN");
+
+            
+            // Remove os adicionais, caso tenha
+            const adicionais = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(itemPedido.id_itempedido)
+            for (const adicionalIndex in adicionais) {
+                const adicional = adicionais[adicionalIndex];
+                await AdicionalItemPedidoModel.removerAdicionalItemPedido(adicional.id_adicional_itempedido, client)
+
+            }
+
+            await ItemPedidoModel.removerItemPedido(id_itempedido, client);
+
+            // Finaliza a transaction;
+            await client.query("COMMIT");
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            // Desfaz a transaction em caso de erro
+            await client.query("ROLLBACK");
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
 }
 
 export default PedidoService;
