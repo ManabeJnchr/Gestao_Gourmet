@@ -54,27 +54,27 @@
             </div>
         </header>
 
-        <main class="row flex-grow-1">
+        <main class="row flex-grow-1" x-data="EfetuarPedido()" x-init="iniciarEfetuarPedido()">
             <div class="col-2 d-none d-lg-block pt-3 pb-3 border-2 border-end">
                 <div class="fit-content">
                     <h3 class="mb-3 fw-bold">CATEGORIAS</h3>
                     <div class="row">
                         <h3 class="fw-bold text-start">Entradas</h3>
                         <ul class="list-unstyled">
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Aperitivos'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Aperitivos')">
                                     <i class="mdi mdi-sausage" style="font-size: 20px;"></i>
                                     <span> Aperitivos</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Saladas'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Saladas')">
                                     <i class="mdi mdi-carrot" style="font-size: 20px;"></i>
                                     <span> Saladas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Sopas'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Sopas')">
                                     <i class="mdi mdi-bowl-mix" style="font-size: 20px;"></i>
                                     <span> Sopas</span>
                                 </a>
@@ -84,20 +84,20 @@
                     <div class="row">
                         <h3 class="fw-bold text-start">Pratos Principais</h3>
                         <ul class="list-unstyled">
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Aves'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Aves')">
                                     <i class="mdi mdi-food-turkey" style="font-size: 20px;"></i>
                                     <span> Aves</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Carnes'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Carnes')">
                                     <i class="mdi mdi-food-steak" style="font-size: 20px;"></i>
                                     <span> Carnes</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Massas'}" x-show="identity.id_cargo != 2">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Massas')">
                                     <i class="mdi mdi-pasta" style="font-size: 20px;"></i>
                                     <span> Massas</span>
                                 </a>
@@ -107,26 +107,26 @@
                     <div class="row">
                         <h3 class="fw-bold text-start">Bebidas</h3>
                         <ul class="list-unstyled">
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Bebidas Alcoólicas'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Bebidas Alcoólicas')">
                                     <i class="mdi mdi-glass-mug-variant" style="font-size: 20px;"></i>
                                     <span> Bebidas Alcoólicas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Bebidas Quentes'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Bebidas Quentes')">
                                     <i class="mdi mdi-tea" style="font-size: 20px;"></i>
                                     <span> Bebidas Quentes</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Refrigerantes'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Refrigerantes')">
                                     <i class="mdi mdi-bottle-soda-classic" style="font-size: 20px;"></i>
                                     <span> Refrigerantes</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
-                                <a href="#" class="text-decoration-none text-black">
+                            <li class="mb-1 p-1 rounded-2" :class="{'selected': categoriaSelecionada === 'Sucos'}">
+                                <a href="#" class="text-decoration-none text-black" @click.prevent="selecionarCategoria('Sucos')">
                                     <i class="mdi mdi-cup" style="font-size: 20px;"></i>
                                     <span> Sucos</span>
                                 </a>
@@ -136,7 +136,7 @@
                 </div>
             </div>
 
-            <div x-data="EfetuarPedido()" x-init="iniciarEfetuarPedido()" class="col-12 col-lg-10" id="div_content">
+            <div class="col-12 col-lg-10" id="div_content">
 
                 <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
@@ -151,62 +151,18 @@
                     <div class="col-9">
                         <div class="container mt-2">
                             <div class="row" style="max-height: 490px; overflow-y: auto;">
-                                <template x-for="item in cardapio">
+                                <template x-for="item in cardapioFiltrado">
                                     <div class="col-3 p-2">
                                         <div class="menu-item">
-                                            <img src="../src/img/add-item-cardapio-icon.jpg" alt="Imagem do item">
+                                            <img :src="item.imagem || '../src/img/add-item-cardapio-icon.jpg'" alt="Imagem do item">
                                             <div class="item-details">
                                                 <div x-text="item.nome" class="item-name text-truncate"></div>
                                                 <div class="price mb-2">R$ <span x-text="item.valor"></span></div>
-                                                <button type="button" id="btn_addImg" class="btn bg-white shadow-inside rounded-2 border-1 border-black pt-0 pb-0 w-100" data-bs-toggle="modal" data-bs-target="#incluirAdicionalModal">
-                                                    <span class="mdi mdi-plus text-decoration-none text-black"> Adicionais</span>
+                                                <button type="button" id="btn_adicionar" 
+                                                        class="btn text-white pt-0 pb-0 w-100" 
+                                                        @click="adicionarAoPedido(item)">
+                                                    <span style="font-size: 14px;"> ADICIONAR AO PEDIDO</span>
                                                 </button>
-                                                
-                                                <div class="modal fade" id="incluirAdicionalModal" tabindex="-1" aria-labelledby="incluirAdicionalModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header" style="background-color: #454545;">
-                                                                <h1 class="modal-title fs-5 text-white" id="incluirAdicionalModalLabel">Adicionais</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
-                                                                <button type="button" class="btn w-100 mb-2" style="background-color: #454545;">
-                                                                    <span class="mdi mdi-plus text-white"> Incluir Adicional</span>
-                                                                </button>
-                                                                <div class="row">
-                                                                    <div class="col-9">
-                                                                        <select x-model="registro.id_categoria" id="categoriaCardapio"
-                                                                            name="categoriaCardapio"
-                                                                            class="w-100 shadow-inside h-100 border-1 rounded-2">
-                                                                            <option value="" selected disabled>
-                                                                                Selecione um adicional
-                                                                            </option>
-                                                                            <template x-for="categoria in categorias">
-                                                                                <option :value="categoria.id_categoria" x-text="categoria.nome"></option>
-                                                                            </template>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-3">
-                                                                        <button type="button" class="btn btn-danger btn-sm w-100"
-                                                                                @click="excluirAdicional(index)">Remover</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
-                                                                <button type="button" class="btn bg-danger text-white"
-                                                                data-bs-dismiss="modal">
-                                                                            CANCELAR
-                                                                        </button>
-                                                                <button id="btn_adicionar" type="button" class="btn text-white"
-                                                                data-bs-dismiss="modal">
-                                                                    SALVAR
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <button class="add-to-cart mt-3">ADICIONAR AO CARRINHO</button>
                                             </div>
                                         </div>
                                     </div>
@@ -215,61 +171,114 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="row h-100" style="background-color: white; align-content: space-between;">
-                            <div>
+                        <div class="row" style="background-color: white; align-content: space-between;">
+                            <div style="height: 490px;">
                                 <div class="row p-2">
                                     <div class="col-3">
                                         <h3 class="m-0 me-2">Mesa:</h3>
                                     </div>
                                     <div class="col-9">
-                                        <select x-model="registro.id_mesa" id="mesaSelect"
+                                        <select x-model="pedido.id_mesa" id="mesaSelect"
                                             name="mesaSelect"
                                             class="w-100 shadow-inside h-100 border-1 rounded-2">
                                             <option value="" selected disabled>
                                                 Selecione uma mesa
                                             </option>
                                             <template x-for="mesa in mesas">
-                                                <option :value="mesa.id_mesa" x-text="mesa.numero_mesa"></option>
+                                                <option :value="mesa.id_mesa">
+                                                    <span x-text="mesa.numero_mesa"></span> - <span x-text="mesa.status"></span>
+                                                </option>
                                             </template>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row p-2">
-                                    <div class="col div_contentAddItem border-1 rounded-2 py-2">
-                                        <div class="row">
+                                <div class="row p-2 align-content-start" style="overflow-y: auto; height: 341px;">
+                                    <template x-for="(item, index) in pedido.itens" :key="index">
+                                        <div class="row px-2 pb-2 border-bottom" style="height: fit-content;">
+                                            <div class="col-12 mb-2">
+                                                <span class="item-namep" x-text="item.nome"></span>
+                                            </div>
                                             <div class="col-5">
-                                                <img src="../src/img/add-item-cardapio-icon.jpg" class="img-fluid">
+                                                <img :src="item.imagem || '../src/img/add-item-cardapio-icon.jpg'" class="img-fluid">
                                             </div>
                                             <div class="col-7">
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <span class="item-namep">001-HAMBURGUER</span>
-                                                    </div>
                                                     <div class="col-6">
                                                         <label for="quantidadeItem" class="item-namep form-label">Quantidade:</label>
                                                     </div>
                                                     <div class="col-6">
-                                                        <input type="number" class="item-namep form-control" id="quantidadeItem">
+                                                        <input type="number" x-mask="99" class="item-namep form-control" x-model="item.quantidade" min="1">
                                                     </div>
                                                     <div class="col-12">
-                                                        <div class="pricep">R$ 25,00</div>
+                                                        <div class="pricep">R$ <span x-text="(item.valor * item.quantidade).toFixed(2)"></span></div>
                                                     </div>
-                                                    <div class="col-12">
-                                                        <button class="add-to-cartp">REMOVER</button>
+                                                    <div class="col-6 mt-2">
+                                                        <button class="btn btn-sm bg-white shadow-inside rounded-2 border-1 border-black w-100 mdi mdi-plus" 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#incluirAdicionalModal" 
+                                                                @click="carregarAdicionais(item)">
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-6 mt-2">
+                                                        <button class="btn btn-danger btn-sm w-100 mdi mdi-delete" @click="removerItem(index)"></button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </template>
+                                </div>
+                                <div class="row"
+                                    style="background-color: white; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px;">
+                                    <div class="footer-bar">
+                                        <div class="valor-total">
+                                            <span>Valor Total: R$ </span> 
+                                            <span x-text="calcularValorTotal()"></span>
+                                        </div>
+                                        <div class="item-detailsp"><button class="add-to-cartF" @click="preparaPedido()">FINALIZAR
+                                                PEDIDO</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row"
-                                style="background-color: white; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px;">
-                                <div class="footer-bar">
-                                    <div class="valor-total"><span>Valor Total:</span> <span>75,00</span>
-                                    </div>
-                                    <div class="item-detailsp"><button class="add-to-cartF">FINALIZAR
-                                            PEDIDO</button>
+                                <div class="modal fade" id="incluirAdicionalModal" tabindex="-1" aria-labelledby="incluirAdicionalModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color: #454545;">
+                                                <h1 class="modal-title fs-5 text-white" id="incluirAdicionalModalLabel">Adicionais</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                                                <button type="button" class="btn w-100 mb-2" style="background-color: #454545;" @click="adicionarNovoAdicional()">
+                                                    <span class="mdi mdi-plus text-white"> Incluir Adicional</span>
+                                                </button>
+                                                <template x-for="(adicional, index) in adicionaisModal" :key="index">
+                                                    <div class="row mb-2">
+                                                        <div class="col-9">
+                                                            <select x-model="adicional.id_adicional" class="w-100 shadow-inside h-100 border-1 rounded-2">
+                                                                <option value="" selected disabled>Selecione um adicional</option>
+                                                                <template x-for="item in adicionaisSelecionados" :key="item.id_adicional">
+                                                                    <option :value="item.id_adicional" x-text="item.nome + ' - R$ ' + item.valor"></option>
+                                                                </template>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <button type="button" class="btn btn-danger btn-sm" @click="removerAdicional(index)">
+                                                                <span class="mdi mdi-delete"> Remover</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                                                <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
+                                                    CANCELAR
+                                                </button>
+                                                <button type="button" class="btn text-white" style="background-color: #06d20e !important;" 
+                                                        data-bs-dismiss="modal" 
+                                                        @click="salvarAdicionais()">
+                                                    SALVAR
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -366,7 +375,7 @@
     <script>
         function Index() {
             return {
-                identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
+                identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', id_funcionario: '', imagem: '' },
                 trocarSenha: { senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' },
                 getIdentity() {
                     axios.get('/identity').then(resp => {
@@ -375,6 +384,7 @@
                         this.identity.funcionario_cpf = resp.data.funcionario_cpf;
                         this.identity.funcionarionome = resp.data.funcionarionome;
                         this.identity.id_cargo = resp.data.id_cargo;
+                        this.identity.id_funcionario = resp.data.id_funcionario;
                         this.identity.imagem = `/uploads/${resp.data.imagem}`;
 
                         if (this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
@@ -471,14 +481,33 @@
         function EfetuarPedido() {
             return {
                 cardapio: [],
+                cardapioFiltrado: [],
                 mesas: [],
+                adicionaisModal: [],
+                adicionaisSelecionados: [],
+                categoriaSelecionada: '',
+                pedido: {
+                    id_pedido: null, 
+                    id_mesa: null, 
+                    id_funcionario: null, 
+                    observacao: '', 
+                    itens: [] 
+                },
                 iniciarEfetuarPedido() {
                     this.listarCardapio();
                     this.listarMesas();
+                    this.getFuncionario();
+
+                    this.$watch('pedido.id_mesa', (newValue) => {
+                        this.buscarPedidoMesa(newValue);
+                    });
+
+                    console.log(this.pedido);
                 },
-                listarCardapio(){
+                listarCardapio() {
                     axios.get('/listarCardapio').then(resp => {
                         this.cardapio = resp.data;
+                        this.cardapioFiltrado = this.cardapio;
                     })
                     .catch(error => {
                         console.log(error);
@@ -486,12 +515,158 @@
                 },
                 listarMesas() {
                     axios.get('/listarMesas').then(resp => {
-                        this.mesas = resp.data.filter(mesa => mesa.status === 'Aberta' || mesa.status === 'Disponível');
+                        this.mesas = resp.data.filter(mesa => mesa.status === 'Disponível' || mesa.status === 'Aberta');
+                        const primeiraMesaDisponivel = this.mesas.find(mesa => mesa.status === 'Disponível');
+                        if (primeiraMesaDisponivel) {
+                            this.pedido.id_mesa = primeiraMesaDisponivel.id_mesa;
+                        }
                     })
                     .catch(error => {
                         console.log(error);
                     });
                 },
+                getFuncionario() {
+                    axios.get('/identity').then(resp => {
+                        this.pedido.id_funcionario = resp.data.id_funcionario;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+                selecionarCategoria(categoria) {
+                    this.categoriaSelecionada = categoria;
+                    this.filtrarCardapio(categoria);
+                },
+                filtrarCardapio(categoria) {
+                    this.cardapioFiltrado = this.cardapio.filter(item => item.categoria === categoria);
+                },
+                adicionarAoPedido(item) {
+                    const valorAdicionais = (item.adicionais || []).reduce((total, adicional) => total + (parseFloat(adicional.valor) || 0), 0);
+                    const valorTotal = (item.valor + valorAdicionais);
+
+                    const novoItem = {
+                        id_itemcardapio: item.id_itemcardapio,
+                        nome: item.nome,
+                        quantidade: 1,
+                        valor: item.valor,
+                        observacao: '',
+                        adicionais: []
+                    };
+
+                    this.pedido.itens.push(novoItem);
+                },
+                removerItem(index) {
+                    this.pedido.itens.splice(index, 1);
+                },
+                preparaPedido() {
+                    var pedido = {
+                        id_pedido: this.pedido.id_pedido,
+                        id_mesa: this.pedido.id_mesa,
+                        id_funcionario: this.pedido.id_funcionario, 
+                        observacao: this.pedido.observacao || '',
+                        itens: []
+                    };
+
+                    this.pedido.itens.forEach((item) => {
+                        var pedidoItem = {
+                            id_itemcardapio: item.id_itemcardapio,
+                            quantidade: parseInt(item.quantidade) || 1, 
+                            observacao: item.observacao || '', 
+                            adicionais: []
+                        };
+
+                        item.adicionais.forEach((adicional) => {
+                            pedidoItem.adicionais.push({
+                                id_adicional: adicional.id_adicional
+                            });
+                        });
+
+                        pedido.itens.push(pedidoItem);
+                    });
+
+                    this.novoPedido(pedido);
+                },
+                novoPedido(pedido) {
+                    console.log(pedido);
+                    axios.post('/novoPedido', { pedido: pedido }).then(resp => {
+                        
+                    }).catch(error => {
+
+                    });
+                },
+                buscarPedidoMesa(id_mesa) {
+                    axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
+                        this.pedido = resp.data;
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                },
+                carregarAdicionais(item) {
+                    const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
+
+                    if (itemCardapio) {
+                        this.adicionaisSelecionados = itemCardapio.adicionais || [];
+                        this.adicionaisModal = item.adicionais || [];
+                        this.itemAtual = item;
+                    } else {
+                        console.error('Item do cardápio não encontrado.');
+                    }
+                },
+                adicionarNovoAdicional() {
+                    this.adicionaisModal.push({ id_adicional: "" });
+                },
+                removerAdicional(index) {
+                    this.adicionaisModal.splice(index, 1);
+                },
+                buscarPedidoMesa(id_mesa) {
+                    axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
+                        this.pedido = resp.data;
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                },
+                salvarAdicionais() {
+                    if (this.itemAtual) {
+                        this.itemAtual.adicionais = [...this.adicionaisModal];
+
+                        const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === this.itemAtual.id_itemcardapio);
+
+                        if (itemCardapio) {
+                            this.itemAtual.adicionais.forEach(adicional => {
+                                const adicionalCardapio = itemCardapio.adicionais.find(a => a.id_adicional === parseInt(adicional.id_adicional));
+                                if (adicionalCardapio) {
+                                    adicional.valor = parseFloat(adicionalCardapio.valor) || 0;
+                                }
+                            });
+
+                            const valorAdicionais = this.itemAtual.adicionais.reduce((total, adicional) => total + (parseFloat(adicional.valor) || 0), 0);
+
+                            const valorBase = parseFloat(itemCardapio.valor) || 0;
+
+
+                            this.itemAtual.valor = (valorBase + valorAdicionais).toFixed(2);
+                        }
+                    }
+                },
+                calcularValorTotal() {
+                    return this.pedido.itens.reduce((total, item) => {
+                        // Busca o item do cardápio correspondente
+                        const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
+
+                        if (itemCardapio) {
+                            const valorAdicionais = (item.adicionais || []).reduce((soma, adicional) => {
+                                const adicionalCardapio = itemCardapio.adicionais.find(a => a.id_adicional === parseInt(adicional.id_adicional));
+                                return soma + (adicionalCardapio ? parseFloat(adicionalCardapio.valor) || 0 : 0);
+                            }, 0);
+
+                            const valorBase = parseFloat(itemCardapio.valor) || 0;
+                            const valorItem = valorBase + valorAdicionais;
+                            return total + (valorItem * (parseFloat(item.quantidade) || 1));
+                        }
+
+                        return total;
+                    }, 0).toFixed(2);
+                }
             }
         }
     </script>
