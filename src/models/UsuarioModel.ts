@@ -35,7 +35,7 @@ class UsuarioModel {
     static async buscarUsuarioPorAuthToken(authToken: string) {
         try {
             const result = await pool.query(`
-                SELECT login.id_login, login.cpf, f.nome AS funcionarionome, f.cpf AS funcionario_cpf, f.id_cargo, f.imagem, c.nome AS cargonome 
+                SELECT login.id_login, login.cpf, f.id_funcionario, f.nome AS funcionarionome, f.cpf AS funcionario_cpf, f.id_cargo, f.imagem, c.nome AS cargonome, 
                 FROM login 
                 LEFT JOIN funcionario AS f ON login.id_funcionario = f.id_funcionario
                 LEFT JOIN cargo AS c ON f.id_cargo = c.id_cargo
