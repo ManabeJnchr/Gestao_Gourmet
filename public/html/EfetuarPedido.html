@@ -498,9 +498,9 @@
                     this.listarMesas();
                     this.getFuncionario();
 
-                    this.$watch('pedido.id_mesa', (newValue) => {
-                        this.buscarPedidoMesa(newValue);
-                    });
+                    // this.$watch('pedido.id_mesa', (newValue) => {
+                    //     this.buscarPedidoMesa(newValue);
+                    // });
 
                     console.log(this.pedido);
                 },
@@ -594,13 +594,6 @@
 
                     });
                 },
-                buscarPedidoMesa(id_mesa) {
-                    axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
-                        this.pedido = resp.data;
-                    }).catch(error => {
-                        console.log(error);
-                    })
-                },
                 carregarAdicionais(item) {
                     const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
 
@@ -619,11 +612,11 @@
                     this.adicionaisModal.splice(index, 1);
                 },
                 buscarPedidoMesa(id_mesa) {
-                    axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
-                        this.pedido = resp.data;
-                    }).catch(error => {
-                        console.log(error);
-                    });
+                    // axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
+                    //     this.pedido = resp.data;
+                    // }).catch(error => {
+                    //     console.log(error);
+                    // });
                 },
                 salvarAdicionais() {
                     if (this.itemAtual) {
