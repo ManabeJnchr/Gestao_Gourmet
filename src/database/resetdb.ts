@@ -6,6 +6,7 @@ import ItemCardapioService from '../services/ItemCardapioService';
 import * as https from 'https';
 import * as http from 'http';
 import { Console } from 'console';
+import MesaService from '../services/MesaService';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ async function resetdb (pool: Pool) {
         await dbinit(pool);
     
         await criarFuncionarios();
+        await criarMesas();
         await criarItens();
 
         console.log("# Banco de dados resetado com sucesso");
@@ -40,6 +42,20 @@ async function resetdb (pool: Pool) {
         console.error("# Erro ao resetar banco de dados: ", err);
         
     }
+}
+
+async function criarFuncionarios () {
+    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"1", id_cargo:1, nome:"ADM", telefone:"9911111111", imagePath:null});
+    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"2", id_cargo:2, nome:"Atendente", telefone:"9922222222", imagePath:null});
+    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"3", id_cargo:3, nome:"Garçom", telefone:"9933333333", imagePath:null});
+    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"4", id_cargo:4, nome:"Gerente", telefone:"9944444444", imagePath:null});
+}
+
+async function criarMesas () {
+    await MesaService.salvarMesa({id_mesa:-1, numero_mesa:1, qtd_lugares:4});
+    await MesaService.salvarMesa({id_mesa:-1, numero_mesa:2, qtd_lugares:4});
+    await MesaService.salvarMesa({id_mesa:-1, numero_mesa:3, qtd_lugares:4});
+    await MesaService.salvarMesa({id_mesa:-1, numero_mesa:4, qtd_lugares:4});
 }
 
 async function criarItens () {
@@ -962,13 +978,6 @@ async function criarItens () {
         adicionais: []
     }, await downloadImageAsBuffer("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG5pc-mciGi409fDzqo-FBrpeYdV2X4BC13g&s"));
 
-}
-
-async function criarFuncionarios () {
-    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"1", id_cargo:1, nome:"ADM", telefone:"9911111111", imagePath:null});
-    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"2", id_cargo:2, nome:"Atendente", telefone:"9922222222", imagePath:null});
-    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"3", id_cargo:3, nome:"Garçom", telefone:"9933333333", imagePath:null});
-    await FuncionarioService.salvarFuncionario({id_funcionario:-1, cpf:"4", id_cargo:4, nome:"Gerente", telefone:"9944444444", imagePath:null});
 }
 
 function downloadImageAsBuffer(url: string): Promise<Buffer>|null {
