@@ -101,14 +101,15 @@ class PedidoService {
                 if (item.adicionais) {
                     // Verifica se os adicionais são válidos e cria eles
                     for (const adicionalIndex in item.adicionais) {
-                        const adicional = await AdicionaisService.buscarAdicional(item.adicionais[adicionalIndex].id_adicional);
-                        
-                        if (!adicional) {
-                            throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) possui adicional inválido ou que foi excluído.`}
+                        if (item.adicionais[adicionalIndex].id_adicional) { // Se o adicional é válido (não é uma string vazia ou null)...
+                            const adicional = await AdicionaisService.buscarAdicional(item.adicionais[adicionalIndex].id_adicional);
+                            
+                            if (!adicional) {
+                                throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) possui adicional inválido ou que foi excluído.`}
+                            }
+        
+                            AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
                         }
-    
-                        AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
-    
                     }
                 }
 
