@@ -290,16 +290,53 @@ class PedidoService {
 
             }
 
-            await ItemPedidoModel.removerItemPedido(id_itempedido, client);
+            const result = await ItemPedidoModel.removerItemPedido(id_itempedido, client);
 
             // Finaliza a transaction;
             await client.query("COMMIT");
 
+            return result;
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
             // Desfaz a transaction em caso de erro
             await client.query("ROLLBACK");
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async cancelarPedido ({id_pedido}: pedidoDTO) {
+        try {
+            if (!id_pedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            // Verificar se pedido existe
+            const number_id_pedido = Number(id_pedido);
+            if (isNaN(id_pedido)) {
+                throw { statusCode: 400, message: "ID do pedido é inválido" }
+            }
+
+            // Verificar se pedido existe e é válido para ser cancelado
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+            if (!pedido) {
+                throw { statusCode: 400, message: "Pedido inexistente ou já cancelado." }
+            }
+
+            if (pedido.id_statuspedido !== 1) { // Pedido não está "aberto"
+                throw { statusCode: 400, message: "O status desse pedido não permite que ele seja cancelado." }
+            }
+
+            const result = await PedidoModel.cancelarPedido(number_id_pedido);
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
 
             if (err.statusCode) {
                 throw err;

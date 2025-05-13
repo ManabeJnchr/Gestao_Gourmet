@@ -71,9 +71,15 @@ class PedidoModel {
         }
     }
 
-    static async deletarPedido(id_pedido: number, client : PgClient = pool) {
+    static async cancelarPedido(id_pedido: number, client : PgClient = pool) {
         try {
-            // TODO: vai deletar ou setar status como desativo?
+            await client.query(
+                `UPDATE pedido
+                 SET id_statuspedido = 4
+                 WHERE id_pedido = $1
+                `,
+                 [id_pedido]
+            );
 
             return true;
         } catch (err: any) {
@@ -87,8 +93,8 @@ class PedidoModel {
             const result = await pool.query(
                 `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
                  FROM pedido
-                 WHERE id_pedido = $1
-                 ORDER BY id_pedido DESC`,
+                 WHERE id_pedido = $1 AND id_statuspedido != 4
+                 ORDER BY id_pedido DESC`, // Não buscar pedidos com status cancelado
                 [id_pedido]
             );
 

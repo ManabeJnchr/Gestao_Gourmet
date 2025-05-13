@@ -61,7 +61,7 @@ class ItemPedidoModel {
 
     static async removerItemPedido(id_itempedido: number, client : PgClient = pool) {
         try {
-            const result = await client.query(
+            await client.query(
                 `DELETE FROM itempedido
                  WHERE id_itempedido = $1
                 `,
@@ -69,7 +69,7 @@ class ItemPedidoModel {
             )
 
 
-            return result.rows[0];
+            return true;
         } catch (err: any) {
             console.error("Erro no model", err);
             throw {statusCode:500, message:"Erro ao deletar pedido, tente novamente"};

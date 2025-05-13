@@ -87,3 +87,19 @@ export const removerItemPedido = async (req: express.Request, res: express.Respo
     }
 };
   
+export const cancelarPedido = async (req: express.Request, res: express.Response) => {
+    try {
+        const result = await PedidoService.cancelarPedido(req.body);
+        
+        res.status(200).json(result)
+    } catch (err: any) {
+        console.error("Erro no controller: ", err);
+
+        if (err.statusCode) {
+            res.status(err.statusCode).json({ "erro": err.message})
+            return;
+        }
+
+        res.status(500).json({"erro": "Erro interno no servidor" })
+    }
+};
