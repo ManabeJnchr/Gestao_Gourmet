@@ -463,8 +463,10 @@ async function initdb(pool: Pool) {
             ALTER TABLE ONLY public.pedido ALTER COLUMN id_pedido SET DEFAULT nextval('public.pedido_id_pedido_seq'::regclass);
 
             ALTER TABLE ONLY public.statusmesa ALTER COLUMN id_status SET DEFAULT nextval('public.statusmesa_id_status_seq'::regclass);
-            ALTER TABLE ONLY public.statusmesa ALTER COLUMN id_status SET DEFAULT nextval('public.statusmesa_id_status_seq'::regclass);
 
+            ALTER TABLE ONLY public.itempedido ALTER COLUMN id_itempedido SET DEFAULT nextval('public.itempedido_id_itempedido_seq'::regclass);
+
+            ALTER TABLE ONLY public.adicional_itempedido ALTER COLUMN id_adicional_itempedido SET DEFAULT nextval('public.adicional_itempedido_id_adicional_itempedido_seq'::regclass);
 
 
             -- INÍCIO INSERT INTO CARGO
