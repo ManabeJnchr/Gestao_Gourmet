@@ -9,7 +9,7 @@ class AdicionalItemPedidoModel {
         try {
             const result = await pool.query(
                 `SELECT 
-                 ap.id_adicional_itempedido, ap.id_adcional, ap.valor,
+                 ap.id_adicional_itempedido, ap.id_adicional, ap.valor,
                  a.nome
                  FROM adicional_itempedido AS ap
                  LEFT JOIN adicional AS a ON ap.id_adicional = a.id_adicional
