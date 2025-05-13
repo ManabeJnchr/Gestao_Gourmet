@@ -159,6 +159,11 @@ class PedidoService {
             const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
 
             for (const item of itensPedido) {
+                if (item.imagem) {
+                    const base64 = item.imagem.toString('base64');
+                    item.imagemBase64 = `data:image/png;base64,${base64}`;
+                }
+
                 const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
 
                 item.adicionais = adicionaisItem;
