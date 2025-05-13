@@ -154,7 +154,7 @@
                                 <template x-for="item in cardapioFiltrado">
                                     <div class="col-3 p-2">
                                         <div class="menu-item">
-                                            <img :src="item.imagem || '../src/img/add-item-cardapio-icon.jpg'" alt="Imagem do item">
+                                            <img :src="item.imagemBase64 ? item.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'" alt="Imagem do item" class="img_contentThumb rounded-2">
                                             <div class="item-details">
                                                 <div x-text="item.nome" class="item-name text-truncate"></div>
                                                 <div class="price mb-2">R$ <span x-text="item.valor"></span></div>
@@ -199,7 +199,7 @@
                                                 <span class="item-namep" x-text="item.nome"></span>
                                             </div>
                                             <div class="col-5">
-                                                <img :src="item.imagem || '../src/img/add-item-cardapio-icon.jpg'" class="img-fluid">
+                                                <img :src="item.imagemBase64 ? item.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'" class="img-fluid" style="height: 100%; width: 100%;">
                                             </div>
                                             <div class="col-7">
                                                 <div class="row">
@@ -488,7 +488,7 @@
                 categoriaSelecionada: '',
                 pedido: {
                     id_pedido: null, 
-                    id_mesa: null, 
+                    id_mesa: '', 
                     id_funcionario: null, 
                     observacao: '', 
                     itens: [] 
@@ -498,9 +498,9 @@
                     this.listarMesas();
                     this.getFuncionario();
 
-                    // this.$watch('pedido.id_mesa', (newValue) => {
-                    //     this.buscarPedidoMesa(newValue);
-                    // });
+                    this.$watch('pedido.id_mesa', (newValue) => {
+                        this.buscarPedidoMesa(newValue);
+                    });
 
                     console.log(this.pedido);
                 },
@@ -516,10 +516,6 @@
                 listarMesas() {
                     axios.get('/listarMesas').then(resp => {
                         this.mesas = resp.data.filter(mesa => mesa.status === 'Disponível' || mesa.status === 'Aberta');
-                        const primeiraMesaDisponivel = this.mesas.find(mesa => mesa.status === 'Disponível');
-                        if (primeiraMesaDisponivel) {
-                            this.pedido.id_mesa = primeiraMesaDisponivel.id_mesa;
-                        }
                     })
                     .catch(error => {
                         console.log(error);
@@ -550,6 +546,7 @@
                         quantidade: 1,
                         valor: item.valor,
                         observacao: '',
+                        imagemBase64: item.imagemBase64,
                         adicionais: []
                     };
 
@@ -612,11 +609,11 @@
                     this.adicionaisModal.splice(index, 1);
                 },
                 buscarPedidoMesa(id_mesa) {
-                    // axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
-                    //     this.pedido = resp.data;
-                    // }).catch(error => {
-                    //     console.log(error);
-                    // });
+                    axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
+                        console.log('Mudou');
+                    }).catch(error => {
+                        console.log(error);
+                    });
                 },
                 salvarAdicionais() {
                     if (this.itemAtual) {
