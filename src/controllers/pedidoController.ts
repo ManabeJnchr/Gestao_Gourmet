@@ -4,7 +4,7 @@ import PedidoService from '../services/PedidoService';
 
 export const novoPedido = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await PedidoService.novoPedido(req.body);
+        const result = await PedidoService.novoPedido(req.body.pedido);
 
         res.status(200).json(result)
     } catch (err: any) {

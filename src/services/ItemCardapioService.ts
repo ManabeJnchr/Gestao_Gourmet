@@ -10,7 +10,7 @@ interface itemCardapioDTO {
     id_categoria?: any,
     descricao?: string,
     imagem?: string,
-    adicionais: Array<any>,
+    adicionais?: Array<any>,
 }
 
 class ItemCardapioService {
@@ -107,12 +107,15 @@ class ItemCardapioService {
 
             // Criar adicionais no banco de dados
             novoItem.adicionais = [];
-            for (const adicional of adicionais) {
-                adicional.id_itemcardapio = novoItem.id_itemcardapio
 
-                const novoAdicional = await AdicionaisService.novoAdicional(adicional, client);
-                
-                novoItem.adicionais.push(novoAdicional)
+            if (adicionais) {
+                for (const adicional of adicionais) {
+                    adicional.id_itemcardapio = novoItem.id_itemcardapio
+    
+                    const novoAdicional = await AdicionaisService.novoAdicional(adicional, client);
+                    
+                    novoItem.adicionais.push(novoAdicional)
+                }
             }
 
             await client.query("COMMIT");
@@ -144,17 +147,20 @@ class ItemCardapioService {
             const adicionaisAntigos = await AdicionaisService.listarAdicionais({id_itemcardapio});
             const adicionaisAntigosMap = new Map(adicionaisAntigos.map(a => [a.id_adicional, a]))
 
-            for (const adicional of adicionais) {
-                if (adicional.id_adicional === -1) { // Novo adicional:
-                    const novoAdicional = await AdicionaisService.novoAdicional(adicional, client);
-
-                    adicional.id_adicional = novoAdicional.id_adicional;
-                } else if (adicionaisAntigosMap.has(adicional.id_adicional)) { // Atualizar adicional
-                    await AdicionaisService.atualizarAdicional(adicional, client);
-                    adicionaisAntigosMap.delete(adicional.id_adicional) // Já foi tratado, remover do map
+            if (adicionais) {
+                for (const adicional of adicionais) {
+                    if (adicional.id_adicional === -1) { // Novo adicional:
+                        const novoAdicional = await AdicionaisService.novoAdicional(adicional, client);
+    
+                        adicional.id_adicional = novoAdicional.id_adicional;
+                    } else if (adicionaisAntigosMap.has(adicional.id_adicional)) { // Atualizar adicional
+                        await AdicionaisService.atualizarAdicional(adicional, client);
+                        adicionaisAntigosMap.delete(adicional.id_adicional) // Já foi tratado, remover do map
+                    }
                 }
-            }
 
+            }
+            
             // Deletar os que sobraram
             for (const [id] of adicionaisAntigosMap) {
                 await AdicionaisService.deletarAdicional({id_adicional: id}, client);

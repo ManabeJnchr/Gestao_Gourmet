@@ -59,9 +59,13 @@ class PedidoService {
             }
 
             // Verificar se mesa específica é válida para criar um novo pedido
-            const mesa = await MesaService.buscarMesa(id_mesa);
-            if (!mesa || mesa.id_status !== 2 ) {
+            const mesa = await MesaService.buscarMesa({id_mesa});
+            if (!mesa) {
                 throw { statusCode: 400, message: "Mesa inválida" }
+            }
+
+            if (mesa.id_status !== 2) {
+                throw { statusCode: 400, message: "Status da mesa impossibilita criação de pedido" }
             }
 
             // Verificar se já existe um pedido não-concluído para a mesa especificada
@@ -91,7 +95,7 @@ class PedidoService {
                     throw { statusCode: 400, message: `Quantidade do ${itemIndex+1}º item (id:${item.id_itemcardapio}) inválida.`}
                 }
 
-                const itemCardapio = await ItemCardapioService.buscarItemCardapio(item.id_itemcardapio);
+                const itemCardapio = await ItemCardapioService.buscarItemCardapio({id_itemcardapio:item.id_itemcardapio});
                 if (!itemCardapio) {
                     throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) é inválido ou foi excluído.`}
                 }
@@ -102,7 +106,7 @@ class PedidoService {
                     // Verifica se os adicionais são válidos e cria eles
                     for (const adicionalIndex in item.adicionais) {
                         if (item.adicionais[adicionalIndex].id_adicional) { // Se o adicional é válido (não é uma string vazia ou null)...
-                            const adicional = await AdicionaisService.buscarAdicional(item.adicionais[adicionalIndex].id_adicional);
+                            const adicional = await AdicionaisService.buscarAdicional({id_adicional:item.adicionais[adicionalIndex].id_adicional});
                             
                             if (!adicional) {
                                 throw { statusCode: 400, message: `O ${itemIndex+1}º item (id:${item.id_itemcardapio}) possui adicional inválido ou que foi excluído.`}
@@ -217,7 +221,7 @@ class PedidoService {
 
             // Verifica se os adicionais são válidos e cria eles
             for (const adicionalIndex in adicionais) {
-                const adicional = await AdicionaisService.buscarAdicional(adicionais[adicionalIndex].id_adicional);
+                const adicional = await AdicionaisService.buscarAdicional({id_adicional:adicionais[adicionalIndex].id_adicional});
                 
                 if (!adicional) {
                     throw { statusCode: 400, message: `O item possui adicional inválido ou que foi excluído.`}

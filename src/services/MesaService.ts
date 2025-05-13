@@ -9,7 +9,7 @@ interface MesaDTO {
 }
 
 class MesaService {
-    static async salvarMesa({ id_mesa, numero_mesa, qtd_lugares, id_status=4 }: MesaDTO) {
+    static async salvarMesa({ id_mesa, numero_mesa, qtd_lugares, id_status=2 }: MesaDTO) {
         try {
             if (!id_mesa || !numero_mesa || !qtd_lugares) {
                 throw { statusCode: 400, message: "Algum argumento não foi especificado" }
@@ -74,7 +74,7 @@ class MesaService {
 
     static async adicionarMesa ({ numero_mesa, qtd_lugares }: MesaDTO) {
         try {
-            return await MesaModel.adicionarMesa(numero_mesa, qtd_lugares, 4); // status 4 = "Aberta"
+            return await MesaModel.adicionarMesa(numero_mesa, qtd_lugares, 2); // status 2 = "Disponível"
 
         } catch (err: any) {
             console.error("Erro no service: ", err);
