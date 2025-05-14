@@ -489,6 +489,7 @@
                 adicionaisModal: [],
                 adicionaisSelecionados: [],
                 categoriaSelecionada: '',
+                numero_de_itens: 0,
                 pedido: {
                     id_pedido: null, 
                     id_mesa: '', 
@@ -576,6 +577,7 @@
                 },
                 preparaPedido() {
                     if(this.pedido.id_pedido == null) {
+                        console.log('NovoPEdido')
                         var pedido = {
                             id_pedido: this.pedido.id_pedido,
                             id_mesa: this.pedido.id_mesa,
@@ -600,17 +602,50 @@
     
                             pedido.itens.push(pedidoItem);
                         });
+                    } else {
+                        console.log('AdicionarItem')
+                        var pedido = {
+                            id_pedido: this.pedido.id_pedido,
+                            itens: []
+                        };
+    
+                        this.pedido.itens.forEach((item, key) => {
+                            if(key >= this.numero_de_itens) {
+                                var pedidoItem = {
+                                    id_itemcardapio: item.id_itemcardapio,
+                                    quantidade: parseInt(item.quantidade) || 1, 
+                                    observacao: item.observacao || '', 
+                                    adicionais: []
+                                };
+        
+                                item.adicionais.forEach((adicional) => {
+                                    pedidoItem.adicionais.push({
+                                        id_adicional: adicional.id_adicional
+                                    });
+                                });
+        
+                                pedido.itens.push(pedidoItem);
+                            }
+                        });
                     }
 
                     this.novoPedido(pedido);
                 },
                 novoPedido(pedido) {
                     console.log(pedido);
-                    axios.post('/novoPedido', { pedido: pedido }).then(resp => {
-                        
-                    }).catch(error => {
-
-                    });
+                    if(pedido.id_pedido == null) {
+                        axios.post('/novoPedido', { pedido: pedido }).then(resp => {
+                            
+                        }).catch(error => {
+    
+                        });
+                    } else {
+                        axios.post('/adicionarItensPedido', pedido).then(resp => {
+                            
+                        }).catch(error => {
+    
+                        });
+                    }
                 },
                 carregarAdicionais(item) {
                     const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
@@ -658,6 +693,7 @@
                                 this.pedido.itens.push(novoItem);
                             });
                         }
+                        this.numero_de_itens = this.pedido.itens.length;
                     }).catch(error => {
                         console.log(error);
                     });
