@@ -234,7 +234,9 @@
                                             <span>Valor Total: R$ </span> 
                                             <span x-text="calcularValorTotal()"></span>
                                         </div>
-                                        <div class="item-detailsp"><button class="add-to-cartF" @click="preparaPedido()">FINALIZAR
+                                        <div class="item-detailsp">
+                                            <button class="add-to-cartF mb-2" @click="cancelarPedido()">CANCELAR PEDIDO</button>
+                                            <button class="add-to-cartF" @click="preparaPedido()">FINALIZAR
                                                 PEDIDO</button>
                                         </div>
                                     </div>
@@ -701,6 +703,31 @@
 
                         return total;
                     }, 0).toFixed(2);
+                },
+                cancelarPedido() {
+                    axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
+                        if(resp.data == true) {
+                            this.resetarPedido();
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                },
+                resetarPedido() {
+                    this.pedido = {
+                        id_pedido: null,
+                        id_mesa: '',
+                        id_funcionario: this.id_funcionario,
+                        observacao: '',
+                        itens: []
+                    };
+
+                    // Opcional: Limpar outras variáveis relacionadas ao pedido
+                    this.adicionaisModal = [];
+                    this.adicionaisSelecionados = [];
+                    this.categoriaSelecionada = '';
+
+                    console.log('Pedido resetado para os valores iniciais:', this.pedido);
                 }
             }
         }
@@ -711,4 +738,3 @@
 </body>
 
 </html>
-``` 
