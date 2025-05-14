@@ -185,12 +185,16 @@ class PedidoService {
 
     }
 
-    static async adicionarItemPedido ({id_pedido}: pedidoDTO, {id_itemcardapio, quantidade=1, observacao="", adicionais=[]}: itemDTO) {
+    static async adicionarItensPedido ({id_pedido, itens}: pedidoDTO) {
         const client = await pool.connect();
 
         try {
-            if (!id_pedido || !id_itemcardapio) {
+            if (!id_pedido || !itens) {
                 throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            if (!itens.length) {
+                throw { statusCode: 400, message: "Nenhum item foi adicionado" }
             }
 
             // Verificar se id do pedido é válido
@@ -212,27 +216,34 @@ class PedidoService {
             // Inicia a transaction
             await client.query("BEGIN");
 
-            const numberQuantidade = quantidade ? Number(quantidade) : 1;
-            if (isNaN(numberQuantidade)) {
-                throw { statusCode: 400, message: `Quantidade do item é inválida.`}
-            }
+            for (const itemIndex in itens) {
+                const item = itens[itemIndex];
 
-            const itemCardapio = await ItemCardapioService.buscarItemCardapio(id_itemcardapio);
-            if (!itemCardapio) {
-                throw { statusCode: 400, message: `O item é inválido ou foi excluído.`}
-            }
-
-            const resultItemPedido = await ItemPedidoModel.adicionarItemPedido(id_pedido, itemCardapio.id_itemcardapio, numberQuantidade, itemCardapio.valor, observacao, client);
-
-            // Verifica se os adicionais são válidos e cria eles
-            for (const adicionalIndex in adicionais) {
-                const adicional = await AdicionaisService.buscarAdicional({id_adicional:adicionais[adicionalIndex].id_adicional});
-                
-                if (!adicional) {
-                    throw { statusCode: 400, message: `O item possui adicional inválido ou que foi excluído.`}
+                const numberQuantidade = item.quantidade ? Number(item.quantidade) : 1;
+                if (isNaN(numberQuantidade)) {
+                    throw { statusCode: 400, message: `Quantidade do ${itemIndex+1}º item é inválida.`}
                 }
-
-                AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
+    
+                const itemCardapio = await ItemCardapioService.buscarItemCardapio(item.id_itemcardapio);
+                if (!itemCardapio) {
+                    throw { statusCode: 400, message: `O ${itemIndex+1}º item é inválido ou foi excluído.`}
+                }
+    
+                const resultItemPedido = await ItemPedidoModel.adicionarItemPedido(id_pedido, itemCardapio.id_itemcardapio, numberQuantidade, itemCardapio.valor, item.observacao || "", client);
+    
+                // Verifica se os adicionais são válidos e cria eles
+                if (item.adicionais) {
+                    for (const adicionalIndex in item.adicionais) {
+                        const adicional = await AdicionaisService.buscarAdicional({id_adicional:item.adicionais[adicionalIndex].id_adicional});
+                        
+                        if (!adicional) {
+                            throw { statusCode: 400, message: `O ${itemIndex+1}º item possui adicional inválido ou que foi excluído.`}
+                        }
+        
+                        AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
+                                
+                    }
+                }
 
             }
 

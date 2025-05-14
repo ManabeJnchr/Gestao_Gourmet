@@ -53,9 +53,9 @@ export const buscarPedidoMesa = async (req: express.Request, res: express.Respon
     }
 };
 
-export const adicionarItemPedido = async (req: express.Request, res: express.Response) => {
+export const adicionarItensPedido = async (req: express.Request, res: express.Response) => {
     try {
-        const result = await PedidoService.adicionarItemPedido({id_pedido:req.body.id_pedido || null}, req.body.item || null);
+        const result = await PedidoService.adicionarItensPedido(req.body);
         
         res.status(200).json(result)
     } catch (err: any) {
