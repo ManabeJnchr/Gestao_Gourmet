@@ -105,6 +105,22 @@ class PedidoModel {
         }
     }
 
+    static async fecharPedido(id_pedido: number, client : PgClient = pool) {
+        try {
+            await client.query(
+                `UPDATE pedido
+                 SET id_statuspedido = 2
+                 WHERE id_pedido = $1
+                `,
+                 [id_pedido]
+            );
+
+            return true;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao deletar pedido, tente novamente"};
+        }
+    }
 
 }
 

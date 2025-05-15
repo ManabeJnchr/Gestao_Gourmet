@@ -1,5 +1,5 @@
 import express from "express";
-import { listarPedidos, novoPedido, buscarPedidoMesa, adicionarItensPedido, removerItemPedido, cancelarPedido } from "../controllers/pedidoController";
+import { listarPedidos, novoPedido, buscarPedidoMesa, adicionarItensPedido, removerItemPedido, cancelarPedido, fecharPedido } from "../controllers/pedidoController";
 
 export default (router: express.Router) => {
     router.get('/listarPedidos', listarPedidos );
@@ -8,4 +8,5 @@ export default (router: express.Router) => {
     router.post('/adicionarItensPedido', adicionarItensPedido );
     router.post('/removerItemPedido', removerItemPedido );
     router.post('/cancelarPedido', cancelarPedido );
+    router.post('/fecharPedido', fecharPedido );
 };

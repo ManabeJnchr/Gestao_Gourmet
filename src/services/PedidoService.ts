@@ -7,6 +7,7 @@ import ItemPedidoModel from "../models/ItemPedidoModel";
 import pool from "../database";
 import FuncionarioService from "./FuncionarioService";
 import AdicionalItemPedidoModel from "../models/AdicionalItemPedidoModel";
+import MesaModel from "../models/MesaModel";
 
 interface pedidoDTO {
     id_pedido?: any,
@@ -83,6 +84,9 @@ class PedidoService {
             // Inicia a transaction
             await client.query("BEGIN");
 
+            // Muda o status da mesa para "aberta"
+            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 4);
+
             // Cria o pedido
             const resultPedido = await PedidoModel.adicionarPedido(mesa.id_mesa, observacao, funcionario.id_funcionario, id_statuspedido, client);
 
@@ -124,6 +128,8 @@ class PedidoService {
 
             await client.query("COMMIT");
 
+            return resultPedido;
+
         } catch (err: any) {
             console.error("Erro no service: ", err);
 
@@ -152,7 +158,7 @@ class PedidoService {
 
             const pedido = await PedidoModel.buscarPedidoMesa(number_id_mesa);
 
-            if (!pedido) { // Se não há nenhum pedido ainda, retorna um objeto vazio
+            if (!pedido) { // Se não há nenhum pedido ainda, retorna nulo
                 return null;
             }
 
@@ -344,6 +350,42 @@ class PedidoService {
             }
 
             const result = await PedidoModel.cancelarPedido(number_id_pedido);
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async fecharPedido ({id_pedido}: pedidoDTO) {
+        try {
+            if (!id_pedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            // Verificar se pedido existe
+            const number_id_pedido = Number(id_pedido);
+            if (isNaN(id_pedido)) {
+                throw { statusCode: 400, message: "ID do pedido é inválido" }
+            }
+
+            // Verificar se pedido existe e é válido para ser cancelado
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+            if (!pedido) {
+                throw { statusCode: 400, message: "Pedido inexistente ou cancelado." }
+            }
+
+            if (pedido.id_statuspedido !== 1) { // Pedido não está "aberto"
+                throw { statusCode: 400, message: "O status desse pedido não permite que ele seja fechado." }
+            }
+
+            const result = await PedidoModel.fecharPedido(number_id_pedido);
 
             return result;
         } catch (err: any) {
