@@ -240,10 +240,16 @@
                                         <div class="item-detailsp">
                                             <div class="row">
                                                 <di class="col-6">
-                                                    <button type="button" class="w-100 btn btn-danger h-100" @click="cancelarPedido()">CANCELAR</button>
+                                                    <button id="cancelarPedido" type="button" class="w-100 btn btn-danger h-100" data-bs-toggle="modal" data-bs-target="#cancelarPedidoModal">CANCELAR</button>
                                                 </di>
                                                 <div class="col-6">
-                                                    <button class="add-to-cartF w-100" data-bs-toggle="modal" data-bs-target="#finalizarPedidoModal">FINALIZAR</button>
+                                                    <button id="btn_adicionar"
+                                                            class="btn text-white w-100"
+                                                            :disabled="pedido.itens.length == 0"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#finalizarPedidoModal">
+                                                        FINALIZAR
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,14 +288,12 @@
                                                 <button
                                                     type="button"
                                                     class="btn bg-danger text-white"
-                                                    :disabled="pedido.id_pedido == null"
                                                     data-bs-dismiss="modal">
                                                     CANCELAR
                                                 </button>
                                                 <button
                                                     type="button"
                                                     class="btn text-white"
-                                                    :disabled="pedido.itens.length == 0"
                                                     style="background-color: #06d20e !important;"
                                                     data-bs-dismiss="modal"
                                                     @click="salvarAdicionais()">
@@ -322,6 +326,29 @@
                                         data-bs-dismiss="modal">
                                     SALVAR
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="cancelarPedidoModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #454545;">
+                                <h1 class="modal-title fs-5 text-white">Cancelar Pedido</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                                class="rounded rounded-bottom-2">
+                                <p class="confirmation-text">Tem certeza que deseja cancelar o pedido?</p>
+                                <div class="mt-4">
+                                    <button type="button" class="btn bg-danger text-white me-3"
+                                        data-bs-dismiss="modal">CANCELAR</button>
+                                    <button type="button" class="btn text-white" style="background-color: #06d20e !important;" data-bs-dismiss="modal"
+                                        @click.prevent="cancelarPedido()">CONFIRMAR</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
                             </div>
                         </div>
                     </div>
@@ -637,15 +664,20 @@
                     }, 0).toFixed(2);
                 },
                 cancelarPedido() {
-                    axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
-                        if(resp.data == true) {
-                            this.resetarPedido();
-                            showToast('Pedido cancelado com sucesso!', 'success');
-                        }
-                    }).catch(error => {
-                        showToast(error.response?.data?.erro || 'Erro ao cancelar pedido.', 'danger');
-                        console.log(error);
-                    })
+                    if(this.pedido.id_pedido == null) {
+                        this.resetarPedido();
+                        showToast('Pedido cancelado com sucesso!', 'success');
+                    } else {
+                        axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
+                            if(resp.data == true) {
+                                this.resetarPedido();
+                                showToast('Pedido cancelado com sucesso!', 'success');
+                            }
+                        }).catch(error => {
+                            showToast(error.response?.data?.erro || 'Erro ao cancelar pedido.', 'danger');
+                            console.log(error);
+                        })
+                    }
                 },
                 carregarAdicionais(item) {
                     const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
@@ -725,6 +757,7 @@
                             console.log(error);
                         });
                     }
+                    this.resetarPedido();
                 },
                 preparaPedido() {
                     if(this.pedido.id_pedido == null) {
@@ -853,4 +886,3 @@
 </body>
 
 </html>
-``` 
