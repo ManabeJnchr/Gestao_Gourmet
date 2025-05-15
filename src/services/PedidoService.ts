@@ -328,6 +328,8 @@ class PedidoService {
     }
 
     static async cancelarPedido ({id_pedido}: pedidoDTO) {
+        const client = await pool.connect();
+
         try {
             if (!id_pedido) {
                 throw { statusCode: 400, message: "Faltam argumentos" }
@@ -349,11 +351,26 @@ class PedidoService {
                 throw { statusCode: 400, message: "O status desse pedido não permite que ele seja cancelado." }
             }
 
+            const mesa = await MesaService.buscarMesa({id_mesa:pedido.id_mesa});
+
+            // Inicia a transaction
+            await client.query("BEGIN");
+
+            // Mudar status da mesa para "disponível"
+            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 2);
+
+            // Mudar status do pedido para "cancelado"
             const result = await PedidoModel.cancelarPedido(number_id_pedido);
+
+            // Finaliza a transaction;
+            await client.query("COMMIT");
 
             return result;
         } catch (err: any) {
             console.error("Erro no service: ", err);
+
+            // Desfaz a transaction em caso de erro
+            await client.query("ROLLBACK");
 
             if (err.statusCode) {
                 throw err;
@@ -364,6 +381,8 @@ class PedidoService {
     }
 
     static async fecharPedido ({id_pedido}: pedidoDTO) {
+        const client = await pool.connect();
+
         try {
             if (!id_pedido) {
                 throw { statusCode: 400, message: "Faltam argumentos" }
@@ -385,11 +404,26 @@ class PedidoService {
                 throw { statusCode: 400, message: "O status desse pedido não permite que ele seja fechado." }
             }
 
+            const mesa = await MesaService.buscarMesa({id_mesa:pedido.id_mesa});
+
+            // Inicia a transaction
+            await client.query("BEGIN");
+
+            // Mudar status da mesa para "fechada"
+            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 4);
+
+            // Mudar status do pedido para "fechado"
             const result = await PedidoModel.fecharPedido(number_id_pedido);
+
+            // Finaliza a transaction;
+            await client.query("COMMIT");
 
             return result;
         } catch (err: any) {
             console.error("Erro no service: ", err);
+
+            // Desfaz a transaction em caso de erro
+            await client.query("ROLLBACK");
 
             if (err.statusCode) {
                 throw err;
