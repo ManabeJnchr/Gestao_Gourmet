@@ -98,7 +98,7 @@ class AdicionaisService {
         try {
 
             if (!id_adicional) {
-                throw { statusCode: 400, message: "ID do item não especificado" }
+                throw { statusCode: 400, message: "ID do adicional não especificado" }
             }
             
             const numero_id_adicional = Number(id_adicional);

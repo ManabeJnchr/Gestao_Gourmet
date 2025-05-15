@@ -224,7 +224,7 @@ class PedidoService {
                     throw { statusCode: 400, message: `Quantidade do ${itemIndex+1}º item é inválida.`}
                 }
     
-                const itemCardapio = await ItemCardapioService.buscarItemCardapio(item.id_itemcardapio);
+                const itemCardapio = await ItemCardapioService.buscarItemCardapio({id_itemcardapio:item.id_itemcardapio});
                 if (!itemCardapio) {
                     throw { statusCode: 400, message: `O ${itemIndex+1}º item é inválido ou foi excluído.`}
                 }
@@ -241,7 +241,7 @@ class PedidoService {
                         }
         
                         AdicionalItemPedidoModel.novoAdicionalItemPedido(resultItemPedido.id_itempedido, adicional.id_adicional, adicional.valor, client)
-                                
+
                     }
                 }
 
