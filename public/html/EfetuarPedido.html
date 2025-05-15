@@ -159,7 +159,7 @@
                                                 <div x-text="item.nome" class="item-name text-truncate"></div>
                                                 <div class="price mb-2">R$ <span x-text="item.valor"></span></div>
                                                 <button type="button" id="btn_adicionar" 
-                                                        class="btn text-white pt-0 pb-0 w-100" 
+                                                        class="btn text-white pt-0 pb-0 w-100" :class="pedido.id_mesa > 0 ? '' : 'disabled'" 
                                                         @click="adicionarAoPedido(item)">
                                                     <span style="font-size: 14px;"> ADICIONAR AO PEDIDO</span>
                                                 </button>
@@ -174,10 +174,10 @@
                         <div class="row" style="background-color: white; align-content: space-between;">
                             <div style="height: 490px;">
                                 <div class="row p-2">
-                                    <div class="col-3">
+                                    <div class="col-3 align-content-center">
                                         <h3 class="m-0 me-2">Mesa:</h3>
                                     </div>
-                                    <div class="col-9">
+                                    <div class="col-7">
                                         <select x-model="pedido.id_mesa" id="mesaSelect"
                                             name="mesaSelect"
                                             class="w-100 shadow-inside h-100 border-1 rounded-2">
@@ -190,6 +190,9 @@
                                                 </option>
                                             </template>
                                         </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-sm bg-white shadow-inside rounded-2 border-1 border-black"><span class="mdi mdi-note-text-outline" data-bs-toggle="modal" data-bs-target="#incluirObservacaoPedido"></span></button>
                                     </div>
                                 </div>
                                 <div class="row p-2 align-content-start" style="overflow-y: auto; height: 341px;">
@@ -237,10 +240,10 @@
                                         <div class="item-detailsp">
                                             <div class="row">
                                                 <di class="col-6">
-                                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white add-to-cartF" @click="cancelarPedido()">CANCELAR</button>
+                                                    <button type="button" class="w-100 btn btn-danger h-100" @click="cancelarPedido()">CANCELAR</button>
                                                 </di>
                                                 <div class="col-6">
-                                                    <button class="add-to-cartF w-100" @click="preparaPedido()">FINALIZAR</button>
+                                                    <button class="add-to-cartF w-100" data-bs-toggle="modal" data-bs-target="#finalizarPedidoModal">FINALIZAR</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -276,12 +279,20 @@
                                                 </template>
                                             </div>
                                             <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
-                                                <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
+                                                <button
+                                                    type="button"
+                                                    class="btn bg-danger text-white"
+                                                    :disabled="pedido.id_pedido == null"
+                                                    data-bs-dismiss="modal">
                                                     CANCELAR
                                                 </button>
-                                                <button type="button" class="btn text-white" style="background-color: #06d20e !important;" 
-                                                        data-bs-dismiss="modal" 
-                                                        @click="salvarAdicionais()">
+                                                <button
+                                                    type="button"
+                                                    class="btn text-white"
+                                                    :disabled="pedido.itens.length == 0"
+                                                    style="background-color: #06d20e !important;"
+                                                    data-bs-dismiss="modal"
+                                                    @click="salvarAdicionais()">
                                                     SALVAR
                                                 </button>
                                             </div>
@@ -292,6 +303,55 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal fade" id="incluirObservacaoPedido" tabindex="-1" aria-labelledby="incluirObservacaoPedidoLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #454545;">
+                                <h1 class="modal-title fs-5 text-white" id="incluirObservacaoPedidoLabel">Observação do Pedido</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                                <textarea class="form-control" id="obsPedido" rows="3" x-model="pedido.observacao"></textarea>
+                            </div>
+                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                                <button type="button" class="btn bg-danger text-white" @click="pedido.observacao = ''" data-bs-dismiss="modal">
+                                    CANCELAR
+                                </button>
+                                <button type="button" class="btn text-white" style="background-color: #06d20e !important;" 
+                                        data-bs-dismiss="modal">
+                                    SALVAR
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="finalizarPedidoModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #454545;">
+                                <h1 class="modal-title fs-5 text-white">Finalizar Pedido</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                                class="rounded rounded-bottom-2">
+                                <p class="confirmation-text">Tem certeza que deseja "GRAVAR PEDIDO" ou "ENVIAR PARA O CAIXA"?</p>
+                                <div class="mt-4">
+                                    <button type="button" class="btn bg-danger text-white me-3"
+                                        data-bs-dismiss="modal">VOLTAR</button>
+                                    <button type="button" class="btn btn-primary text-white me-3"
+                                        data-bs-dismiss="modal" @click="preparaPedido()">GRAVAR PEDIDO</button>
+                                    <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                                        @click.prevent="trocarSenhaAtual()">ENVIAR PARA O CAIXA</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
 
@@ -535,9 +595,10 @@
                             } else {
                                 this.pedido.id_pedido = resp.data.id_pedido;
                                 this.pedido.id_mesa = id_mesa;
-                                this.pedido.id_pedido = resp.data.id_pedido;
-        
-                                resp.data.itens.forEach((item, index) => {
+                                this.pedido.observacao = resp.data.observacao || '';
+                                this.pedido.itens = [];
+
+                                resp.data.itens.forEach((item) => {
                                     const novoItem = {
                                         id_itempedido: item.id_itempedido,
                                         id_itemcardapio: item.id_itemcardapio,
@@ -548,7 +609,6 @@
                                         imagemBase64: item.imagemBase64,
                                         adicionais: item.adicionais,
                                     };
-        
                                     this.pedido.itens.push(novoItem);
                                 });
                                 showToast('Pedido carregado com sucesso!', 'success');
@@ -793,4 +853,4 @@
 </body>
 
 </html>
-`
+``` 
