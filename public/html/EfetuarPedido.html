@@ -240,7 +240,7 @@
                                         <div class="item-detailsp">
                                             <div class="row">
                                                 <di class="col-6">
-                                                    <button type="button" class="w-100 btn btn-danger h-100" @click="cancelarPedido()">CANCELAR</button>
+                                                    <button type="button" class="w-100 btn btn-danger h-100" data-bs-toggle="modal" data-bs-target="#cancelarPedidoModal">CANCELAR</button>
                                                 </di>
                                                 <div class="col-6">
                                                     <button class="add-to-cartF w-100" data-bs-toggle="modal" data-bs-target="#finalizarPedidoModal">FINALIZAR</button>
@@ -322,6 +322,29 @@
                                         data-bs-dismiss="modal">
                                     SALVAR
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="cancelarPedidoModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #454545;">
+                                <h1 class="modal-title fs-5 text-white">Cancelar Pedido</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                                class="rounded rounded-bottom-2">
+                                <p class="confirmation-text">Tem certeza que deseja cancelar o pedido?</p>
+                                <div class="mt-4">
+                                    <button type="button" class="btn bg-danger text-white me-3"
+                                        data-bs-dismiss="modal">CANCELAR</button>
+                                    <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                                        @click.prevent="cancelarPedido()">CONFIRMAR</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
                             </div>
                         </div>
                     </div>
@@ -852,5 +875,4 @@
 
 </body>
 
-</html>
-``` 
+</html> 
