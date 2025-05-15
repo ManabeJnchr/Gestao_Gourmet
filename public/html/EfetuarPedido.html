@@ -196,7 +196,7 @@
                                     <template x-for="(item, index) in pedido.itens" :key="index">
                                         <div class="row px-2 pb-2 border-bottom" style="height: fit-content;">
                                             <div class="col-12 mb-2">
-                                                <span class="item-namep" x-text="item.nome"></span>
+                                                <span class="item-namep" x-text="item.nome"><span class="badge bg-secondary" x-text="item.adicionais.length"></span></span>
                                             </div>
                                             <div class="col-5">
                                                 <img :src="item.imagemBase64 ? item.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'" class="img-fluid" style="height: 100%; width: 100%;">
@@ -231,13 +231,18 @@
                                     style="background-color: white; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px;">
                                     <div class="footer-bar">
                                         <div class="valor-total">
-                                            <span>Valor Total: R$ </span> 
+                                            <span>Valor Total: R$</span> 
                                             <span x-text="calcularValorTotal()"></span>
                                         </div>
                                         <div class="item-detailsp">
-                                            <button class="add-to-cartF mb-2" @click="cancelarPedido()">CANCELAR PEDIDO</button>
-                                            <button class="add-to-cartF" @click="preparaPedido()">FINALIZAR
-                                                PEDIDO</button>
+                                            <div class="row">
+                                                <di class="col-6">
+                                                    <button id="btn_cancelar" type="button" class="w-100 btn text-white add-to-cartF" @click="cancelarPedido()">CANCELAR</button>
+                                                </di>
+                                                <div class="col-6">
+                                                    <button class="add-to-cartF w-100" @click="preparaPedido()">FINALIZAR</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -482,20 +487,132 @@
 
         function EfetuarPedido() {
             return {
-                id_funcionario: '',
-                cardapio: [],
-                cardapioFiltrado: [],
-                mesas: [],
                 adicionaisModal: [],
                 adicionaisSelecionados: [],
+                cardapio: [],
+                cardapioFiltrado: [],
                 categoriaSelecionada: '',
-                numero_de_itens: 0,
+                id_funcionario: '',
+                mesas: [],
                 pedido: {
                     id_pedido: null, 
                     id_mesa: '', 
                     id_funcionario: null, 
                     observacao: '', 
                     itens: [] 
+                },
+                adicionarAoPedido(item) {
+                    const valorAdicionais = (item.adicionais || []).reduce((total, adicional) => total + (parseFloat(adicional.valor) || 0), 0);
+                    const valorTotal = (item.valor + valorAdicionais);
+
+                    const novoItem = {
+                        id_itempedido: null,
+                        id_itemcardapio: item.id_itemcardapio,
+                        nome: item.nome,
+                        quantidade: 1,
+                        valor: item.valor,
+                        observacao: '',
+                        imagemBase64: item.imagemBase64,
+                        adicionais: []
+                    };
+
+                    this.pedido.itens.push(novoItem);
+                },
+                adicionarNovoAdicional() {
+                    this.adicionaisModal.push({ id_adicional: "" });
+                },
+                buscarPedidoMesa(id_mesa) {
+                    if(id_mesa != "") {
+                        axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
+                            if(resp.data == null) {
+                                this.pedido = {
+                                    id_pedido: null, 
+                                    id_mesa: id_mesa, 
+                                    id_funcionario: this.id_funcionario, 
+                                    observacao: '', 
+                                    itens: []
+                                }
+                            } else {
+                                this.pedido.id_pedido = resp.data.id_pedido;
+                                this.pedido.id_mesa = id_mesa;
+                                this.pedido.id_pedido = resp.data.id_pedido;
+        
+                                resp.data.itens.forEach((item, index) => {
+                                    const novoItem = {
+                                        id_itempedido: item.id_itempedido,
+                                        id_itemcardapio: item.id_itemcardapio,
+                                        nome: item.nome,
+                                        quantidade: item.quantidade,
+                                        valor: item.valor,
+                                        observacao: item.observacao,
+                                        imagemBase64: item.imagemBase64,
+                                        adicionais: item.adicionais,
+                                    };
+        
+                                    this.pedido.itens.push(novoItem);
+                                });
+                                showToast('Pedido carregado com sucesso!', 'success');
+                            }
+                        }).catch(error => {
+                            showToast(error.response?.data?.erro || 'Erro ao buscar pedido.', 'danger');
+                        });
+                    } 
+                },
+                calcularValorTotal() {
+                    return this.pedido.itens.reduce((total, item) => {
+                        const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
+
+                        if (itemCardapio) {
+                            const valorAdicionais = (item.adicionais || []).reduce((soma, adicional) => {
+                                const adicionalCardapio = itemCardapio.adicionais.find(a => a.id_adicional === parseInt(adicional.id_adicional));
+                                return soma + (adicionalCardapio ? parseFloat(adicionalCardapio.valor) || 0 : 0);
+                            }, 0);
+
+                            const valorBase = parseFloat(itemCardapio.valor) || 0;
+                            const valorItem = valorBase + valorAdicionais;
+                            return total + (valorItem * (parseFloat(item.quantidade) || 1));
+                        }
+
+                        return total;
+                    }, 0).toFixed(2);
+                },
+                cancelarPedido() {
+                    axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
+                        if(resp.data == true) {
+                            this.resetarPedido();
+                            showToast('Pedido cancelado com sucesso!', 'success');
+                        }
+                    }).catch(error => {
+                        showToast(error.response?.data?.erro || 'Erro ao cancelar pedido.', 'danger');
+                        console.log(error);
+                    })
+                },
+                carregarAdicionais(item) {
+                    const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
+
+                    if (itemCardapio) {
+                        this.adicionaisSelecionados = itemCardapio.adicionais || [];
+                        this.adicionaisModal = item.adicionais || [];
+                        this.itemAtual = item;
+
+                        if (!this.itemAtual.adicionais) {
+                            this.itemAtual.adicionais = [];
+                        }
+                    } else {
+                        console.error('Item do cardápio não encontrado.');
+                    }
+                },
+                filtrarCardapio(categoria) {
+                    this.cardapioFiltrado = this.cardapio.filter(item => item.categoria === categoria);
+                },
+                getFuncionario() {
+                    axios.get('/identity').then(resp => {
+                        this.pedido.id_funcionario = resp.data.id_funcionario;
+                        this.id_funcionario = resp.data.id_funcionario;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
                 },
                 iniciarEfetuarPedido() {
                     this.listarCardapio();
@@ -519,6 +636,7 @@
                         this.cardapioFiltrado = this.cardapio;
                     })
                     .catch(error => {
+                        showToast(error.response?.data?.erro || 'Erro ao carregar cardápio.', 'danger');
                         console.log(error);
                     });
                 },
@@ -527,51 +645,24 @@
                         this.mesas = resp.data.filter(mesa => mesa.status === 'Disponível' || mesa.status === 'Aberta');
                     })
                     .catch(error => {
+                        showToast(error.response?.data?.erro || 'Erro ao carregar mesas.', 'danger');
                         console.log(error);
                     });
                 },
-                getFuncionario() {
-                    axios.get('/identity').then(resp => {
-                        this.pedido.id_funcionario = resp.data.id_funcionario;
-                        this.id_funcionario = resp.data.id_funcionario;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-                },
-                selecionarCategoria(categoria) {
-                    this.categoriaSelecionada = categoria;
-                    this.filtrarCardapio(categoria);
-                },
-                filtrarCardapio(categoria) {
-                    this.cardapioFiltrado = this.cardapio.filter(item => item.categoria === categoria);
-                },
-                adicionarAoPedido(item) {
-                    const valorAdicionais = (item.adicionais || []).reduce((total, adicional) => total + (parseFloat(adicional.valor) || 0), 0);
-                    const valorTotal = (item.valor + valorAdicionais);
-
-                    const novoItem = {
-                        id_itemcardapio: item.id_itemcardapio,
-                        nome: item.nome,
-                        quantidade: 1,
-                        valor: item.valor,
-                        observacao: '',
-                        imagemBase64: item.imagemBase64,
-                        adicionais: []
-                    };
-
-                    this.pedido.itens.push(novoItem);
-                },
-                removerItem(index) {
-                    const idItemPedido = this.pedido.itens[index]?.id_itemcardapio;
-                    console.log(idItemPedido);
-                    if(this.pedido.id_pedido == null) {
-                        this.pedido.itens.splice(index, 1);
-                    } else {
-                        axios.post('/removerItemPedido', { id_itempedido: idItemPedido }).then(resp => {
-                            this.pedido.itens.splice(index, 1);
+                novoPedido(pedido) {
+                    if(pedido.id_pedido == null) {
+                        axios.post('/novoPedido', { pedido: pedido }).then(resp => {
+                            showToast('Novo pedido criado com sucesso!', 'success');
                         }).catch(error => {
-
+                            showToast(error.response?.data?.erro || 'Erro ao criar novo pedido.', 'danger');
+                            console.log(error);
+                        });
+                    } else {
+                        axios.post('/adicionarItensPedido', pedido).then(resp => {
+                            showToast('Itens adicionados ao pedido com sucesso!', 'success');
+                        }).catch(error => {
+                            showToast(error.response?.data?.erro || 'Erro ao adicionar itens ao pedido.', 'danger');
+                            console.log(error);
                         });
                     }
                 },
@@ -610,7 +701,7 @@
                         };
     
                         this.pedido.itens.forEach((item, key) => {
-                            if(key >= this.numero_de_itens) {
+                            if(item.id_itempedido == null) {
                                 var pedidoItem = {
                                     id_itemcardapio: item.id_itemcardapio,
                                     quantidade: parseInt(item.quantidade) || 1, 
@@ -631,72 +722,39 @@
 
                     this.novoPedido(pedido);
                 },
-                novoPedido(pedido) {
-                    console.log(pedido);
-                    if(pedido.id_pedido == null) {
-                        axios.post('/novoPedido', { pedido: pedido }).then(resp => {
-                            
-                        }).catch(error => {
-    
-                        });
-                    } else {
-                        axios.post('/adicionarItensPedido', pedido).then(resp => {
-                            
-                        }).catch(error => {
-    
-                        });
-                    }
-                },
-                carregarAdicionais(item) {
-                    const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
-
-                    if (itemCardapio) {
-                        this.adicionaisSelecionados = itemCardapio.adicionais || [];
-                        this.adicionaisModal = item.adicionais || [];
-                        this.itemAtual = item;
-                    } else {
-                        console.error('Item do cardápio não encontrado.');
-                    }
-                },
-                adicionarNovoAdicional() {
-                    this.adicionaisModal.push({ id_adicional: "" });
-                },
                 removerAdicional(index) {
                     this.adicionaisModal.splice(index, 1);
                 },
-                buscarPedidoMesa(id_mesa) {
-                    axios.post('/buscarPedidoMesa', { id_mesa: id_mesa }).then(resp => {
-                        if(resp.data == null) {
-                            this.pedido = {
-                                id_pedido: null, 
-                                id_mesa: id_mesa, 
-                                id_funcionario: this.id_funcionario, 
-                                observacao: '', 
-                                itens: []
-                            }
-                        } else {
-                            this.pedido.id_pedido = resp.data.id_pedido;
-                            this.pedido.id_mesa = id_mesa;
-                            this.pedido.id_pedido = resp.data.id_pedido;
-    
-                            resp.data.itens.forEach((item, index) => {
-                                const novoItem = {
-                                    id_itemcardapio: item.id_itemcardapio,
-                                    nome: item.nome,
-                                    quantidade: item.quantidade,
-                                    valor: item.valor,
-                                    observacao: item.observacao,
-                                    imagemBase64: item.imagemBase64,
-                                    adicionais: item.adicionais,
-                                };
-    
-                                this.pedido.itens.push(novoItem);
-                            });
-                        }
-                        this.numero_de_itens = this.pedido.itens.length;
-                    }).catch(error => {
-                        console.log(error);
-                    });
+                removerItem(index) {
+                    const idItemPedido = this.pedido.itens[index]?.id_itempedido;
+                    console.log(idItemPedido);
+                    if(idItemPedido == null) {
+                        this.pedido.itens.splice(index, 1);
+                        showToast('Item removido com sucesso!', 'success');
+                    } else {
+                        axios.post('/removerItemPedido', { id_itempedido: idItemPedido }).then(resp => {
+                            this.pedido.itens.splice(index, 1);
+                            showToast('Item removido com sucesso!', 'success');
+                        }).catch(error => {
+                            showToast(error.response?.data?.erro || 'Erro ao remover item.', 'danger');
+                            console.log(error);
+                        });
+                    }
+                },
+                resetarPedido() {
+                    this.pedido = {
+                        id_pedido: null,
+                        id_mesa: '',
+                        id_funcionario: this.id_funcionario,
+                        observacao: '',
+                        itens: []
+                    };
+
+                    this.adicionaisModal = [];
+                    this.adicionaisSelecionados = [];
+                    this.categoriaSelecionada = '';
+
+                    console.log('Pedido resetado para os valores iniciais:', this.pedido);
                 },
                 salvarAdicionais() {
                     if (this.itemAtual) {
@@ -720,51 +778,12 @@
                             this.itemAtual.valor = (valorBase + valorAdicionais).toFixed(2);
                         }
                     }
+                    showToast('Adicionais salvos com sucesso!', 'success');
                 },
-                calcularValorTotal() {
-                    return this.pedido.itens.reduce((total, item) => {
-                        // Busca o item do cardápio correspondente
-                        const itemCardapio = this.cardapio.find(cardapioItem => cardapioItem.id_itemcardapio === item.id_itemcardapio);
-
-                        if (itemCardapio) {
-                            const valorAdicionais = (item.adicionais || []).reduce((soma, adicional) => {
-                                const adicionalCardapio = itemCardapio.adicionais.find(a => a.id_adicional === parseInt(adicional.id_adicional));
-                                return soma + (adicionalCardapio ? parseFloat(adicionalCardapio.valor) || 0 : 0);
-                            }, 0);
-
-                            const valorBase = parseFloat(itemCardapio.valor) || 0;
-                            const valorItem = valorBase + valorAdicionais;
-                            return total + (valorItem * (parseFloat(item.quantidade) || 1));
-                        }
-
-                        return total;
-                    }, 0).toFixed(2);
+                selecionarCategoria(categoria) {
+                    this.categoriaSelecionada = categoria;
+                    this.filtrarCardapio(categoria);
                 },
-                cancelarPedido() {
-                    axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
-                        if(resp.data == true) {
-                            this.resetarPedido();
-                        }
-                    }).catch(error => {
-                        console.log(error);
-                    })
-                },
-                resetarPedido() {
-                    this.pedido = {
-                        id_pedido: null,
-                        id_mesa: '',
-                        id_funcionario: this.id_funcionario,
-                        observacao: '',
-                        itens: []
-                    };
-
-                    // Opcional: Limpar outras variáveis relacionadas ao pedido
-                    this.adicionaisModal = [];
-                    this.adicionaisSelecionados = [];
-                    this.categoriaSelecionada = '';
-
-                    console.log('Pedido resetado para os valores iniciais:', this.pedido);
-                }
             }
         }
     </script>
@@ -774,3 +793,4 @@
 </body>
 
 </html>
+`
