@@ -215,14 +215,25 @@
                                                     <div class="col-12">
                                                         <div class="pricep">R$ <span x-text="(item.valor * item.quantidade).toFixed(2)"></span></div>
                                                     </div>
-                                                    <div class="col-6 mt-2">
+                                                    <div class="col-4 mt-2">
                                                         <button class="btn btn-sm bg-white shadow-inside rounded-2 border-1 border-black w-100 mdi mdi-plus" 
                                                                 data-bs-toggle="modal" 
                                                                 data-bs-target="#incluirAdicionalModal" 
                                                                 @click="carregarAdicionais(item)">
                                                         </button>
                                                     </div>
-                                                    <div class="col-6 mt-2">
+                                                    <div class="col-4 mt-2">
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-sm bg-white shadow-inside rounded-2 border-1 border-black"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#incluirObservacaoItemPedido"
+                                                            @click="itemObservacaoAtual = item"
+                                                        >
+                                                            <span class="mdi mdi-note-text-outline"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-4 mt-2">
                                                         <button class="btn btn-danger btn-sm w-100 mdi mdi-delete" @click="removerItem(index)"></button>
                                                     </div>
                                                 </div>
@@ -297,6 +308,29 @@
                                                     style="background-color: #06d20e !important;"
                                                     data-bs-dismiss="modal"
                                                     @click="salvarAdicionais()">
+                                                    SALVAR
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="incluirObservacaoItemPedido" tabindex="-1" aria-labelledby="incluirObservacaoItemPedidoLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color: #454545;">
+                                                <h1 class="modal-title fs-5 text-white" id="incluirObservacaoItemPedidoLabel">Observação do Item do Pedido</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                                                <textarea class="form-control" id="obsPedido" rows="3" x-model="itemObservacaoAtual.observacao"></textarea>
+                                            </div>
+                                            <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                                                <button type="button" class="btn bg-danger text-white" @click="pedido.observacao = ''" data-bs-dismiss="modal">
+                                                    CANCELAR
+                                                </button>
+                                                <button type="button" class="btn text-white" style="background-color: #06d20e !important;" 
+                                                        data-bs-dismiss="modal"
+                                                        @click="salvarObservacaoItem()">
                                                     SALVAR
                                                 </button>
                                             </div>
@@ -580,6 +614,7 @@
                 cardapioFiltrado: [],
                 categoriaSelecionada: '',
                 id_funcionario: '',
+                itemObservacaoAtual: null,
                 mesas: [],
                 pedido: {
                     id_pedido: null, 
@@ -872,6 +907,12 @@
                         }
                     }
                     showToast('Adicionais salvos com sucesso!', 'success');
+                },
+                salvarObservacaoItem() {
+                    this.pedido.itens = this.pedido.itens.map(item =>
+                        item === this.itemObservacaoAtual ? { ...item, observacao: this.itemObservacaoAtual.observacao } : item
+                    );
+                    showToast('Observação salva!', 'success');
                 },
                 selecionarCategoria(categoria) {
                     this.categoriaSelecionada = categoria;
