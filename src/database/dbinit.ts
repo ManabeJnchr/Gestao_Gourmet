@@ -700,6 +700,9 @@ async function initdb(pool: Pool) {
                 ADD CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido) REFERENCES public.pedido(id_pedido);
 
             COMMIT;
+
+            -- teste para novo commit
+
         `);
 
     } catch (error) {
