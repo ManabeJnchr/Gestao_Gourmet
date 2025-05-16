@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script type="module" src="/assets/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>Gestão Gourmet</title>
@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div x-data="Index()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column">
+    <div x-data="Auth()" x-init="getIdentity()" id="div_auth" class="container-fluid vh-100 d-flex flex-column">
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
@@ -464,207 +464,6 @@
     </div>
 
     <script>
-        function Index() {
-            return {
-                identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
-                trocarSenha: { senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' },
-                getIdentity() {
-                    axios.get('/identity').then(resp => {
-                        this.identity.cargonome = resp.data.cargonome;
-                        this.identity.cpf = resp.data.cpf;
-                        this.identity.funcionario_cpf = resp.data.funcionario_cpf;
-                        this.identity.funcionarionome = resp.data.funcionarionome;
-                        this.identity.id_cargo = resp.data.id_cargo;
-                        this.identity.imagem = `/uploads/${resp.data.imagem}`;
-
-                        if (this.identity.id_cargo == 1 || this.identity.id_cargo == 2 || this.identity.id_cargo == 3 || this.identity.id_cargo == 4) {
-                            if (this.identity.id_cargo == 1 || this.identity.id_cargo == 4) {
-                                document.getElementById('div_auth').classList.remove('d-none');
-                            } else {
-                                window.location.href = "/html/index.html";
-                            }
-                        } else {
-                            window.location.href = "/";
-                        }
-                    })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                },
-                logout() {
-                    axios.get('/logout').then(resp => {
-                        window.location.href = "/";
-                    })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                },
-                verificarNovaSenha() {
-                    if (this.trocarSenha.novaSenha.length < 6) {
-                        showToast('A nova senha deve ter pelo menos 6 caracteres.', 'danger');
-                        return;
-                    }
-                    if (this.trocarSenha.novaSenha !== this.trocarSenha.confirmarNovaSenha) {
-                        showToast('As senhas não coincidem.', 'danger');
-                        return;
-                    }
-                    if (!this.trocarSenha.senhaAtual || !this.trocarSenha.novaSenha || !this.trocarSenha.confirmarNovaSenha) {
-                        showToast('Preencha todos os campos!', 'warning');
-                        return;
-                    }
-
-                    const changePasswordModal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
-                    if (changePasswordModal) {
-                        changePasswordModal.hide();
-                    }
-
-                    const confirmModal = new bootstrap.Modal(document.getElementById('confirmChangeModal'));
-                    confirmModal.show();
-                },
-                trocarSenhaAtual() {
-                    axios.post('/trocarSenha', {
-                        senha: this.trocarSenha.novaSenha
-                    }).then(resp => {
-                        showToast('Senha alterada com sucesso!', 'success');
-                        window.location.reload();
-                    }).catch(error => {
-                        showToast('Erro ao alterar a senha.', 'danger');
-                        console.log(error);
-                    });
-                }
-            }
-        }
-
-        function QuantidadeSolicitacoes() {
-            return {
-                quantidadeSolicitacoes: 0,
-                quantidadeSolicitacoesResetSenha() {
-                    axios.get('/quantidadeSolicitacoesResetSenha').then(resp => {
-                        console.log(resp.data);
-                        this.quantidadeSolicitacoes = resp.data.quantidade;
-                    })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                },
-            }
-        }
-
-        function showToast(message, type = 'success') {
-            const toastContainer = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast align-items-center text-bg-${type} border-0 show`;
-            toast.role = 'alert';
-            toast.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">${message}</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            `;
-            toastContainer.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        function Cardapio() {
-            return {
-                tela: 'GER',
-                registro: { id_itemcardapio: -1, nome: '', valor: '', id_categoria: '', descricao: '', imagem: '', adicionais: [] },
-                categorias: [],
-                dados: [],
-                dadoSelecionado: [],
-                idItemParaExcluir: '',
-                buscarDados() {
-                    axios.get('/listarCardapio')
-                        .then(resp => {
-                            this.dados = resp.data.map(dado => ({
-                                ...dado,
-                                imagem: dado.imagem ? `/uploads/${dado.imagem}` : null
-                            }));
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                        .finally(function () {
-
-                        });
-                },
-                buscarCategorias() {
-                    axios.get('/listarCategorias')
-                        .then(resp => {
-                            this.categorias = resp.data;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                        .finally(function () {
-
-                        });
-                },
-                salvarRegistro() {
-                    const formData = new FormData();
-                    const fileInput = document.getElementById('input_img') || document.getElementById('selectedImage');
-
-                    if (fileInput.files[0]) {
-                        formData.append('file', fileInput.files[0]);
-                    }
-                    formData.append('registro', JSON.stringify(this.registro));
-
-                    axios.post('/salvarItemCardapio', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    })
-                        .then(resp => {
-                            console.log(resp.data);
-                            this.buscarDados();
-                            this.limparRegistro();
-                            this.tela = 'GER';
-                        })
-                        .catch(error => {
-
-                        })
-                        .finally(() => {
-
-                        });
-                },
-                deletarRegistro(_id) {
-                    axios.post('/deletarItemCardapio', { id_itemcardapio: _id })
-                        .then(resp => {
-                            if (resp.data == -1) {
-                                this.buscarDados();
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-                },
-                editarRegistro(index) {
-                    this.registro.id_itemcardapio = this.dados[index].id_itemcardapio;
-                    this.registro.nome = this.dados[index].nome;
-                    this.registro.valor = this.dados[index].valor;
-                    this.registro.id_categoria = this.dados[index].id_categoria;
-                    this.registro.imagem = this.dados[index].imagemBase64;
-                    this.registro.adicionais = this.dados[index].adicionais;
-                    this.registro.descricao = this.dados[index].descricao;
-                },
-                limparRegistro() {
-                    this.registro = { id_itemcardapio: -1, nome: '', valor: '', descricao: '', id_categoria: '', imagem: '', adicionais: [] };
-                },
-                incluirAdicional() {
-                    if (!this.registro.adicionais) {
-                        this.registro.adicionais = [];
-                    }
-                    this.registro.adicionais.push({ id_adicional: -1, id_itemcardapio: this.registro.id_itemcardapio, nome: '', valor: '' });
-                },
-                excluirAdicional(index) {
-                    this.registro.adicionais.splice(index, 1);
-                },
-            }
-        }
-
         document.getElementById("btn_addImg").addEventListener("click", function () {
             document.getElementById("input_img").click();
         });
