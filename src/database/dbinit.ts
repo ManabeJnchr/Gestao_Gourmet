@@ -245,24 +245,22 @@ async function initdb(pool: Pool) {
 
             -- FIM CREATE MESA
 
+            -- INICIO CREATE MEIO PAGAMENTO
 
-
-            -- INÍCIO CREATE PAGAMENTO
-
-            CREATE TABLE public.pagamento (
-                id_pagamento integer NOT NULL,
-                id_mesa integer NOT NULL,
-                estado_pagamento character varying(50) NOT NULL,
-                id_pedido integer NOT NULL,
-                valor_total numeric(10,2) NOT NULL,
-                meio_pagamento character varying(50) NOT NULL,
-                data_pagamento date DEFAULT CURRENT_DATE NOT NULL,
-                hora_pagamento time without time zone DEFAULT CURRENT_TIME NOT NULL
+                        CREATE TABLE public.meiopagamento (
+                id_meiopagamento integer NOT NULL,
+                nome character varying(20)
             );
 
-            ALTER TABLE public.pagamento OWNER TO postgres;
 
-            CREATE SEQUENCE public.pagamento_id_pagamento_seq
+            ALTER TABLE public.meiopagamento OWNER TO postgres;
+
+            --
+            -- TOC entry 245 (class 1259 OID 42432)
+            -- Name: meio_pagamento_id_meiopagamento_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+            --
+
+            CREATE SEQUENCE public.meio_pagamento_id_meiopagamento_seq
                 AS integer
                 START WITH 1
                 INCREMENT BY 1
@@ -270,9 +268,41 @@ async function initdb(pool: Pool) {
                 NO MAXVALUE
                 CACHE 1;
 
-            ALTER SEQUENCE public.pagamento_id_pagamento_seq OWNER TO postgres;
 
-            ALTER SEQUENCE public.pagamento_id_pagamento_seq OWNED BY public.pagamento.id_pagamento;
+            ALTER SEQUENCE public.meio_pagamento_id_meiopagamento_seq OWNER TO postgres;
+
+            ALTER SEQUENCE public.meio_pagamento_id_meiopagamento_seq OWNED BY public.meiopagamento.id_meiopagamento;
+
+            -- FIM CREATE MEIO PAGAMENTO
+
+            -- INÍCIO CREATE PAGAMENTO
+
+           CREATE TABLE public.pagamento (
+            id_pagamento integer NOT NULL,
+            id_mesa integer NOT NULL,
+            estado_pagamento character varying(50) NOT NULL,
+            id_pedido integer NOT NULL,
+            valor_total numeric(10,2) NOT NULL,
+            data_pagamento date DEFAULT CURRENT_DATE NOT NULL,
+            hora_pagamento time without time zone DEFAULT CURRENT_TIME NOT NULL,
+            meio_pagamento integer NOT NULL
+        );
+
+
+        ALTER TABLE public.pagamento OWNER TO postgres;
+
+        CREATE SEQUENCE public.pagamento_id_pagamento_seq
+            AS integer
+            START WITH 1
+            INCREMENT BY 1
+            NO MINVALUE
+            NO MAXVALUE
+            CACHE 1;
+
+
+        ALTER SEQUENCE public.pagamento_id_pagamento_seq OWNER TO postgres;
+
+        ALTER SEQUENCE public.pagamento_id_pagamento_seq OWNED BY public.pagamento.id_pagamento;
 
             -- FIM CREATE PAGAMENTO
 
@@ -458,6 +488,8 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.mesa ALTER COLUMN id_mesa SET DEFAULT nextval('public.mesa_id_mesa_seq'::regclass);
 
+            ALTER TABLE ONLY public.meiopagamento ALTER COLUMN id_meiopagamento SET DEFAULT nextval('public.meio_pagamento_id_meiopagamento_seq'::regclass);
+
             ALTER TABLE ONLY public.pagamento ALTER COLUMN id_pagamento SET DEFAULT nextval('public.pagamento_id_pagamento_seq'::regclass);
 
             ALTER TABLE ONLY public.pedido ALTER COLUMN id_pedido SET DEFAULT nextval('public.pedido_id_pedido_seq'::regclass);
@@ -507,6 +539,15 @@ async function initdb(pool: Pool) {
 
             -- FIM INSERT INTO STATUSMESA
 
+            -- INICIO INSERT INTO MEIO PAGAMENTO
+
+            INSERT INTO public.meiopagamento (id_meiopagamento, nome) VALUES (1, 'Dinheiro');
+            INSERT INTO public.meiopagamento (id_meiopagamento, nome) VALUES (2, 'PIX');
+            INSERT INTO public.meiopagamento (id_meiopagamento, nome) VALUES (3, 'Débito');
+            INSERT INTO public.meiopagamento (id_meiopagamento, nome) VALUES (4, 'Crédito');
+
+            -- FIM INSERT INTO MEIO PAGAMENTO
+
 
 
             -- INICIO INSERT INTO STATUS PEDIDO
@@ -525,6 +566,7 @@ async function initdb(pool: Pool) {
             SELECT pg_catalog.setval('public.cargo_id_cargo_seq', 1, true);
 
             SELECT pg_catalog.setval('public.categoria_id_categoria_seq', 1, false);
+            
 
             SELECT pg_catalog.setval('public.checkin_id_checkin_seq', 1, false);
 
@@ -537,6 +579,8 @@ async function initdb(pool: Pool) {
             SELECT pg_catalog.setval('public.login_id_login_seq', 1, true);
 
             SELECT pg_catalog.setval('public.mesa_id_mesa_seq', 1, false);
+
+            SELECT pg_catalog.setval('public.meio_pagamento_id_meiopagamento_seq', 1, true);
 
             SELECT pg_catalog.setval('public.pagamento_id_pagamento_seq', 1, false);
 
@@ -581,6 +625,9 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.mesa
                 ADD CONSTRAINT mesa_pkey PRIMARY KEY (id_mesa);
+
+            ALTER TABLE ONLY public.meiopagamento
+                 ADD CONSTRAINT id_meiopagamento PRIMARY KEY (id_meiopagamento);
 
             ALTER TABLE ONLY public.pagamento
                 ADD CONSTRAINT pagamento_pkey PRIMARY KEY (id_pagamento);
@@ -636,6 +683,9 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.adicional_itempedido
                 ADD CONSTRAINT fk_itempedido FOREIGN KEY (id_itempedido) REFERENCES public.itempedido(id_itempedido);
+
+            ALTER TABLE ONLY public.pagamento
+                ADD CONSTRAINT fk_meio_pagamento FOREIGN KEY (meio_pagamento) REFERENCES public.meiopagamento(id_meiopagamento) NOT VALID;
 
             ALTER TABLE ONLY public.login
                 ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
