@@ -1,4 +1,4 @@
-window.QuantidadeSolicitacoes = function () {
+window.quantidadeSolicitacoes = function () {
     return {
         quantidadeSolicitacoes: 0,
         quantidadeSolicitacoesResetSenha() {
