@@ -1,8 +1,9 @@
 import express from "express";
-import { listarPedidos, novoPedido, buscarPedidoMesa, adicionarItensPedido, removerItemPedido, cancelarPedido, fecharPedido } from "../controllers/pedidoController";
+import { listarPedidos, novoPedido, buscarPedidoMesa, adicionarItensPedido, removerItemPedido, cancelarPedido, fecharPedido, listarPedidosFechados } from "../controllers/pedidoController";
 
 export default (router: express.Router) => {
     router.get('/listarPedidos', listarPedidos );
+    router.get('/listarPedidosFechados', listarPedidosFechados );
     router.post('/novoPedido', novoPedido );
     router.post('/buscarPedidoMesa', buscarPedidoMesa );
     router.post('/adicionarItensPedido', adicionarItensPedido );

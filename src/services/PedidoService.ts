@@ -50,6 +50,25 @@ class PedidoService {
 
     }
 
+        static async listarPedidosFechados () {
+        try {
+
+            const result = await PedidoModel.listarPedidosFechados()
+
+            return result;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
     static async novoPedido ({id_mesa, observacao="", id_funcionario, id_statuspedido=1, itens = []}: pedidoDTO) {
         const client = await pool.connect();
 

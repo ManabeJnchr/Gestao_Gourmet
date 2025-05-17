@@ -19,6 +19,22 @@ class PedidoModel {
             throw {statusCode:500, message:"Erro ao listar pedidos, tente novamente"};
         }
     }
+        
+    static async listarPedidosFechados() {
+        try {
+            const result = await pool.query(
+                `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
+                 FROM pedido
+                 WHERE id_statuspedido = 2
+                 ORDER BY id_pedido DESC`
+            );
+
+            return result.rows;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao listar pedidos, tente novamente"};
+        }
+    }
 
     static async buscarPedidoMesa(id_mesa: number) {
         try {
