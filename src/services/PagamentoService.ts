@@ -1,12 +1,6 @@
-import { Pool, PoolClient } from "pg";
 import PedidoModel from "../models/PedidoModel";
 import MesaService from "./MesaService";
-import ItemCardapioService from "./ItemCardapioService";
-import AdicionaisService from "./AdicionaisService";
-import ItemPedidoModel from "../models/ItemPedidoModel";
 import pool from "../database";
-import FuncionarioService from "./FuncionarioService";
-import AdicionalItemPedidoModel from "../models/AdicionalItemPedidoModel";
 import MesaModel from "../models/MesaModel";
 import PagamentoModel from "../models/PagamentoModel";
 import PedidoService from "./PedidoService";

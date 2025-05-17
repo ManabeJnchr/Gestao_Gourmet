@@ -1,4 +1,3 @@
-import { Pool, PoolClient } from "pg";
 import PedidoModel from "../models/PedidoModel";
 import MesaService from "./MesaService";
 import ItemCardapioService from "./ItemCardapioService";
