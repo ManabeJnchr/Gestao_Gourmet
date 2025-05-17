@@ -191,6 +191,34 @@ class PedidoService {
 
     }
 
+        static async buscarPedido ({id_pedido}:pedidoDTO) {
+        try {
+
+            if (!id_pedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            const number_id_pedido = Number(id_pedido);
+            if (isNaN(number_id_pedido)) {
+                throw { statusCode: 400, message: "Pedido inválido" }
+            }
+
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+
+            return pedido;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
     static async adicionarItensPedido ({id_pedido, itens}: pedidoDTO) {
         const client = await pool.connect();
 
