@@ -191,7 +191,53 @@ class PedidoService {
 
     }
 
-        static async buscarPedido ({id_pedido}:pedidoDTO) {
+    static async somarValorTotal ({id_pedido}:pedidoDTO) {
+        try {
+
+            if (!id_pedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            const number_id_pedido = Number(id_pedido);
+            if (isNaN(number_id_pedido)) {
+                throw { statusCode: 400, message: "Pedido inválido" }
+            }
+
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+
+            if (!pedido) { // Se não há nenhum pedido ainda, retorna nulo
+                throw { statusCode: 400, message: "Pedido inválido"}
+            }
+
+            const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
+
+            let somaValorPedido = 0;
+
+            for (const item of itensPedido) {
+                somaValorPedido += item.valor;
+
+                const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
+
+                for (const adicional of adicionaisItem) {
+                    somaValorPedido += adicional.valor;
+                }
+            }
+
+            return somaValorPedido;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
+    static async buscarPedido ({id_pedido}:pedidoDTO) {
         try {
 
             if (!id_pedido) {
