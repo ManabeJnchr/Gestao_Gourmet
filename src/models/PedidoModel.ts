@@ -23,10 +23,11 @@ class PedidoModel {
     static async listarPedidosFechados() {
         try {
             const result = await pool.query(
-                `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
-                 FROM pedido
-                 WHERE id_statuspedido = 2
-                 ORDER BY id_pedido DESC`
+                `SELECT p.id_pedido, p.id_mesa, p.observacao, p.id_funcionario, p.id_statuspedido, p.data_pedido, m.numero_mesa, f.nome
+                 FROM pedido AS p LEFT JOIN mesa AS m ON m.id_mesa = p.id_mesa
+                 LEFT JOIN funcionario AS f ON f.id_funcionario = p.id_funcionario
+                 WHERE p.id_statuspedido = 2
+                 ORDER BY p.id_pedido DESC` // Status do pedido deve ser "fechado"
             );
 
             return result.rows;
