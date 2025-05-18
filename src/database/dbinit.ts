@@ -316,7 +316,7 @@ async function initdb(pool: Pool) {
                     observacao text,
                     id_funcionario integer NOT NULL,
                     id_statuspedido integer NOT NULL,
-                    data_pedido timestamp without time zone DEFAULT CURRENT_DATE NOT NULL
+                    data_pedido timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
                 );
 
 
