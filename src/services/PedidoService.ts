@@ -162,6 +162,38 @@ class PedidoService {
         }
     }
 
+    static async buscarItensDoPedido (pedido : pedidoDTO) {
+        try {
+            const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
+
+            for (const item of itensPedido) {
+                if (item.imagem) {
+                    const base64 = item.imagem.toString('base64');
+                    item.imagemBase64 = `data:image/png;base64,${base64}`;
+                }
+
+                const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
+
+                item.adicionais = adicionaisItem;
+            }
+
+            pedido.itens = itensPedido
+
+            return pedido;
+
+        } catch (err : any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+
+        }
+
+    }
+
     static async buscarPedidoMesa ({id_mesa}:pedidoDTO) {
         try {
 
@@ -180,22 +212,9 @@ class PedidoService {
                 return null;
             }
 
-            const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
+            const pedidoCompleto = await this.buscarItensDoPedido(pedido);
 
-            for (const item of itensPedido) {
-                if (item.imagem) {
-                    const base64 = item.imagem.toString('base64');
-                    item.imagemBase64 = `data:image/png;base64,${base64}`;
-                }
-
-                const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
-
-                item.adicionais = adicionaisItem;
-            }
-
-            pedido.itens = itensPedido
-
-            return pedido;
+            return pedidoCompleto;
 
         } catch (err: any) {
             console.error("Erro no service: ", err);
@@ -255,7 +274,7 @@ class PedidoService {
 
     }
 
-    static async buscarPedido ({id_pedido}:pedidoDTO) {
+    static async buscarPedido ({id_pedido}:pedidoDTO, complete : boolean = false) {
         try {
 
             if (!id_pedido) {
@@ -268,6 +287,12 @@ class PedidoService {
             }
 
             const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+
+            if (complete) {
+                const pedidoCompleto = await this.buscarItensDoPedido(pedido);
+
+                return pedidoCompleto;
+            }
 
             return pedido;
 
