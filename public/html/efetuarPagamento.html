@@ -133,9 +133,9 @@
                 </div>
             </div>
 
-            <div x-data="EfetuarPagamento()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="EfetuarPagamento()" x-init="listarPagamentos()" class="col-12 col-lg-10" id="div_content">
                 <div style="background-color: #f5f5f5;">
-                    <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
+                    <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                         <div class="col d-flex align-items-center">
                             <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
                                 <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
@@ -149,20 +149,22 @@
                         <!-- Bloco de Itens -->
                         <div class="w-50">
                             <h4 class="mb-4"><i class="mdi mdi-cart cart-icon"></i> ITENS</h4>
-                            <div class="menu-itemf d-flex align-items-center"
-                                style="background-color: white; border: 1px solid #ccc; border-radius: 8px; padding-top: 10px;padding-bottom: 10px;padding-left: 8px; margin-bottom: 10px;">
-                                <img src="../src/img/menu-item-hamburger.jpg" class="img-fluid"
-                                    style="max-width: 150px;">
-                                <div class="item-detailsp ms-3">
-                                    <div class="item-namef">001 - HAMBURGUER</div>
-                                    <div class="item-ingredientsp">ingredientes</div>
-                                    <div class="item-un2 mt-2">
-                                        <input type="number" class="quantity-input" value="1" min="1">
-                                        <span class="pricep ms--1">R$ 25,00</span>
-                                        <button class="add-to-cartp btn btn-danger btn-sm ms-2">EXCLUIR</button>
+                            <template x-for="(pagamento, index) in pagamentos" :key="index">
+                                <div class="menu-itemf d-flex align-items-center"
+                                    style="background-color: white; border: 1px solid #ccc; border-radius: 8px; padding-top: 10px;padding-bottom: 10px;padding-left: 8px; margin-bottom: 10px;">
+                                    <img src="../src/img/menu-item-hamburger.jpg" class="img-fluid"
+                                        style="max-width: 150px;">
+                                    <div class="item-detailsp ms-3">
+                                        <div class="item-namef">001 - HAMBURGUER</div>
+                                        <div class="item-ingredientsp">ingredientes</div>
+                                        <div class="item-un2 mt-2">
+                                            <input type="number" class="quantity-input" value="1" min="1">
+                                            <span class="pricep ms--1">R$ 25,00</span>
+                                            <button class="add-to-cartp btn btn-danger btn-sm ms-2">EXCLUIR</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </template>
                         </div>
 
                         <!-- Bloco de Pagamento -->

@@ -6,6 +6,7 @@ window.EfetuarPedido = function () {
         cardapioFiltrado: [],
         categoriaSelecionada: '',
         id_funcionario: '',
+        id_pedido: null,
         itemObservacaoAtual: null,
         mesas: [],
         pedido: {
@@ -94,11 +95,13 @@ window.EfetuarPedido = function () {
             if (this.pedido.id_pedido == null) {
                 this.resetarPedido();
                 showToast('Pedido cancelado com sucesso!', 'success');
+                this.listarMesas();
             } else {
                 axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
                     if (resp.data == true) {
                         this.resetarPedido();
                         showToast('Pedido cancelado com sucesso!', 'success');
+                        this.listarMesas();
                     }
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao cancelar pedido.', 'danger');
@@ -119,6 +122,36 @@ window.EfetuarPedido = function () {
                 }
             } else {
                 console.error('Item do cardápio não encontrado.');
+            }
+        },
+        fecharPedido() {
+            if (this.pedido.id_pedido == null) {
+                this.preparaPedido().then(pedidoCriado => {
+                    axios.post('/fecharPedido', { id_pedido: pedidoCriado.id_pedido }).then(resp => {
+                        if (resp.data == true) {
+                            this.resetarPedido();
+                            this.id_pedido = null;
+                            showToast('Pedido finalizado com sucesso!', 'success');
+                        }
+                    }).catch(error => {
+                        showToast(error.response?.data?.erro || 'Erro ao finalizar pedido.', 'danger');
+                        console.log(error);
+                    });
+                }).catch(error => {
+                    // erro já tratado em preparaPedido
+                });
+            } else {
+                axios.post('/fecharPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
+                    if (resp.data == true) {
+                        this.resetarPedido();
+                        this.id_pedido = null;
+                        showToast('Pedido finalizado com sucesso!', 'success');
+                        this.listarMesas();
+                    }
+                }).catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao finalizar pedido.', 'danger');
+                    console.log(error);
+                });
             }
         },
         filtrarCardapio(categoria) {
@@ -172,6 +205,7 @@ window.EfetuarPedido = function () {
             if (pedido.id_pedido == null) {
                 axios.post('/novoPedido', { pedido: pedido }).then(resp => {
                     showToast('Novo pedido criado com sucesso!', 'success');
+                    this.listarMesas();
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao criar novo pedido.', 'danger');
                     console.log(error);
@@ -179,6 +213,7 @@ window.EfetuarPedido = function () {
             } else {
                 axios.post('/adicionarItensPedido', pedido).then(resp => {
                     showToast('Itens adicionados ao pedido com sucesso!', 'success');
+                    this.listarMesas();
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao adicionar itens ao pedido.', 'danger');
                     console.log(error);
@@ -187,41 +222,18 @@ window.EfetuarPedido = function () {
             this.resetarPedido();
         },
         preparaPedido() {
-            if (this.pedido.id_pedido == null) {
-                console.log('NovoPEdido')
-                var pedido = {
-                    id_pedido: this.pedido.id_pedido,
-                    id_mesa: this.pedido.id_mesa,
-                    id_funcionario: this.pedido.id_funcionario,
-                    observacao: this.pedido.observacao || '',
-                    itens: []
-                };
-
-                this.pedido.itens.forEach((item) => {
-                    var pedidoItem = {
-                        id_itemcardapio: item.id_itemcardapio,
-                        quantidade: parseInt(item.quantidade) || 1,
-                        observacao: item.observacao || '',
-                        adicionais: []
+            return new Promise((resolve, reject) => {
+                let pedido;
+                if (this.pedido.id_pedido == null) {
+                    pedido = {
+                        id_pedido: this.pedido.id_pedido,
+                        id_mesa: this.pedido.id_mesa,
+                        id_funcionario: this.pedido.id_funcionario,
+                        observacao: this.pedido.observacao || '',
+                        itens: []
                     };
 
-                    item.adicionais.forEach((adicional) => {
-                        pedidoItem.adicionais.push({
-                            id_adicional: adicional.id_adicional
-                        });
-                    });
-
-                    pedido.itens.push(pedidoItem);
-                });
-            } else {
-                console.log('AdicionarItem')
-                var pedido = {
-                    id_pedido: this.pedido.id_pedido,
-                    itens: []
-                };
-
-                this.pedido.itens.forEach((item, key) => {
-                    if (item.id_itempedido == null) {
+                    this.pedido.itens.forEach((item) => {
                         var pedidoItem = {
                             id_itemcardapio: item.id_itemcardapio,
                             quantidade: parseInt(item.quantidade) || 1,
@@ -236,11 +248,43 @@ window.EfetuarPedido = function () {
                         });
 
                         pedido.itens.push(pedidoItem);
-                    }
-                });
-            }
+                    });
+                } else {
+                    pedido = {
+                        id_pedido: this.pedido.id_pedido,
+                        itens: []
+                    };
 
-            this.novoPedido(pedido);
+                    this.pedido.itens.forEach((item, key) => {
+                        if (item.id_itempedido == null) {
+                            var pedidoItem = {
+                                id_itemcardapio: item.id_itemcardapio,
+                                quantidade: parseInt(item.quantidade) || 1,
+                                observacao: item.observacao || '',
+                                adicionais: []
+                            };
+
+                            item.adicionais.forEach((adicional) => {
+                                pedidoItem.adicionais.push({
+                                    id_adicional: adicional.id_adicional
+                            });
+                        });
+
+                        pedido.itens.push(pedidoItem);
+                        }
+                    });
+                }
+
+                axios.post('/novoPedido', { pedido: pedido }).then(resp => {
+                    showToast('Novo pedido criado com sucesso!', 'success');
+                    resolve(resp.data);
+                    this.resetarPedido();
+                }).catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao criar novo pedido.', 'danger');
+                    console.log(error);
+                    reject(error);
+                });
+            });
         },
         removerAdicional(index) {
             this.adicionaisModal.splice(index, 1);
@@ -310,5 +354,20 @@ window.EfetuarPedido = function () {
             this.categoriaSelecionada = categoria;
             this.filtrarCardapio(categoria);
         },
+    }
+}
+
+window.EfetuarPagamento = function () {
+    return {
+        pagamentos: [],
+        listarPagamentos() {
+            axios.get('/listarPagamentos').then(resp => {
+                this.pagamentos = resp.data;
+            })
+            .catch(error => {
+                showToast(error.response?.data?.erro || 'Erro ao carregar pagamentos.', 'danger');
+                console.log(error);
+            });
+        }
     }
 }
