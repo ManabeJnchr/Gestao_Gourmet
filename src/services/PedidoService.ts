@@ -501,8 +501,8 @@ class PedidoService {
             // Inicia a transaction
             await client.query("BEGIN");
 
-            // Mudar status da mesa para "fechada"
-            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 4);
+            // Mudar status da mesa para "disponivel"
+            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 2);
 
             // Mudar status do pedido para "fechado"
             const result = await PedidoModel.fecharPedido(number_id_pedido);

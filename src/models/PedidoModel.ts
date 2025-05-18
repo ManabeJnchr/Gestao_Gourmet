@@ -41,8 +41,8 @@ class PedidoModel {
             const result = await pool.query(
                 `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
                  FROM pedido
-                 WHERE id_mesa = $1 AND id_statuspedido IN ('1','2')
-                 ORDER BY id_pedido DESC`, // Pedidos com status "aberto" ou "fechado"
+                 WHERE id_mesa = $1 AND id_statuspedido = 1
+                 ORDER BY id_pedido DESC`, // Pedidos com status "aberto"
                 [id_mesa]
             );
 
