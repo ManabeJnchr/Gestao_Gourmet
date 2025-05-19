@@ -48,6 +48,25 @@ class PagamentoService {
 
     }
 
+    static async listarMeiosPagamento () {
+        try {
+
+            const result = await PagamentoModel.listarMeiosPagamento();
+
+            return result;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
     static async adicionarPagamentos ({id_pedido, pagamentos} : listaPagamentosDTO) {
         const client = await pool.connect();
 

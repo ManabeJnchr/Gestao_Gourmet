@@ -54,6 +54,22 @@ class PagamentoModel {
         }
     }
 
+    static async listarMeiosPagamento() {
+        try {
+            const result = await pool.query(
+                `SELECT id_meiopagamento, nome
+                 FROM meiopagamento
+                 ORDER BY id_meiopagamento ASC`, 
+            );
+
+            return result.rows;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao listar meios de pagamento, tente novamente"};
+        }
+    }
+
+
 }
 
 export default PagamentoModel;
