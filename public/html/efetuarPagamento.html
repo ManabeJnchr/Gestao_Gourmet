@@ -133,7 +133,7 @@
                 </div>
             </div>
 
-            <div x-data="EfetuarPagamento()" x-init="listarPagamentos()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="EfetuarPagamento()" x-init="listarPedidos()" class="col-12 col-lg-10" id="div_content">
                 <div style="background-color: #f5f5f5;">
                     <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                         <div class="col d-flex align-items-center">
@@ -144,23 +144,78 @@
                         </div>
                     </div>
 
-                    <div class="d-flex gap-4 align-items-start" style="background-color: #f5f5f5;">
+                    <div class="row" :class="tela == 'LIS' ? '' : 'd-none'" style="max-height: 78vh; overflow-y: auto;">
+                        <template x-for="(pedido, index) in pedidos" :key="index">
+                            <div class="col-sm-12 col-md-6 p-2">
+                                <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
+                                    <div class="col-md-4 d-md-block d-none align-content-center text-center h-100" style="width: 150px;">
+                                        <div class="h-100 align-content-center rounded-2 d-grid" style="background-color: #d2d2d2;">
+                                            <span class="fw-bold text-light" style="font-size: x-large;">Mesa</span>
+                                            <span class="fw-bold text-light" style="font-size: xxx-large;" x-text="pedido.numero_mesa"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
+                                        <div class="row">
+                                            <div class="col d-inline-flex justify-content-between">
+                                                <h4 class="h2 text-truncate">Pedido <span x-text="pedido.id_pedido"></span></h4>
+                                                <div style="min-width: 42px;">
+                                                    <button style="background: none; border: none;" @click="buscarPedido(pedido.id_pedido)">
+                                                        <span class="mdi mdi-cash-register text-decoration-none text-black" style="font-size: 30px;"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="h5 no-bold text-truncate">
+                                                <span x-text="formatarDataHora(pedido.data_pedido)"></span> - <span x-text="pedido.nome"></span>
+                                            </div>
+                                            <div class="h6 no-bold text-truncate">Obs: <span x-text="pedido.observacao"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
 
-                        <!-- Bloco de Itens -->
-                        <div class="w-50">
+                    <div class="row align-items-start" :class="tela == 'PGT' ? '' : 'd-none'" style="background-color: #f5f5f5;">
+                        <div class="col-6">
                             <h4 class="mb-4"><i class="mdi mdi-cart cart-icon"></i> ITENS</h4>
-                            <template x-for="(pagamento, index) in pagamentos" :key="index">
-                                <div class="menu-itemf d-flex align-items-center"
-                                    style="background-color: white; border: 1px solid #ccc; border-radius: 8px; padding-top: 10px;padding-bottom: 10px;padding-left: 8px; margin-bottom: 10px;">
-                                    <img src="../src/img/menu-item-hamburger.jpg" class="img-fluid"
-                                        style="max-width: 150px;">
-                                    <div class="item-detailsp ms-3">
-                                        <div class="item-namef">001 - HAMBURGUER</div>
-                                        <div class="item-ingredientsp">ingredientes</div>
-                                        <div class="item-un2 mt-2">
-                                            <input type="number" class="quantity-input" value="1" min="1">
-                                            <span class="pricep ms--1">R$ 25,00</span>
-                                            <button class="add-to-cartp btn btn-danger btn-sm ms-2">EXCLUIR</button>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="card-title mb-4">
+                                <i class="mdi mdi-cash-multiple me-2"></i>PAGAMENTO
+                            </h4>
+                        </div>
+                        <!-- Bloco de Itens -->
+                        <div class="col-6" style="max-height: 70vh; overflow-y: auto;">
+                            <template x-for="(item, index) in pedido_sel.itens">
+                                <div class="row div_contentItemPag m-0 my-2 border-1 rounded-2 py-2">
+                                    <div class="col-md-4 d-md-block d-none align-content-center h-100"
+                                        style="width: 125px;">
+                                        <img :src="item.imagemBase64 ? item.imagemBase64 : '/src/img/add-item-cardapio-icon.jpg'"
+                                            alt="user" class="img_contentThumb rounded-2">
+                                    </div>
+                                    <div class="col-sm-12 col-md" style="width: calc(100% - 150px);">
+                                        <div class="row">
+                                            <div class="col d-inline-flex justify-content-between">
+                                                <h5 class="mb-0"><span x-text="item.nome"></span> (Qtde.: <span x-text="item.quantidade"></span> )</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <span class="pricep-pag">R$ <span x-text="item.valor"></span></span>
+                                        </div>
+                                        <div class="row" style="font-size: small;">
+                                            <div class="adicionais-lista">
+                                                <strong>Adicionais: </strong>
+                                                <template x-for="(adicional, index) in item.adicionais">
+                                                    <span x-text="adicional.nome + ' (R$ ' + adicional.valor + '); '"></span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="font-size: small;">
+                                            <div class="text-truncate">
+                                                <strong>Obs.: </strong><span class="text-truncate" x-text="item.observacao"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -168,44 +223,72 @@
                         </div>
 
                         <!-- Bloco de Pagamento -->
-                        <div class="w-50" style="height: 100vh;">
-                            <h4 class="card-title mb-4">
-                                <i class="mdi mdi-cash-multiple me-2"></i>PAGAMENTO
-                            </h4>
+                        <div class="col-6">
                             <div class="card shadow-sm border-1">
                                 <div class="card-body">
-
+                                    <div class="row" style="display: flow;">
+                                        <div class="col-12">
+                                            <h5>Pagamentos:</h5>
+                                        </div>
+                                        <template x-for="(pagamento, index) in pagamentos">
+                                            <div class="col-12 d-flex justify-content-between">
+                                                <span x-text="getMeioPagamentoNome(pagamento.id_meiopagamento)"></span>
+                                                <strong>R$ <span x-text="pagamento.valor_pago"></span></strong>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <hr class="m-0">
                                     <ul class="list-group list-group-flush mb-4">
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            <span>Total Itens</span>
-                                            <strong>R$ 0,00</strong>
+                                        <li class="list-group-item d-flex justify-content-between py-1">
+                                            <span>Total Pago</span>
+                                            <strong>R$ <span x-text="total_pago"></span></strong>
                                         </li>
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            <span>Descontos</span>
-                                            <strong>R$ 0,00</strong>
+                                        <li class="list-group-item d-flex justify-content-between py-1">
+                                            <span>Total Restante</span>
+                                            <strong>R$ <span x-text="total_restante"></span></strong>
                                         </li>
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            <span>Taxa de serviço</span>
-                                            <strong>R$ 0,00</strong>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between fs-5 fw-bold">
+                                        <li class="list-group-item d-flex justify-content-between fs-5 fw-bold py-1">
                                             <span>Total</span>
-                                            <strong>R$ 0,00</strong>
+                                            <strong>R$ <span x-text="valor_total"></span></strong>
                                         </li>
                                     </ul>
 
-                                    <div class="mb-4">
-                                        <label for="formaPagamento" class="form-label">Forma de pagamento:</label>
-                                        <select class="form-select" id="formaPagamento">
-                                            <option selected disabled>Escolher forma de pagamento</option>
-                                            <option value="credito">Cartão de Crédito</option>
-                                            <option value="debito">Cartão de Débito</option>
-                                            <option value="dinheiro">Dinheiro</option>
-                                            <option value="pix">PIX</option>
-                                        </select>
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6>Adiconar Pagamento: </h6>
+                                        </div>
+                                        <div class="col-12 d-inline-flex align-items-center">
+                                            <select class="form-select shadow-inside border-1 rounded-2 me-3" id="meioPagamento" x-model="pag.id_meiopagamento">
+                                                <option value="" selected disabled>Escolher meio de pagamento</option>
+                                                <option value=4>Cartão de Crédito</option>
+                                                <option value=3>Cartão de Débito</option>
+                                                <option value=1>Dinheiro</option>
+                                                <option value=2>PIX</option>
+                                            </select>
+                                            <label for="valorPagamento" class="form-label fw-bold mb-0 me-1">R$: </label>
+                                            <input
+                                                x-model="pag.valor_pagamento"
+                                                type="text"
+                                                id="valorPagamento"
+                                                name="valor_pagamento"
+                                                class="w-50 shadow-inside border-1 rounded-2 h-100 me-2"
+                                                placeholder="0,00"
+                                                @input="
+                                                    let v = $event.target.value.replace(/[^0-9]/g, '');
+                                                    if(v.length === 0) v = '0';
+                                                    v = (parseInt(v, 10) / 100).toFixed(2);
+                                                    pag.valor_pagamento = v;
+                                                "
+                                            >
+                                            <button
+                                                class="btn btn-danger btn-sm mdi mdi-cash-plus h-100"
+                                                @click="adicionarPagamento()"
+                                                :disabled="parseFloat(pag.valor_pagamento || 0) > parseFloat(total_restante || 0) || pag.valor_pagamento <= 0 || !pag.id_meiopagamento">
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    <button class="btn btn-success w-100 fw-bold">
+                                    <button class="btn btn-success w-100 fw-bold" @click="finalizarPagamento()" :disabled="total_restante > 0">
                                         FINALIZAR PAGAMENTO
                                     </button>
                                 </div>
