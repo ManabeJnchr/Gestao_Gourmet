@@ -82,7 +82,7 @@ class PagamentoService {
                 throw { statusCode: 400, message: "Pedido inválido" }
             }
 
-            if (pedido.id_status !== 3) {
+            if (pedido.id_statuspedido !== 2) {
                 throw { statusCode: 400, message: "Status do pedido impossibilita adição de pagamento" }
             }
 
