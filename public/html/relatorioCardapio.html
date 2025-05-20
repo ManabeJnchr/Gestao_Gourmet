@@ -101,6 +101,12 @@
                         <h3 class="fw-bold text-start">Relatórios</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/relatorioCardapio.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-food" style="font-size: 20px;"></i>
+                                    <span> Cadápio</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
                                 <a href="../html/relatorioFuncionarios.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-account-group" style="font-size: 20px;"></i>
                                     <span> Funcionários</span>
@@ -112,18 +118,115 @@
                                     <span> Pedidos</span>
                                 </a>
                             </li>
-                            <li class="mb-1 mb-3 p-1 rounded-2 selected">
-                                <a href="../html/relatorioReservas.html" class="text-decoration-none text-black">
-                                    <i class="mdi mdi-text-box-search" style="font-size: 20px;"></i>
-                                    <span> Reservas</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-lg-10" id="div_content">
+                <div class="row mt-3 mb-4 border-3" id="div_contentHeader">
+                    <div class="col d-flex align-items-center">
+                        <h1 class="m-0 ms-2">Emitir relatório de Cardápio</h1>
+                    </div>
+                </div>
+                
+                <!-- Formulário de Filtros -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="mb-4">Filtros do Relatório</h2>
+                        <form class="row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label for="nomeItem" class="report-label">Nome do Item</label>
+                                <input type="text" class="report-input w-100" id="nomeItem" placeholder="Nome do item">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="categoria" class="report-label">Categoria</label>
+                                <input type="text" class="report-input w-100" id="categoria" placeholder="Categoria">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ingredientes" class="report-label">Ingredientes</label>
+                                <input type="text" class="report-input w-100" id="ingredientes" placeholder="Ingredientes (separados por vírgula)">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="criadoPor" class="report-label">Criado por</label>
+                                <select class="report-select w-100" id="criadoPor">
+                                    <option value="">Todos</option>
+                                    <option value="1">Adm João Silva</option>
+                                    <option value="2">Gerente Maria Santos</option>
+                                    <option value="3">Adm Pedro Oliveira</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="valorMinimo" class="report-label">Valor Mínimo</label>
+                                <input type="number" class="report-input w-100" id="valorMinimo" placeholder="Valor mínimo" step="0.01">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="valorMaximo" class="report-label">Valor Máximo</label>
+                                <input type="number" class="report-input w-100" id="valorMaximo" placeholder="Valor máximo" step="0.01">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="dataInicial" class="report-label">Criado a partir de</label>
+                                <input type="date" class="report-input w-100" id="dataInicial">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="dataFinal" class="report-label">Criado até</label>
+                                <input type="date" class="report-input w-100" id="dataFinal">
+                            </div>
+                            <div class="col-12 text-center mt-2">
+                                <button type="submit" class="report-btn-success w-100">Pesquisar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
+                <!-- Tabela de Resultados -->
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="report-table-container">
+                            <table class="report-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%">Nome</th>
+                                        <th style="width: 10%">Valor</th>
+                                        <th style="width: 10%">Categoria</th>
+                                        <th style="width: 25%">Ingredientes</th>
+                                        <th style="width: 10%">Data</th>
+                                        <th style="width: 10%">Hora</th>
+                                        <th style="width: 20%">Criador</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Spaghetti Carbonara</td>
+                                        <td>R$ 32,90</td>
+                                        <td>Massas</td>
+                                        <td>Macarrão, Bacon, Ovos, Queijo Parmesão, Pimenta Preta</td>
+                                        <td>26/04/2024</td>
+                                        <td>14:30:00</td>
+                                        <td>ADM João Silva</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Risoto de Cogumelos</td>
+                                        <td>R$ 45,90</td>
+                                        <td>Risotos</td>
+                                        <td>Arroz Arbóreo, Cogumelos, Vinho Branco, Caldo de Legumes</td>
+                                        <td>26/04/2024</td>
+                                        <td>15:00:00</td>
+                                        <td>Gerente Maria Santos</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Filé ao Molho Madeira</td>
+                                        <td>R$ 68,90</td>
+                                        <td>Carnes</td>
+                                        <td>Filé Mignon, Molho Madeira, Cogumelos, Batata</td>
+                                        <td>26/04/2024</td>
+                                        <td>16:15:00</td>
+                                        <td>ADM Pedro Oliveira</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
