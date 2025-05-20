@@ -111,6 +111,12 @@
                         <h3 class="fw-bold text-start">Relatórios</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2">
+                                <a href="../html/relatorioCardapio.html" class="text-decoration-none text-black">
+                                    <i class="mdi mdi-food" style="font-size: 20px;"></i>
+                                    <span> Cadápio</span>
+                                </a>
+                            </li>
+                            <li class="mb-1 p-1 rounded-2">
                                 <a href="../html/relatorioFuncionarios.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-account-group" style="font-size: 20px;"></i>
                                     <span> Funcionários</span>
@@ -122,19 +128,13 @@
                                     <span> Pedidos</span>
                                 </a>
                             </li>
-                            <li class="mb-1 mb-3 p-1 rounded-2">
-                                <a href="../html/relatorioReservas.html" class="text-decoration-none text-black">
-                                    <i class="mdi mdi-text-box-search" style="font-size: 20px;"></i>
-                                    <span> Reservas</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div x-data="Funcionarios()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
 
-                <div class="row mt-3 mb-5 border-3" id="div_contentHeader">
+                <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
                             <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
@@ -150,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="row" :class="tela == 'GER' ? '' : 'd-none'" style="max-height: 500px; overflow-y: auto;">
+                <div class="row" :class="tela == 'GER' ? '' : 'd-none'" style="max-height: 78vh; overflow-y: auto;">
                     <div class="col-sm-12 col-md-6 p-2">
                         <div class="row div_contentItem m-0 border-4 rounded-2 py-2">
                             <div class="col-md-4 d-md-block d-none align-content-center h-100" style="width: 150px;">

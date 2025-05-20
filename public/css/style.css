@@ -70,6 +70,15 @@ header {
     /* position: relative; */
 }
 
+.div_contentItemPag {
+    height: 125px !important;
+    background-color: white;
+    border: solid #8a8a8a;
+    /* display: flex;  */
+    /* align-items: stretch;  */
+    /* position: relative; */
+}
+
 .div_contentAddItem {
     height: fit-content !important;
     /* width: 96% !important; */
@@ -264,6 +273,13 @@ header {
     color: #382BD2;
 }
 
+.pricep-pag {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #382BD2;
+}
+
 .add-to-cartp {
     font-family: 'Inter', sans-serif;
     background-color: #D20606;
@@ -366,18 +382,27 @@ header {
 }
 
 .btn-login {
-    background-color: #454545 !important; /* Cor de fundo */
-    width: 253px !important;              /* Largura desejada */
-    height: 47px !important;              /* Altura desejada */
-    border: none;                         /* Remove a borda */
-    color: #fff;                          /* Cor do texto */
-    font-size: 16px;                      /* Tamanho da fonte */
-    display: flex;                        /* Habilita Flexbox para centralizar o texto */
-    justify-content: center;              /* Centraliza horizontalmente o conteúdo interno */
-    align-items: center;                  /* Centraliza verticalmente o conteúdo interno */
-    margin: 0 auto;   
-    
-  }
+    background-color: #454545 !important;
+    /* Cor de fundo */
+    width: 253px !important;
+    /* Largura desejada */
+    height: 47px !important;
+    /* Altura desejada */
+    border: none;
+    /* Remove a borda */
+    color: #fff;
+    /* Cor do texto */
+    font-size: 16px;
+    /* Tamanho da fonte */
+    display: flex;
+    /* Habilita Flexbox para centralizar o texto */
+    justify-content: center;
+    /* Centraliza horizontalmente o conteúdo interno */
+    align-items: center;
+    /* Centraliza verticalmente o conteúdo interno */
+    margin: 0 auto;
+
+}
 
 .card-title i {
     font-size: 1.5rem;
@@ -386,7 +411,7 @@ header {
 
 .list-group-item {
     border: none;
-    padding: 0.75rem 0;
+    padding: 0.75rem 0;
 }
 
 .table-password-reset {
@@ -451,7 +476,7 @@ header {
 .password-reset-icon {
     font-size: 16px;
     vertical-align: text-bottom;
-    margin-right: 4px;
+    margin-right: 4px;
 }
 
 /* Reset Password Page */
@@ -594,27 +619,172 @@ header {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 20px;
-  }
-  .btn-gerar {
+}
+
+.btn-gerar {
     background-color: #00cc00;
     color: #ffffff;
     width: 100%;
-  }
-  .btn-gerar:hover {
+}
+
+.btn-gerar:hover {
     background-color: #009900;
     color: #ffffff;
-  }
-  .table-container {
+}
+
+.table-container {
     background: #ffffff;
     padding: 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     overflow-x: auto;
-  }
-  th,
-  td {
+}
+
+th,
+td {
     vertical-align: middle !important;
-  }
-  .table > :not(caption) > * > * {
-    border-bottom-width: 1px;
-  }
+}
+
+.table> :not(caption)>*>* {
+    border-bottom-width: 1px;
+}
+
+.adicionais-lista {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Limita a 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-width: 100%;
+}
+
+.report-content-wrapper {
+    background-color: #F5F5F5;
+    padding: 20px;
+    height: calc(100vh - 71px); 
+    overflow-y: auto;
+}
+
+.report-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #FFFFFF;
+}
+
+.report-sidebar {
+    position: fixed;
+    top: 71px; /* Altura do header */
+    left: 0;
+    bottom: 0;
+    width: 16.666667%;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+}
+
+.report-main-content {
+    margin-left: 16.666667%;
+    padding-top: 0;
+}
+
+/* Só aplica o padding-top quando houver um .report-header fixo */
+.report-header ~ main .report-main-content,
+.report-header + main .report-main-content {
+    padding-top: 71px;
+}
+
+.report-input,
+.report-select {
+    height: 45px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+}
+
+.report-input:focus,
+.report-select:focus {
+    border-color: #06D20E;
+    box-shadow: 0 0 0 0.2rem rgba(6, 210, 14, 0.25);
+}
+
+.report-label {
+    font-size: 14px;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+.report-btn-success {
+    background-color: #06D20E !important;
+    border-color: #06D20E !important;
+    height: 45px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.report-btn-success:hover {
+    background-color: #05A00B !important;
+    border-color: #05A00B !important;
+}
+
+.report-table {
+    margin-bottom: 0;
+    border: 1px solid #dee2e6;
+}
+
+.report-table thead th {
+    background-color: #E5E5E5 !important;
+    color: #000000 !important;
+    font-weight: 600;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+}
+
+.report-table tbody td {
+    padding: 12px;
+    vertical-align: middle;
+    color: #000000;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.report-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.report-table-container {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-height: calc(100vh - 300px); /* Altura ajustável conforme necessário */
+    overflow-y: auto;
+}
+
+/* Estilização da barra de rolagem */
+.report-table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.report-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.report-table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.report-table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.report-main-content h1, .report-main-content h2, .report-main-content h3, .report-main-content h4, .report-main-content h5, .report-main-content h6 {
+    margin-top: 0 !important;
+}

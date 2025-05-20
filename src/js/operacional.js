@@ -6,6 +6,7 @@ window.EfetuarPedido = function () {
         cardapioFiltrado: [],
         categoriaSelecionada: '',
         id_funcionario: '',
+        id_pedido: null,
         itemObservacaoAtual: null,
         mesas: [],
         pedido: {
@@ -94,11 +95,13 @@ window.EfetuarPedido = function () {
             if (this.pedido.id_pedido == null) {
                 this.resetarPedido();
                 showToast('Pedido cancelado com sucesso!', 'success');
+                this.listarMesas();
             } else {
                 axios.post('/cancelarPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
                     if (resp.data == true) {
                         this.resetarPedido();
                         showToast('Pedido cancelado com sucesso!', 'success');
+                        this.listarMesas();
                     }
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao cancelar pedido.', 'danger');
@@ -119,6 +122,36 @@ window.EfetuarPedido = function () {
                 }
             } else {
                 console.error('Item do cardápio não encontrado.');
+            }
+        },
+        fecharPedido() {
+            if (this.pedido.id_pedido == null) {
+                this.preparaPedido().then(pedidoCriado => {
+                    axios.post('/fecharPedido', { id_pedido: pedidoCriado.id_pedido }).then(resp => {
+                        if (resp.data == true) {
+                            this.resetarPedido();
+                            this.id_pedido = null;
+                            showToast('Pedido finalizado com sucesso!', 'success');
+                        }
+                    }).catch(error => {
+                        showToast(error.response?.data?.erro || 'Erro ao finalizar pedido.', 'danger');
+                        console.log(error);
+                    });
+                }).catch(error => {
+                    // erro já tratado em preparaPedido
+                });
+            } else {
+                axios.post('/fecharPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
+                    if (resp.data == true) {
+                        this.resetarPedido();
+                        this.id_pedido = null;
+                        showToast('Pedido finalizado com sucesso!', 'success');
+                        this.listarMesas();
+                    }
+                }).catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao finalizar pedido.', 'danger');
+                    console.log(error);
+                });
             }
         },
         filtrarCardapio(categoria) {
@@ -172,6 +205,7 @@ window.EfetuarPedido = function () {
             if (pedido.id_pedido == null) {
                 axios.post('/novoPedido', { pedido: pedido }).then(resp => {
                     showToast('Novo pedido criado com sucesso!', 'success');
+                    this.listarMesas();
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao criar novo pedido.', 'danger');
                     console.log(error);
@@ -179,6 +213,7 @@ window.EfetuarPedido = function () {
             } else {
                 axios.post('/adicionarItensPedido', pedido).then(resp => {
                     showToast('Itens adicionados ao pedido com sucesso!', 'success');
+                    this.listarMesas();
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao adicionar itens ao pedido.', 'danger');
                     console.log(error);
@@ -187,41 +222,18 @@ window.EfetuarPedido = function () {
             this.resetarPedido();
         },
         preparaPedido() {
-            if (this.pedido.id_pedido == null) {
-                console.log('NovoPEdido')
-                var pedido = {
-                    id_pedido: this.pedido.id_pedido,
-                    id_mesa: this.pedido.id_mesa,
-                    id_funcionario: this.pedido.id_funcionario,
-                    observacao: this.pedido.observacao || '',
-                    itens: []
-                };
-
-                this.pedido.itens.forEach((item) => {
-                    var pedidoItem = {
-                        id_itemcardapio: item.id_itemcardapio,
-                        quantidade: parseInt(item.quantidade) || 1,
-                        observacao: item.observacao || '',
-                        adicionais: []
+            return new Promise((resolve, reject) => {
+                let pedido;
+                if (this.pedido.id_pedido == null) {
+                    pedido = {
+                        id_pedido: this.pedido.id_pedido,
+                        id_mesa: this.pedido.id_mesa,
+                        id_funcionario: this.pedido.id_funcionario,
+                        observacao: this.pedido.observacao || '',
+                        itens: []
                     };
 
-                    item.adicionais.forEach((adicional) => {
-                        pedidoItem.adicionais.push({
-                            id_adicional: adicional.id_adicional
-                        });
-                    });
-
-                    pedido.itens.push(pedidoItem);
-                });
-            } else {
-                console.log('AdicionarItem')
-                var pedido = {
-                    id_pedido: this.pedido.id_pedido,
-                    itens: []
-                };
-
-                this.pedido.itens.forEach((item, key) => {
-                    if (item.id_itempedido == null) {
+                    this.pedido.itens.forEach((item) => {
                         var pedidoItem = {
                             id_itemcardapio: item.id_itemcardapio,
                             quantidade: parseInt(item.quantidade) || 1,
@@ -236,11 +248,43 @@ window.EfetuarPedido = function () {
                         });
 
                         pedido.itens.push(pedidoItem);
-                    }
-                });
-            }
+                    });
+                } else {
+                    pedido = {
+                        id_pedido: this.pedido.id_pedido,
+                        itens: []
+                    };
 
-            this.novoPedido(pedido);
+                    this.pedido.itens.forEach((item, key) => {
+                        if (item.id_itempedido == null) {
+                            var pedidoItem = {
+                                id_itemcardapio: item.id_itemcardapio,
+                                quantidade: parseInt(item.quantidade) || 1,
+                                observacao: item.observacao || '',
+                                adicionais: []
+                            };
+
+                            item.adicionais.forEach((adicional) => {
+                                pedidoItem.adicionais.push({
+                                    id_adicional: adicional.id_adicional
+                            });
+                        });
+
+                        pedido.itens.push(pedidoItem);
+                        }
+                    });
+                }
+
+                axios.post('/novoPedido', { pedido: pedido }).then(resp => {
+                    showToast('Novo pedido criado com sucesso!', 'success');
+                    resolve(resp.data);
+                    this.resetarPedido();
+                }).catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao criar novo pedido.', 'danger');
+                    console.log(error);
+                    reject(error);
+                });
+            });
         },
         removerAdicional(index) {
             this.adicionaisModal.splice(index, 1);
@@ -310,5 +354,114 @@ window.EfetuarPedido = function () {
             this.categoriaSelecionada = categoria;
             this.filtrarCardapio(categoria);
         },
+    }
+}
+
+window.EfetuarPagamento = function () {
+    return {
+        tela: 'LIS',
+        pag: { id_meiopagamento: '', valor_pagamento: 0 },
+        pagamentos: [],
+        pedidos: [],
+        pedido_sel: {
+            data_pedido: null,
+            id_funcionario: null,
+            id_mesa: '',
+            id_pedido: null,
+            id_statuspedido: null,
+            observacao: '',
+            itens: []
+        },
+        total_pago: 0,
+        total_restante: 0,
+        valor_total: 0,
+        adicionarPagamento() {
+            const valor = parseFloat(this.pag.valor_pagamento) || 0;
+            const forma = parseInt(this.pag.id_meiopagamento);
+
+            if (!forma || valor <= 0) {
+                showToast('Informe a forma de pagamento e um valor válido.', 'danger');
+                return;
+            }
+
+            this.pagamentos.push({
+                id_pedido: this.pedido_sel.id_pedido,
+                id_meiopagamento: forma,
+                valor_pagamento: valor
+            });
+
+            this.total_pago = this.pagamentos.reduce((soma, pag) => soma + parseFloat(pag.valor_pagamento), 0).toFixed(2);
+            this.total_restante = (parseFloat(this.valor_total) - parseFloat(this.total_pago)).toFixed(2);
+
+            this.pag = { id_meiopagamento: '', valor_pagamento: 0 };
+        },
+        buscarPedido(id_pedido) {
+            axios.post('/buscarPedido', { id_pedido: id_pedido }).then(resp => {
+                if (resp.data && Array.isArray(resp.data.itens)) {
+                    resp.data.itens = resp.data.itens.map(item => {
+                        let valorItem = parseFloat(item.valor) || 0;
+                        let valorAdicionais = 0;
+                        if (Array.isArray(item.adicionais)) {
+                            valorAdicionais = item.adicionais.reduce((soma, adicional) => {
+                                return soma + (parseFloat(adicional.valor) || 0);
+                            }, 0);
+                        }
+                        
+                        const valor_total_item = ((valorItem + valorAdicionais) * (parseInt(item.quantidade) || 1)).toFixed(2);
+                        return { ...item, valor_total_item };
+                    });
+                }
+
+                this.pedido_sel = resp.data;
+                this.tela = 'PGT';
+
+                let total = 0;
+                if (this.pedido_sel && Array.isArray(this.pedido_sel.itens)) {
+                    this.pedido_sel.itens.forEach(item => {
+                        total += parseFloat(item.valor_total_item) || 0;
+                    });
+                }
+                this.valor_total = total.toFixed(2);
+                this.total_restante = total.toFixed(2);
+                console.log(this.pedido_sel);
+            }).catch(error => {
+                showToast(error.response?.data?.erro || 'Erro ao buscar pedido.', 'danger');
+                console.log(error);
+            });
+        },
+        finalizarPagamento() {
+            if (this.pagamentos.length > 0) {
+                axios.post('/finalizarPagamento', { id_pedido: this.pedido_sel.id_pedido, pagamentos: this.pagamentos }).then(resp => {
+                    if (resp.data == true) {
+                        showToast('Pagamento realizado com sucesso!', 'success');
+                        this.listarPedidos();
+                        this.tela = 'LIS';
+                    }
+                }).catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao finalizar pagamento.', 'danger');
+                    console.log(error);
+                });
+            } else {
+                showToast('Nenhum pagamento adicionado.', 'danger');
+            }
+        },
+        listarPedidos() {
+            axios.get('/listarPedidosFechados').then(resp => {
+                this.pedidos = resp.data;
+            })
+            .catch(error => {
+                showToast(error.response?.data?.erro || 'Erro ao carregar pagamentos.', 'danger');
+                console.log(error);
+            });
+        },
+        getMeioPagamentoNome(id_meiopagamento) {
+            switch (parseInt(id_meiopagamento)) {
+                case 1: return 'Dinheiro';
+                case 2: return 'PIX';
+                case 3: return 'Cartão de Débito';
+                case 4: return 'Cartão de Crédito';
+                default: return 'Outro';
+            }
+        }
     }
 }

@@ -257,10 +257,10 @@ async function initdb(pool: Pool) {
 
             --
             -- TOC entry 245 (class 1259 OID 42432)
-            -- Name: meio_pagamento_id_meiopagamento_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+            -- Name: meiopagamento_id_meiopagamento_seq; Type: SEQUENCE; Schema: public; Owner: postgres
             --
 
-            CREATE SEQUENCE public.meio_pagamento_id_meiopagamento_seq
+            CREATE SEQUENCE public.meiopagamento_id_meiopagamento_seq
                 AS integer
                 START WITH 1
                 INCREMENT BY 1
@@ -269,9 +269,9 @@ async function initdb(pool: Pool) {
                 CACHE 1;
 
 
-            ALTER SEQUENCE public.meio_pagamento_id_meiopagamento_seq OWNER TO postgres;
+            ALTER SEQUENCE public.meiopagamento_id_meiopagamento_seq OWNER TO postgres;
 
-            ALTER SEQUENCE public.meio_pagamento_id_meiopagamento_seq OWNED BY public.meiopagamento.id_meiopagamento;
+            ALTER SEQUENCE public.meiopagamento_id_meiopagamento_seq OWNED BY public.meiopagamento.id_meiopagamento;
 
             -- FIM CREATE MEIO PAGAMENTO
 
@@ -279,13 +279,11 @@ async function initdb(pool: Pool) {
 
            CREATE TABLE public.pagamento (
             id_pagamento integer NOT NULL,
-            id_mesa integer NOT NULL,
-            estado_pagamento character varying(50) NOT NULL,
             id_pedido integer NOT NULL,
-            valor_total numeric(10,2) NOT NULL,
+            id_meiopagamento integer NOT NULL,
+            valor_pagamento numeric(10,2) NOT NULL,
             data_pagamento date DEFAULT CURRENT_DATE NOT NULL,
-            hora_pagamento time without time zone DEFAULT CURRENT_TIME NOT NULL,
-            meio_pagamento integer NOT NULL
+            hora_pagamento time without time zone DEFAULT CURRENT_TIME NOT NULL
         );
 
 
@@ -488,7 +486,7 @@ async function initdb(pool: Pool) {
 
             ALTER TABLE ONLY public.mesa ALTER COLUMN id_mesa SET DEFAULT nextval('public.mesa_id_mesa_seq'::regclass);
 
-            ALTER TABLE ONLY public.meiopagamento ALTER COLUMN id_meiopagamento SET DEFAULT nextval('public.meio_pagamento_id_meiopagamento_seq'::regclass);
+            ALTER TABLE ONLY public.meiopagamento ALTER COLUMN id_meiopagamento SET DEFAULT nextval('public.meiopagamento_id_meiopagamento_seq'::regclass);
 
             ALTER TABLE ONLY public.pagamento ALTER COLUMN id_pagamento SET DEFAULT nextval('public.pagamento_id_pagamento_seq'::regclass);
 
@@ -580,7 +578,7 @@ async function initdb(pool: Pool) {
 
             SELECT pg_catalog.setval('public.mesa_id_mesa_seq', 1, false);
 
-            SELECT pg_catalog.setval('public.meio_pagamento_id_meiopagamento_seq', 1, true);
+            SELECT pg_catalog.setval('public.meiopagamento_id_meiopagamento_seq', 1, true);
 
             SELECT pg_catalog.setval('public.pagamento_id_pagamento_seq', 1, false);
 
@@ -685,16 +683,13 @@ async function initdb(pool: Pool) {
                 ADD CONSTRAINT fk_itempedido FOREIGN KEY (id_itempedido) REFERENCES public.itempedido(id_itempedido);
 
             ALTER TABLE ONLY public.pagamento
-                ADD CONSTRAINT fk_meio_pagamento FOREIGN KEY (meio_pagamento) REFERENCES public.meiopagamento(id_meiopagamento) NOT VALID;
+                ADD CONSTRAINT fk_meiopagamento FOREIGN KEY (id_meiopagamento) REFERENCES public.meiopagamento(id_meiopagamento) NOT VALID;
 
             ALTER TABLE ONLY public.login
                 ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
 
             ALTER TABLE ONLY public.mesa
                 ADD CONSTRAINT fk_mesa_status FOREIGN KEY (id_status) REFERENCES public.statusmesa(id_status);
-
-            ALTER TABLE ONLY public.pagamento
-                ADD CONSTRAINT fk_pagamento_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
 
             ALTER TABLE ONLY public.pagamento
                 ADD CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido) REFERENCES public.pedido(id_pedido);

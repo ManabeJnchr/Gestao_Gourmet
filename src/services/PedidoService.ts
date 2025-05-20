@@ -1,4 +1,3 @@
-import { Pool, PoolClient } from "pg";
 import PedidoModel from "../models/PedidoModel";
 import MesaService from "./MesaService";
 import ItemCardapioService from "./ItemCardapioService";
@@ -36,6 +35,25 @@ class PedidoService {
         try {
 
             const result = await PedidoModel.listarPedidos()
+
+            return result;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
+        static async listarPedidosFechados () {
+        try {
+
+            const result = await PedidoModel.listarPedidosFechados()
 
             return result;
 
@@ -144,6 +162,38 @@ class PedidoService {
         }
     }
 
+    static async buscarItensDoPedido (pedido : pedidoDTO) {
+        try {
+            const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
+
+            for (const item of itensPedido) {
+                if (item.imagem) {
+                    const base64 = item.imagem.toString('base64');
+                    item.imagemBase64 = `data:image/png;base64,${base64}`;
+                }
+
+                const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
+
+                item.adicionais = adicionaisItem;
+            }
+
+            pedido.itens = itensPedido
+
+            return pedido;
+
+        } catch (err : any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+
+        }
+
+    }
+
     static async buscarPedidoMesa ({id_mesa}:pedidoDTO) {
         try {
 
@@ -162,20 +212,87 @@ class PedidoService {
                 return null;
             }
 
+            const pedidoCompleto = await this.buscarItensDoPedido(pedido);
+
+            return pedidoCompleto;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
+    static async somarValorTotal ({id_pedido}:pedidoDTO) {
+        try {
+
+            if (!id_pedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            const number_id_pedido = Number(id_pedido);
+            if (isNaN(number_id_pedido)) {
+                throw { statusCode: 400, message: "Pedido inválido" }
+            }
+
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+
+            if (!pedido) { // Se não há nenhum pedido ainda, retorna nulo
+                throw { statusCode: 400, message: "Pedido inválido"}
+            }
+
             const itensPedido = await ItemPedidoModel.listarItensDoPedido(pedido.id_pedido);
 
+            let somaValorPedido = 0;
+
             for (const item of itensPedido) {
-                if (item.imagem) {
-                    const base64 = item.imagem.toString('base64');
-                    item.imagemBase64 = `data:image/png;base64,${base64}`;
-                }
+                somaValorPedido += item.valor;
 
                 const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
 
-                item.adicionais = adicionaisItem;
+                for (const adicional of adicionaisItem) {
+                    somaValorPedido += adicional.valor;
+                }
             }
 
-            pedido.itens = itensPedido
+            return somaValorPedido;
+
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
+    static async buscarPedido ({id_pedido}:pedidoDTO, complete : boolean = false) {
+        try {
+
+            if (!id_pedido) {
+                throw { statusCode: 400, message: "Faltam argumentos" }
+            }
+
+            const number_id_pedido = Number(id_pedido);
+            if (isNaN(number_id_pedido)) {
+                throw { statusCode: 400, message: "Pedido inválido" }
+            }
+
+            const pedido = await PedidoModel.buscarPedido(number_id_pedido);
+
+            if (complete) {
+                const pedidoCompleto = await this.buscarItensDoPedido(pedido);
+
+                return pedidoCompleto;
+            }
 
             return pedido;
 
@@ -409,8 +526,8 @@ class PedidoService {
             // Inicia a transaction
             await client.query("BEGIN");
 
-            // Mudar status da mesa para "fechada"
-            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 4);
+            // Mudar status da mesa para "disponivel"
+            await MesaModel.atualizarMesa(mesa.id_mesa, mesa.numero_mesa, mesa.qtd_lugares, 2);
 
             // Mudar status do pedido para "fechado"
             const result = await PedidoModel.fecharPedido(number_id_pedido);

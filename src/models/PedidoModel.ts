@@ -19,14 +19,31 @@ class PedidoModel {
             throw {statusCode:500, message:"Erro ao listar pedidos, tente novamente"};
         }
     }
+        
+    static async listarPedidosFechados() {
+        try {
+            const result = await pool.query(
+                `SELECT p.id_pedido, p.id_mesa, p.observacao, p.id_funcionario, p.id_statuspedido, p.data_pedido, m.numero_mesa, f.nome
+                 FROM pedido AS p LEFT JOIN mesa AS m ON m.id_mesa = p.id_mesa
+                 LEFT JOIN funcionario AS f ON f.id_funcionario = p.id_funcionario
+                 WHERE p.id_statuspedido = 2
+                 ORDER BY p.id_pedido DESC` // Status do pedido deve ser "fechado"
+            );
+
+            return result.rows;
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao listar pedidos, tente novamente"};
+        }
+    }
 
     static async buscarPedidoMesa(id_mesa: number) {
         try {
             const result = await pool.query(
                 `SELECT id_pedido, id_mesa, observacao, id_funcionario, id_statuspedido, data_pedido
                  FROM pedido
-                 WHERE id_mesa = $1 AND id_statuspedido IN ('1','2')
-                 ORDER BY id_pedido DESC`, // Pedidos com status "aberto" ou "fechado"
+                 WHERE id_mesa = $1 AND id_statuspedido = 1
+                 ORDER BY id_pedido DESC`, // Pedidos com status "aberto"
                 [id_mesa]
             );
 
