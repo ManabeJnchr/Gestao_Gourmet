@@ -94,8 +94,8 @@ class PagamentoService {
             for (const pagamentoIndex in pagamentos) {
                 const pagamento = pagamentos[pagamentoIndex];
 
-                const resultPagamento = await PagamentoModel.adicionarPagamento(id_pedido, pagamento.id_meiopagamento, pagamento.valor_pagamento, client)
-                somaPagamentos += resultPagamento.valor_pagamento
+                await PagamentoModel.adicionarPagamento(id_pedido, pagamento.id_meiopagamento, pagamento.valor_pagamento, client)
+                somaPagamentos += pagamento.valor_pagamento;
             }
 
             const valorPedido = await PedidoService.somarValorTotal({id_pedido:pedido.id_pedido})

@@ -260,7 +260,7 @@ class PedidoService {
                 }
             }
 
-            return somaValorPedido;
+            return Number(somaValorPedido);
 
         } catch (err: any) {
             console.error("Erro no service: ", err);
