@@ -120,6 +120,7 @@ class PagamentoService {
             
             await client.query("COMMIT");
             
+            return true; // Retorna true em caso de sucesso
 
         } catch (err: any) {
             console.error("Erro no service: ", err);
