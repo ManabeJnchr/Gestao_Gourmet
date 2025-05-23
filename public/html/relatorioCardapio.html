@@ -124,7 +124,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-10" id="div_content">
+            <div x-data="RelCardapio()" x-init="initRelCardapio()" class="col-12 col-lg-10" id="div_content">
                 <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
@@ -151,27 +151,35 @@
                                             Exibir Inativos
                                         </label>
                                     </div>
-                                    <button type="button" class="btn btn-primary me-3">LIMPAR</button>
-                                    <button type="submit" class="btn btn-success">PESQUISAR</button>
+                                    <button type="button" class="btn btn-primary me-3" @click="resetarFiltros()">LIMPAR</button>
+                                    <button type="button" class="btn btn-success" @click="gerarRelatorio()">PESQUISAR</button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select x-model="categoria" id="filtro_categoria" name="filtro_categoria" class="form-select">
+                                        <option value="" selected>
+                                            Selecione uma categoria
+                                        </option>
+                                        <template x-for="categoria in categorias">
+                                            <option :value="categoria.id_categoria" x-text="categoria.nome">
+                                            </option>
+                                        </template>
+                                    </select>
+                                    <label for="floatingSelect">Categoria</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-2">
-                                    <input type="text" class="form-control" id="categoria" placeholder="Categoria">
-                                    <label for="categoria">Categoria</label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-floating mb-2">
-                                    <input type="date" class="form-control" id="dataInicial"
+                                    <input type="date" x-model="data_inicial" class="form-control" id="data_inicial"
                                         placeholder="Criado a partir de">
-                                    <label for="dataInicial">Criado a partir de</label>
+                                    <label for="data_inicial">Criado a partir de</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-2">
-                                    <input type="date" class="form-control" id="dataFinal" placeholder="Criado até">
-                                    <label for="dataFinal">Criado até</label>
+                                    <input type="date" x-model="data_final" class="form-control" id="data_final" placeholder="Criado até">
+                                    <label for="data_final">Criado até</label>
                                 </div>
                             </div>
                         </form>
