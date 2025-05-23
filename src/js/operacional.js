@@ -455,7 +455,7 @@ window.EfetuarPagamento = function () {
                 });
         },
         listarPedidos() {
-            axios.get('/listarPedidos').then(resp => {
+            axios.get('/listarPedidosFechados').then(resp => {
                 this.pedidos = resp.data;
             })
             .catch(error => {
