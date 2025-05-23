@@ -133,138 +133,101 @@
                 </div>
             </div>
 
-            <div x-data="Cardapio()" x-init="buscarDados()" class="col-12 col-lg-10" id="div_content">
+            <div x-data="RelFuncionario()" class="col-12 col-lg-10" id="div_content">
                 <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
                         <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
                             <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
                         </button>
-                        <h1 class="m-0 ms-2">RELATÓRIO DE FUNCIONÁRIOS</h1>
+                        <h1 class="m-0 ms-2">RELATÓRIO DE FUNCIONÁRIO</h1>
                     </div>
                 </div>
-                <div class="mt-4">
-                    <div class="filter-section">
-                        <div class="row g-2">
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" placeholder="Insira o Nome..." />
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" placeholder="Insira o CPF..." />
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select">
-                                    <option selected>Selecione o Cargo...</option>
-                                    <option>Garçom</option>
-                                    <option>Caixa</option>
-                                    <option>Gerente</option>
-                                    <option>Administrador</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" placeholder="Insira o Telefone..." />
-                            </div>
+                <div class="row" :class="tela == 'LIS' ? '' : 'd-none'" style="max-height: 78vh; overflow-y: auto;">
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Data e Hora Inicial</label>
-                                <input type="datetime-local" class="form-control" />
+                <!-- Formulário de Filtros -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form class="row g-2">
+                            <div class="col-3">
+                                <h2 class="mb-0">Filtros do Relatório</h2>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Data e Hora Final</label>
-                                <input type="datetime-local" class="form-control" />
+                            <div class="col-9 text-end">
+                                <div class="d-inline-flex">
+                                    <button type="button" class="btn btn-primary me-3"
+                                        @click="resetarFiltros()">LIMPAR</button>
+                                    <button type="button" class="btn btn-success"
+                                        @click="gerarRelatorio()">PESQUISAR</button>
+                                </div>
                             </div>
-
-                            <div class="col-md-12 text-center mt-2">
-                                <button class="btn btn-gerar">Gerar</button>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select x-model="cargo" id="filtro_cargo" name="filtro_cargo"
+                                        class="form-select">
+                                        <option value="" selected disabled>
+                                            Selecione um cargo
+                                        </option>
+                                        <option value=1>
+                                            Administrador
+                                        </option>
+                                        <option value=2>
+                                            Caixa / Atendente
+                                        </option>
+                                        <option value=3>
+                                            Garçom
+                                        </option>
+                                        <option value=4>
+                                            Gerente
+                                        </option>
+                                    </select>
+                                    <label for="floatingSelect">Cargo</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-text mt-2">
-                            * Dados pré-cadastrados no sistema
-                        </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-2">
+                                    <input type="date" x-model="data_inicial" class="form-control" id="data_inicial"
+                                        placeholder="Criado a partir de">
+                                    <label for="data_inicial">Criado a partir de</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-2">
+                                    <input type="date" x-model="data_final" class="form-control" id="data_final"
+                                        placeholder="Criado até">
+                                    <label for="data_final">Criado até</label>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                </div>
 
-                    <div class="table-container">
-                        <table class="table table-bordered text-center m-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>CPF</th>
-                                    <th>Cargo</th>
-                                    <th>Telefone</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Lucas Felipe</td>
-                                    <td>238.123.543-12</td>
-                                    <td>Garçom</td>
-                                    <td>(14) 993087873</td>
-                                </tr>
-                                <tr>
-                                    <td>Lucas Samuel</td>
-                                    <td>238.123.543-13</td>
-                                    <td>Garçom</td>
-                                    <td>(14) 993087874</td>
-                                </tr>
-                                <tr>
-                                    <td>Jean Luca</td>
-                                    <td>238.123.543-14</td>
-                                    <td>Garçom</td>
-                                    <td>(14) 993087875</td>
-                                </tr>
-                                <tr>
-                                    <td>Bianca Amaral</td>
-                                    <td>238.123.543-15</td>
-                                    <td>Garçom</td>
-                                    <td>(14) 993087876</td>
-                                </tr>
-                                <tr>
-                                    <td>José Francisco</td>
-                                    <td>238.123.543-16</td>
-                                    <td>Garçom</td>
-                                    <td>(14) 993087877</td>
-                                </tr>
-                                <tr>
-                                    <td>Garçom Teste</td>
-                                    <td>000.000.000-01</td>
-                                    <td>Garçom</td>
-                                    <td>(00) 000000001</td>
-                                </tr>
-                                <tr>
-                                    <td>Gerente Teste</td>
-                                    <td>000.000.000-02</td>
-                                    <td>Gerente</td>
-                                    <td>(00) 000000000</td>
-                                </tr>
-                                <tr>
-                                    <td>Atendente Caixa Teste</td>
-                                    <td>000.000.000-00</td>
-                                    <td>Caixa</td>
-                                    <td>(00) 000000000</td>
-                                </tr>
-                                <tr>
-                                    <td>Administrador</td>
-                                    <td>999.999.999-99</td>
-                                    <td>Administrador</td>
-                                    <td>(99) 999999999</td>
-                                </tr>
-                                <!-- Linhas vazias -->
-                                <tr>
-                                    <td colspan="4">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">&nbsp;</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="card">
+                    <div class="card-body" style="height: 53vh;">
+                        <div style="height:100%; display:flex; flex-direction:column;">
+                            <div style="overflow-y:auto; flex:1; min-height:0;">
+                                <table class="table table-hover table-bordered table-sm m-0 border border-1"
+                                    style="width:100%;">
+                                    <thead style="position: sticky; top: 0; background: #E5E5E5; z-index: 2;">
+                                        <tr>
+                                            <th scope="col" style="background-color: #E5E5E5;">Nome</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">CPF</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade de Atendimentos</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Valor Total Vendido</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="(dado, index) in rel_funcionario" :key="index">
+                                            <tr>
+                                                <td x-text="dado.nome"></td>
+                                                <td x-text="dado.cpf"></td>
+                                                <td x-text="dado.qtde_atendimentos"></td>
+                                                <td x-text="dado.valor_total_vendido"></td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -283,8 +246,8 @@
                             <div class="mb-4">
                                 <label for="currentPassword" class="form-label">Senha Atual</label>
                                 <div class="input-group">
-                                    <input x-model="trocarSenha.senhaAtual" type="password" class="form-control change-password-input"
-                                        id="currentPassword" required>
+                                    <input x-model="trocarSenha.senhaAtual" type="password"
+                                        class="form-control change-password-input" id="currentPassword" required>
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="togglePassword('currentPassword', this)">
                                         <i class="mdi mdi-eye"></i>
@@ -294,8 +257,8 @@
                             <div class="mb-4">
                                 <label for="newPassword" class="form-label">Nova Senha</label>
                                 <div class="input-group">
-                                    <input x-model="trocarSenha.novaSenha" type="password" class="form-control change-password-input" id="newPassword"
-                                        required>
+                                    <input x-model="trocarSenha.novaSenha" type="password"
+                                        class="form-control change-password-input" id="newPassword" required>
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="togglePassword('newPassword', this)">
                                         <i class="mdi mdi-eye"></i>
@@ -305,8 +268,8 @@
                             <div class="mb-4">
                                 <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
                                 <div class="input-group">
-                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password" class="form-control change-password-input"
-                                        id="confirmPassword" required>
+                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password"
+                                        class="form-control change-password-input" id="confirmPassword" required>
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="togglePassword('confirmPassword', this)">
                                         <i class="mdi mdi-eye"></i>
@@ -354,7 +317,9 @@
         <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
