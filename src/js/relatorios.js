@@ -4,9 +4,10 @@ window.RelCardapio = function () {
         categorias: [],
         data_inicial: '',
         data_final: '',
+        exibir_inativo: false,
         rel_cardapio: [],
         gerarRelatorio() {
-            const filtros = { categoria: this.categoria, data_inicial: this.data_inicial, data_final: this.data_final };
+            const filtros = { categoria: this.categoria, data_inicial: this.data_inicial, data_final: this.data_final, exibir_inativo: this.exibir_inativo };
             axios.post('/gerarRelatorioCardapio', filtros).then(resp => {
                 this.rel_cardapio = resp.data;
             }).catch(error => {
@@ -30,6 +31,7 @@ window.RelCardapio = function () {
             this.categoria = '';
             this.data_inicial = '';
             this.data_final = '';
+            this.exibir_inativo = false;
         }
     }
 }

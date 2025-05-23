@@ -146,7 +146,7 @@
                             <div class="col-9 text-end">
                                 <div class="d-inline-flex">
                                     <div class="form-check me-3 align-content-center">
-                                        <input class="form-check-input" type="checkbox" value="" id="exibirInativos">
+                                        <input x-model="exibir_inativo" class="form-check-input" type="checkbox" value="" id="exibirInativos">
                                         <label class="form-check-label" for="exibirInativos">
                                             Exibir Inativos
                                         </label>
@@ -203,14 +203,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
+                                        <template x-for="(dado, index) in rel_cardapio" :key="index">
+                                            <tr>
+                                                <td x-text="dado.nome"></td>
+                                                <td x-text="dado.categoria"></td>
+                                                <td x-text="dado.valor_item"></td>
+                                                <td x-text="dado.qtde_vendida"></td>
+                                                <td x-text="dado.valor_total"></td>
+                                                <td x-text="dado.ativo"></td>
+                                            </tr>
+                                        </template>
                                     </tbody>
                                 </table>
                             </div>
