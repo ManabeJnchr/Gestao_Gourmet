@@ -16,6 +16,10 @@ interface RelatorioCardapioParams extends RelatorioParams {
     exibir_inativo: boolean
 } 
 
+interface RelatorioFuncionarioParams extends RelatorioParams {
+    cargo?: string | number
+} 
+
 class RelatorioService {
 
     static async gerarRelatorioCardapio ({categoria, data_inicial, data_final, exibir_inativo} : RelatorioCardapioParams) {
@@ -81,6 +85,91 @@ class RelatorioService {
                 ${filtroWhere}
                 GROUP BY ic.id_itemcardapio, ic.nome, c.nome, ic.valor, ic.ativo
                 ORDER BY vezes_pedido DESC; 
+            `
+
+            const result = await RelatorioModel.gerarRelatorio(query, values)
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
+    static async gerarRelatorioFuncionario ({cargo, data_inicial, data_final} : RelatorioFuncionarioParams) {
+        try {
+
+            let paramIndex = 1;
+            const values = []
+
+            const conditionsData = [];
+            let filtroData = '';
+
+            if (data_inicial) {
+                conditionsData.push(`p.data_pedido >= $${paramIndex}`)
+                values.push(data_inicial);
+                paramIndex++
+            }
+
+            if (data_final) {
+                conditionsData.push(`p.data_pedido <= $${paramIndex}`)
+                values.push(data_final);
+                paramIndex++
+            }
+
+            if (conditionsData.length > 0) {
+                filtroData += 'WHERE ' + conditionsData.join(' AND ');
+            }
+
+            const conditions = [];
+            let filtroFuncionario = '';
+
+            if(cargo) {
+                conditions.push(`f.cargo = $${paramIndex}`)
+                values.push(cargo)
+                paramIndex++
+            }
+
+            if (conditions.length > 0) {
+                filtroFuncionario += 'WHERE ' + conditions.join(' AND ');
+            }
+
+            let query = `
+                SELECT 
+                f.nome,
+                f.cpf,
+                COALESCE(pedidos.qtde_atendimentos, 0) AS qtde_atendimentos,
+                COALESCE(valores.valor_total_vendido, 0) AS valor_total_vendido
+                FROM funcionario f
+                LEFT JOIN (
+                    SELECT 
+                        p.id_funcionario,
+                        COUNT(DISTINCT p.id_pedido) AS qtde_atendimentos
+                    FROM pedido p
+                    GROUP BY p.id_funcionario
+                    ${filtroData}
+                ) pedidos ON pedidos.id_funcionario = f.id_funcionario
+                LEFT JOIN (
+                    SELECT 
+                        p.id_funcionario,
+                        SUM(ip.valor * ip.quantidade + COALESCE(aip.valor_adicionais, 0)) AS valor_total_vendido
+                    FROM pedido p
+                    LEFT JOIN itempedido ip ON ip.id_pedido = p.id_pedido
+                    LEFT JOIN (
+                        SELECT id_itempedido, SUM(valor) AS valor_adicionais
+                        FROM adicional_itempedido
+                        GROUP BY id_itempedido
+                    ) aip ON aip.id_itempedido = ip.id_itempedido
+                    ${filtroData}
+                    GROUP BY p.id_funcionario
+                ) valores ON valores.id_funcionario = f.id_funcionario
+                ${filtroFuncionario}
             `
 
             const result = await RelatorioModel.gerarRelatorio(query, values)
