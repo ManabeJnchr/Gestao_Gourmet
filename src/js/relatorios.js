@@ -10,6 +10,7 @@ window.RelCardapio = function () {
             const filtros = { categoria: this.categoria, data_inicial: this.data_inicial, data_final: this.data_final, exibir_inativo: this.exibir_inativo };
             axios.post('/gerarRelatorioCardapio', filtros).then(resp => {
                 this.rel_cardapio = resp.data;
+                this.ordenarPor('nome_item');
             }).catch(error => {
                 console.log(error);
             });
@@ -32,7 +33,35 @@ window.RelCardapio = function () {
             this.data_inicial = '';
             this.data_final = '';
             this.exibir_inativo = false;
-        }
+        },
+        ordenarPor(prop) {
+            const propsNumericas = [
+                'valor_atual',
+                'vezes_pedido',
+                'valor_sem_adicionais',
+                'valor_adicionais',
+                'valor_total_com_adicionais'
+            ];
+            this.rel_cardapio.sort((a, b) => {
+                if (a[prop] === undefined || b[prop] === undefined) return 0;
+
+                if (propsNumericas.includes(prop)) {
+                    const numA = Number(a[prop]);
+                    const numB = Number(b[prop]);
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        return numB - numA; // decrescente
+                    }
+                    return 0;
+                }
+
+                // Para strings, ordena ignorando maiúsculas/minúsculas (crescente)
+                if (typeof a[prop] === 'string' && typeof b[prop] === 'string') {
+                    return a[prop].localeCompare(b[prop], 'pt-BR', { sensitivity: 'base' });
+                }
+
+                return 0;
+            });
+        },
     }
 }
 

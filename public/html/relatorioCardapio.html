@@ -199,17 +199,33 @@
                         <div style="height:100%; display:flex; flex-direction:column;">
                             <div style="overflow-y:auto; flex:1; min-height:0;">
                                 <table class="table table-hover table-bordered table-sm m-0 border border-1"
-                                    style="width:100%;">
+                                    style="width:100%; font-size: smaller;">
                                     <thead style="position: sticky; top: 0; background: #E5E5E5; z-index: 2;">
                                         <tr>
-                                            <th scope="col" style="background-color: #E5E5E5;">Nome</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Categoria</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Valor Unitário</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade Vendida</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Valor Sem Adicionais</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Valor Adicionais</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Valor Total</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Ativo</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('nome_item')">Nome</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('categoria')">Categoria</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_atual')">Valor Unitário</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('vezes_pedido')">Quantidade Vendida</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_sem_adicionais')">Valor Sem Adicionais</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_adicionais')">Valor Adicionais</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_total_com_adicionais')">Valor Total</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('ativo')">Ativo</button>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
