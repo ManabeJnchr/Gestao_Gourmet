@@ -21,7 +21,8 @@
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -29,19 +30,24 @@
                 <div class="btn-group">
                     <button type="button" class="btn bg-transparent">
                         <span class="me-2" id="text_userName" x-text="identity.funcionarionome"></span>
-                        <img class="me-2 rounded-circle" id="img_userIcon" :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'"
-                            alt="user-icon">
+                        <img class="me-2 rounded-circle" id="img_userIcon"
+                            :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user-icon">
                     </button>
                     <button type="button" class="btn bg-transparent dropdown-toggle dropdown-toggle-split"
                         data-bs-toggle="dropdown" aria-expanded="true">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Alterar Senha</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changePasswordModal">Alterar Senha</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -72,10 +78,13 @@
                                     <span> Gerenciar Mesas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2" x-data="quantidadeSolicitacoes()"
+                                x-init="quantidadeSolicitacoesResetSenha()">
                                 <a href="redefinicaoSenhaAdm.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
                                     <span> Redifinição de Senhas</span>
+                                    <span class="badge text-bg-secondary" x-show="quantidadeSolicitacoes > 0"
+                                        x-text="quantidadeSolicitacoes"></span>
                                 </a>
                             </li>
                         </ul>
@@ -84,7 +93,7 @@
                         <h3 class="fw-bold text-start">Operacional</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 3">
-                                <a href="#" class="text-decoration-none text-black">
+                                <a href="../html/efetuarPagamento.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
                                     <span> Efetuar Pagamento</span>
                                 </a>
@@ -112,7 +121,7 @@
                                     <span> Funcionários</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2 selected">
                                 <a href="../html/relatorioPedidos.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-order-bool-ascending-variant" style="font-size: 20px;"></i>
                                     <span> Pedidos</span>

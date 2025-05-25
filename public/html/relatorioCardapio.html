@@ -39,11 +39,16 @@
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Alterar Senha</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changePasswordModal">Alterar Senha</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -74,10 +79,13 @@
                                     <span> Gerenciar Mesas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2" x-data="quantidadeSolicitacoes()"
+                                x-init="quantidadeSolicitacoesResetSenha()">
                                 <a href="redefinicaoSenhaAdm.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
                                     <span> Redifinição de Senhas</span>
+                                    <span class="badge text-bg-secondary" x-show="quantidadeSolicitacoes > 0"
+                                        x-text="quantidadeSolicitacoes"></span>
                                 </a>
                             </li>
                         </ul>
@@ -86,7 +94,7 @@
                         <h3 class="fw-bold text-start">Operacional</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 3">
-                                <a href="#" class="text-decoration-none text-black">
+                                <a href="../html/efetuarPagamento.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
                                     <span> Efetuar Pagamento</span>
                                 </a>
@@ -102,7 +110,7 @@
                     <div class="row" x-show="identity.id_cargo == 1 || identity.id_cargo == 4">
                         <h3 class="fw-bold text-start">Relatórios</h3>
                         <ul class="list-unstyled">
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2 selected">
                                 <a href="../html/relatorioCardapio.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-food" style="font-size: 20px;"></i>
                                     <span> Cadápio</span>
