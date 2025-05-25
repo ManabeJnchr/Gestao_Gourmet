@@ -13,11 +13,12 @@ interface RelatorioParams {
 
 interface RelatorioCardapioParams extends RelatorioParams {
     categoria?: string | number
+    exibir_inativo: boolean
 } 
 
 class RelatorioService {
 
-    static async gerarRelatorioCardapio ({categoria, data_inicial, data_final} : RelatorioCardapioParams) {
+    static async gerarRelatorioCardapio ({categoria, data_inicial, data_final, exibir_inativo} : RelatorioCardapioParams) {
         try {
             let query = `
                 SELECT ic.id_itemcardapio,
@@ -60,6 +61,10 @@ class RelatorioService {
                 conditions.push(`ic.id_categoria = $${paramIndex}`)
                 values.push(categoria)
                 paramIndex++
+            }
+
+            if (!exibir_inativo) {
+                conditions.push(`ic.ativo = true`)
             }
 
             if (conditions.length > 0) {
