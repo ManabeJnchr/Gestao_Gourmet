@@ -131,7 +131,7 @@ class RelatorioService {
             let filtroFuncionario = '';
 
             if(cargo) {
-                conditions.push(`f.cargo = $${paramIndex}`)
+                conditions.push(`f.id_cargo = $${paramIndex}`)
                 values.push(cargo)
                 paramIndex++
             }
@@ -152,8 +152,8 @@ class RelatorioService {
                         p.id_funcionario,
                         COUNT(DISTINCT p.id_pedido) AS qtde_atendimentos
                     FROM pedido p
-                    GROUP BY p.id_funcionario
                     ${filtroData}
+                    GROUP BY p.id_funcionario
                 ) pedidos ON pedidos.id_funcionario = f.id_funcionario
                 LEFT JOIN (
                     SELECT 
