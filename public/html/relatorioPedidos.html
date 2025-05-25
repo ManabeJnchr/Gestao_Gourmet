@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
     <script type="module" src="/assets/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <title>Gestão Gourmet</title>
     <link rel="shortcut icon" href="../src/img/logo-gestao-gourmet-icon.svg">
@@ -152,8 +154,10 @@
                             </div>
                             <div class="col-9 text-end">
                                 <div class="d-inline-flex">
-                                    <button type="button" class="btn btn-primary me-3" @click="resetarFiltros()">LIMPAR</button>
-                                    <button type="button" class="btn btn-success" @click="gerarRelatorio()">PESQUISAR</button>
+                                    <button type="button" class="btn btn-primary me-3"
+                                        @click="resetarFiltros()">LIMPAR</button>
+                                    <button type="button" class="btn btn-success"
+                                        @click="gerarRelatorio()">PESQUISAR</button>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -179,7 +183,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-2">
-                                    <input type="date" x-model="data_final" class="form-control" id="data_final" placeholder="Criado até">
+                                    <input type="date" x-model="data_final" class="form-control" id="data_final"
+                                        placeholder="Criado até">
                                     <label for="data_final">Criado até</label>
                                 </div>
                             </div>
@@ -190,28 +195,38 @@
                 <div class="card">
                     <div class="card-body" style="height: 53vh;">
                         <div style="height:100%; display:flex; flex-direction:column;">
-                            <div style="overflow-y:auto; flex:1; min-height:0;">
-                                <table class="table table-hover table-bordered table-sm m-0 border border-1"
-                                    style="width:100%;">
-                                    <thead style="position: sticky; top: 0; background: #E5E5E5; z-index: 2;">
-                                        <tr>
-                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade de Pedidos</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade de Itens Vendidos</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Média de valor por Pedido</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Valor Total dos Pedidos</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="(dado, index) in rel_pedido" :key="index">
-                                            <tr>
-                                                <td x-text="dado.qtde_pedidos"></td>
-                                                <td x-text="dado.qtde_itens_vendidos"></td>
-                                                <td x-text="dado.media_valor_pedido"></td>
-                                                <td x-text="dado.valor_total_pedidos"></td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
+                            <div class="d-inline-flex" style="overflow-y:auto; flex:1; min-height:0;">
+                                <div class="d-grid align-content-between me-3">
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Quantidade de Pedidos</h5>
+                                            <p class="card-text" x-text="rel_pedido.qtde_pedidos">5</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Quantidade de Itens Vendidos</h5>
+                                            <p class="card-text" x-text="rel_pedido.qtde_itens_vendidos">5</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Média de Valor por Pedido</h5>
+                                            <p class="card-text" x-text="rel_pedido.media_valor_pedido">5</p>
+                                        </div>
+                                    </div>
+                                    <div class="card" style="width: 18rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Valor Total dos Pedidos</h5>
+                                            <p class="card-text" x-text="rel_pedido.valor_total_pedidos">5</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100">
+                                    <div id="pie_chart_pagamentos" style="height: 100%; width: 100%;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -232,8 +247,8 @@
                             <div class="mb-4">
                                 <label for="newPassword" class="form-label">Nova Senha</label>
                                 <div class="input-group">
-                                    <input x-model="trocarSenha.novaSenha" type="password" class="form-control change-password-input" id="newPassword"
-                                        required>
+                                    <input x-model="trocarSenha.novaSenha" type="password"
+                                        class="form-control change-password-input" id="newPassword" required>
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="togglePassword('newPassword', this)">
                                         <i class="mdi mdi-eye"></i>
@@ -243,8 +258,8 @@
                             <div class="mb-4">
                                 <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
                                 <div class="input-group">
-                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password" class="form-control change-password-input"
-                                        id="confirmPassword" required>
+                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password"
+                                        class="form-control change-password-input" id="confirmPassword" required>
                                     <button class="btn btn-outline-secondary" type="button"
                                         onclick="togglePassword('confirmPassword', this)">
                                         <i class="mdi mdi-eye"></i>
@@ -292,7 +307,9 @@
         <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

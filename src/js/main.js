@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import ApexCharts from 'apexcharts';
 
 // Importe todos os módulos de páginas aqui
 import './administrativo.js';

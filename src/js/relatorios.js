@@ -126,11 +126,13 @@ window.RelPedido = function () {
         mesas: [],
         data_inicial: '',
         data_final: '',
-        rel_cardapio: [],
+        rel_pedido: [],
+        graf_pedido: [],
         gerarRelatorio() {
-            const filtros = { categoria: this.categoria, data_inicial: this.data_inicial, data_final: this.data_final, exibir_inativo: this.exibir_inativo };
-            axios.post('/gerarRelatorioCardapio', filtros).then(resp => {
-                this.rel_cardapio = resp.data;
+            this.renderizaGrafico();
+            const filtros = { mesa: this.mesa, data_inicial: this.data_inicial, data_final: this.data_final };
+            axios.post('/gerarRelatorioPedido', filtros).then(resp => {
+                this.rel_pedido = resp.data;
             }).catch(error => {
                 console.log(error);
             });
@@ -141,12 +143,44 @@ window.RelPedido = function () {
             this.data_inicial = padraoData;
             this.data_final = padraoData;
         },
-        listarCategorias() {
-            axios.get('/listarCategorias').then(resp => {
-                this.categorias = resp.data;
+        listarMesas() {
+            axios.get('/listarMesas').then(resp => {
+                this.mesas = resp.data;
             }).catch(error => {
                 console.log(error);
             });
+        },
+        renderizaGrafico(dados) {
+            const series = dados.map(item => item.valor_total);
+            const labels = dados.map(item => item.meio_pagamento);
+            const options = {
+                series: series,
+                chart: {
+                    height: '100%', // <-- aqui!
+                    width: '100%',
+                    type: 'pie',
+                },
+                title: {
+                    text: 'Valor Total por Meio de Pagamento',
+                    align: 'left'
+                },
+                labels: labels,
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            height: '100%',
+                            width: '100%'
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+
+            var chart = new ApexCharts(document.querySelector("#pie_chart_pagamentos"), options);
+            chart.render();
         },
         resetarFiltros() {
             this.categoria = '';
