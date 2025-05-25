@@ -20,6 +20,10 @@ interface RelatorioFuncionarioParams extends RelatorioParams {
     cargo?: string | number
 } 
 
+interface RelatorioPedidoParams extends RelatorioParams {
+    mesa?: string | number
+} 
+
 class RelatorioService {
 
     static async gerarRelatorioCardapio ({categoria, data_inicial, data_final, exibir_inativo} : RelatorioCardapioParams) {
@@ -173,6 +177,70 @@ class RelatorioService {
                 ) valores ON valores.id_funcionario = f.id_funcionario
                 ${filtroFuncionario}
             `
+
+            const result = await RelatorioModel.gerarRelatorio(query, values)
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+
+    }
+
+    static async gerarRelatorioPedido ({mesa, data_inicial, data_final} : RelatorioPedidoParams) {
+        try {
+
+            let paramIndex = 1;
+            const values = []
+            const conditions = [];
+
+            if (data_inicial) {
+                conditions.push(`p.data_pedido >= $${paramIndex}`)
+                values.push(data_inicial);
+                paramIndex++
+            }
+
+            if (data_final) {
+                conditions.push(`p.data_pedido <= $${paramIndex}`)
+                values.push(data_final);
+                paramIndex++
+            }
+
+            if(mesa) {
+                conditions.push(`p.id_mesa = $${paramIndex}`)
+                values.push(mesa)
+                paramIndex++
+            }
+
+            let query = `
+                SELECT 
+                    COUNT(DISTINCT p.id_pedido) AS total_pedidos,
+                    COALESCE(SUM(ip.quantidade), 0) AS total_itens_vendidos,
+                    COALESCE(SUM(ip.valor * ip.quantidade) + SUM(COALESCE(aip.total_adicionais, 0)), 0) AS valor_total_pedidos,
+                    ROUND(
+                        COALESCE(
+                            (SUM(ip.valor * ip.quantidade) + SUM(COALESCE(aip.total_adicionais, 0)))::numeric / NULLIF(COUNT(DISTINCT p.id_pedido), 0),
+                            0
+                        ),
+                        2
+                    ) AS media_valor_por_pedido
+                FROM pedido p
+                LEFT JOIN itempedido ip ON ip.id_pedido = p.id_pedido
+                LEFT JOIN (
+                    SELECT id_itempedido, SUM(valor) AS total_adicionais
+                    FROM adicional_itempedido
+                    GROUP BY id_itempedido
+                ) aip ON aip.id_itempedido = ip.id_itempedido
+                ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
+            `
+
+            console.log(query);
 
             const result = await RelatorioModel.gerarRelatorio(query, values)
 
