@@ -198,6 +198,8 @@
                                             <th scope="col" style="background-color: #E5E5E5;">Categoria</th>
                                             <th scope="col" style="background-color: #E5E5E5;">Valor Unitário</th>
                                             <th scope="col" style="background-color: #E5E5E5;">Quantidade Vendida</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Valor Sem Adicionais</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Valor Adicionais</th>
                                             <th scope="col" style="background-color: #E5E5E5;">Valor Total</th>
                                             <th scope="col" style="background-color: #E5E5E5;">Ativo</th>
                                         </tr>
@@ -205,12 +207,14 @@
                                     <tbody>
                                         <template x-for="(dado, index) in rel_cardapio" :key="index">
                                             <tr>
-                                                <td x-text="dado.nome"></td>
+                                                <td x-text="dado.nome_item"></td>
                                                 <td x-text="dado.categoria"></td>
-                                                <td x-text="dado.valor_item"></td>
-                                                <td x-text="dado.qtde_vendida"></td>
-                                                <td x-text="dado.valor_total"></td>
-                                                <td x-text="dado.ativo"></td>
+                                                <td x-text="'R$ ' + dado.valor_atual"></td>
+                                                <td x-text="dado.vezes_pedido"></td>
+                                                <td x-text="'R$ ' + dado.valor_sem_adicionais"></td>
+                                                <td x-text="'R$ ' + dado.valor_adicionais"></td>
+                                                <td x-text="'R$ ' + dado.valor_total_com_adicionais"></td>
+                                                <td x-text="dado.ativo ? 'Sim' : 'Não'"></td>
                                             </tr>
                                         </template>
                                     </tbody>

@@ -122,119 +122,88 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-10" id="div_content">
-                <div class="row mt-3 mb-4 border-3" id="div_contentHeader">
+            <div x-data="RelPedido()" x-init="listarMesas()" class="col-12 col-lg-10" id="div_content">
+                <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
-                        <h1 class="m-0 ms-2">Emitir relatório de Pedidos</h1>
+                        <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
+                            <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
+                        </button>
+                        <h1 class="m-0 ms-2">RELATÓRIO DE PEDIDOS</h1>
                     </div>
                 </div>
-                
+                <div class="row" :class="tela == 'LIS' ? '' : 'd-none'" style="max-height: 78vh; overflow-y: auto;">
+                </div>
+
                 <!-- Formulário de Filtros -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h2 class="mb-4">Filtros do Relatório</h2>
-                        <form class="row g-2 align-items-end">
-                            <div class="col-md-3">
-                                <label for="mesa" class="report-label">Número da Mesa</label>
-                                <input type="number" class="report-input w-100" id="mesa" placeholder="Número da Mesa">
+                        <form class="row g-2">
+                            <div class="col-3">
+                                <h2 class="mb-0">Filtros do Relatório</h2>
                             </div>
-                            <div class="col-md-3">
-                                <label for="garcom" class="report-label">Garçom Responsável</label>
-                                <select class="report-select w-100" id="garcom">
-                                    <option selected disabled value="">Selecione o Garçom...</option>
-                                    <option>Todos</option>
-                                </select>
+                            <div class="col-9 text-end">
+                                <div class="d-inline-flex">
+                                    <button type="button" class="btn btn-primary me-3" @click="resetarFiltros()">LIMPAR</button>
+                                    <button type="button" class="btn btn-success" @click="gerarRelatorio()">PESQUISAR</button>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="estado" class="report-label">Estado do Pedido</label>
-                                <select class="report-select w-100" id="estado">
-                                    <option selected disabled value="">Selecione o Status...</option>
-                                    <option>Em Preparo</option>
-                                    <option>Pronto</option>
-                                    <option>Entregue</option>
-                                    <option>Finalizado</option>
-                                </select>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select x-model="mesa" id="filtro_mesa" name="filtro_mesa" class="form-select">
+                                        <option value="" selected>
+                                            Selecione uma mesa
+                                        </option>
+                                        <template x-for="mesa in mesas">
+                                            <option :value="mesa.id_mesa" x-text="'Mesa: ' + mesa.numero_mesa">
+                                            </option>
+                                        </template>
+                                    </select>
+                                    <label for="floatingSelect">Mesa</label>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="pagamento" class="report-label">Método de Pagamento</label>
-                                <select class="report-select w-100" id="pagamento">
-                                    <option selected disabled value="">Selecione o Método...</option>
-                                    <option>Dinheiro</option>
-                                    <option>Cartão de Crédito</option>
-                                    <option>Cartão de Débito</option>
-                                    <option>PIX</option>
-                                </select>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-2">
+                                    <input type="date" x-model="data_inicial" class="form-control" id="data_inicial"
+                                        placeholder="Criado a partir de">
+                                    <label for="data_inicial">Criado a partir de</label>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="dataInicial" class="report-label">Data Inicial</label>
-                                <input type="date" class="report-input w-100" id="dataInicial">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="dataFinal" class="report-label">Data Final</label>
-                                <input type="date" class="report-input w-100" id="dataFinal">
-                            </div>
-                            <div class="col-12 text-center mt-2">
-                                <button type="submit" class="report-btn-success w-100">Pesquisar</button>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-2">
+                                    <input type="date" x-model="data_final" class="form-control" id="data_final" placeholder="Criado até">
+                                    <label for="data_final">Criado até</label>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- Tabela de Resultados -->
                 <div class="card">
-                    <div class="card-body p-0">
-                        <div class="report-table-container" style="width: 100%;">
-                            <table class="report-table w-100">
-                                <thead>
-                                    <tr>
-                                        <th>Mesa</th>
-                                        <th>Item</th>
-                                        <th>Quantidade</th>
-                                        <th>Garçom</th>
-                                        <th>Status</th>
-                                        <th>Valor Total</th>
-                                        <th>Data</th>
-                                        <th>Hora</th>
-                                        <th>Pagamento</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td rowspan="2">01</td>
-                                        <td>X-Burger</td>
-                                        <td>1</td>
-                                        <td rowspan="2">João Silva</td>
-                                        <td rowspan="2">Finalizado</td>
-                                        <td rowspan="2">R$ 45,90</td>
-                                        <td rowspan="2">25/04/2024</td>
-                                        <td rowspan="2">19:30</td>
-                                        <td rowspan="2">Cartão de Crédito</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Batata Frita</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td rowspan="3">02</td>
-                                        <td>Coca-Cola</td>
-                                        <td>2</td>
-                                        <td rowspan="3">Maria Santos</td>
-                                        <td rowspan="3">Em Preparo</td>
-                                        <td rowspan="3">R$ 89,70</td>
-                                        <td rowspan="3">25/04/2024</td>
-                                        <td rowspan="3">20:15</td>
-                                        <td rowspan="3">PIX</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pizza Margherita</td>
-                                        <td>1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Salada Caesar</td>
-                                        <td>1</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card-body" style="height: 53vh;">
+                        <div style="height:100%; display:flex; flex-direction:column;">
+                            <div style="overflow-y:auto; flex:1; min-height:0;">
+                                <table class="table table-hover table-bordered table-sm m-0 border border-1"
+                                    style="width:100%;">
+                                    <thead style="position: sticky; top: 0; background: #E5E5E5; z-index: 2;">
+                                        <tr>
+                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade de Pedidos</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade de Itens Vendidos</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Média de valor por Pedido</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">Valor Total dos Pedidos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="(dado, index) in rel_pedido" :key="index">
+                                            <tr>
+                                                <td x-text="dado.qtde_pedidos"></td>
+                                                <td x-text="dado.qtde_itens_vendidos"></td>
+                                                <td x-text="dado.media_valor_pedido"></td>
+                                                <td x-text="dado.valor_total_pedidos"></td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
