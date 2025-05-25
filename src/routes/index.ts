@@ -8,6 +8,7 @@ import categoria from './categoriaRoutes';
 import itemcardapio from './itemCardapioRoutes';
 import pedidoRoutes from './pedidoRoutes';
 import pagamento from './pagamentoRoutes';
+import relatorio from './relatorioRoutes';
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ export default (): express.Router => {
     pedidoRoutes(router);
     itemcardapio(router);
     pagamento(router);
+    relatorio(router);
 
     return router;
 }
