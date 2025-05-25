@@ -1,7 +1,7 @@
 window.Auth = function () {
     return {
         identity: { cargonome: '', cpf: '', funcionario_cpf: '', funcionarionome: '', id_cargo: '', imagem: '' },
-        trocarSenha: { senhaAtual: '', novaSenha: '', confirmarNovaSenha: '' },
+        trocarSenha: { novaSenha: '', confirmarNovaSenha: '' },
 
         getIdentity(context = 'default') {
             axios.get('/identity').then(resp => {
@@ -124,7 +124,7 @@ window.Auth = function () {
                 showToast('As senhas não coincidem.', 'danger');
                 return;
             }
-            if (!this.trocarSenha.senhaAtual || !this.trocarSenha.novaSenha || !this.trocarSenha.confirmarNovaSenha) {
+            if (!this.trocarSenha.novaSenha || !this.trocarSenha.confirmarNovaSenha) {
                 showToast('Preencha todos os campos!', 'warning');
                 return;
             }

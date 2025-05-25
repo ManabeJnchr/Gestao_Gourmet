@@ -173,13 +173,13 @@
                                 <div class="form-floating mb-2">
                                     <input type="date" x-model="data_inicial" class="form-control" id="data_inicial"
                                         placeholder="Criado a partir de">
-                                    <label for="data_inicial">Criado a partir de</label>
+                                    <label for="data_inicial">Pedido criado de</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-2">
                                     <input type="date" x-model="data_final" class="form-control" id="data_final" placeholder="Criado até">
-                                    <label for="data_final">Criado até</label>
+                                    <label for="data_final">Pedido criado até</label>
                                 </div>
                             </div>
                         </form>
@@ -225,6 +225,78 @@
                 </div>
             </div>
         </main>
+
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #454545;">
+                        <h1 class="modal-title fs-5 text-white" id="changePasswordModalLabel">Alterar Senha</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                        <form>
+                            <div class="mb-4">
+                                <label for="newPassword" class="form-label">Nova Senha</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.novaSenha" type="password" class="form-control change-password-input" id="newPassword"
+                                        required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('newPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password" class="form-control change-password-input"
+                                        id="confirmPassword" required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('confirmPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                        <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
+                            CANCELAR
+                        </button>
+                        <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                            @click.prevent="verificarNovaSenha()">
+                            ALTERAR SENHA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #454545;">
+                        <h1 class="modal-title fs-5 text-white">Confirmar Alteração</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                        class="rounded rounded-bottom-2">
+                        <p class="confirmation-text">Tem certeza que deseja alterar sua senha?</p>
+                        <div class="mt-4">
+                            <button type="button" class="btn bg-danger text-white me-3"
+                                data-bs-dismiss="modal">CANCELAR</button>
+                            <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                                @click.prevent="trocarSenhaAtual()">CONFIRMAR</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
