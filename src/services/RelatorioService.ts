@@ -32,19 +32,19 @@ class RelatorioService {
             let filtroData = '';
 
             if (data_inicial) {
-                conditionsData.push(`p.data_pedido >= $${paramIndex}`)
+                conditionsData.push(`pedido.data_pedido >= $${paramIndex}`)
                 values.push(data_inicial);
                 paramIndex++
             }
 
             if (data_final) {
-                conditionsData.push(`p.data_pedido <= $${paramIndex}`)
+                conditionsData.push(`pedido.data_pedido <= $${paramIndex}`)
                 values.push(data_final);
                 paramIndex++
             }
 
             if (conditionsData.length > 0) {
-                filtroData += 'AND ' + conditionsData.join(' AND ');
+                filtroData += 'WHERE ' + conditionsData.join(' AND ');
             }
 
             const conditions = [];
@@ -76,7 +76,9 @@ class RelatorioService {
                     COALESCE(SUM(ip.valor), 0) + COALESCE(SUM(aip.valor_adicionais), 0) AS valor_total_com_adicionais
                 FROM itemcardapio ic JOIN categoria c ON ic.id_categoria = c.id_categoria
                                     LEFT JOIN itempedido ip ON ic.id_itemcardapio = ip.id_itemcardapio
-                                    LEFT JOIN pedido p ON p.id_pedido = ip.id_pedido ${filtroData}
+                                    JOIN (
+                                        SELECT * FROM pedido  ${filtroData}
+                                    ) p ON p.id_pedido = ip.id_pedido
                                     LEFT JOIN (
                                                 SELECT id_itempedido, SUM(valor) AS valor_adicionais
                                                 FROM adicional_itempedido
