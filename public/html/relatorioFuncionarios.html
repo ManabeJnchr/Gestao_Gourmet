@@ -186,15 +186,15 @@
                             <div class="col-md-4">
                                 <div class="form-floating mb-2">
                                     <input type="date" x-model="data_inicial" class="form-control" id="data_inicial"
-                                        placeholder="Criado a partir de">
-                                    <label for="data_inicial">Criado a partir de</label>
+                                        placeholder="Pedidos criados de">
+                                    <label for="data_inicial">Pedidos criados de</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-floating mb-2">
                                     <input type="date" x-model="data_final" class="form-control" id="data_final"
-                                        placeholder="Criado até">
-                                    <label for="data_final">Criado até</label>
+                                        placeholder="Pedidos criados até">
+                                    <label for="data_final">Pedidos criados até</label>
                                 </div>
                             </div>
                         </form>
@@ -206,13 +206,21 @@
                         <div style="height:100%; display:flex; flex-direction:column;">
                             <div style="overflow-y:auto; flex:1; min-height:0;">
                                 <table class="table table-hover table-bordered table-sm m-0 border border-1"
-                                    style="width:100%;">
+                                    style="width:100%; font-size: smaller;">
                                     <thead style="position: sticky; top: 0; background: #E5E5E5; z-index: 2;">
                                         <tr>
-                                            <th scope="col" style="background-color: #E5E5E5;">Nome</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">CPF</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Quantidade de Atendimentos</th>
-                                            <th scope="col" style="background-color: #E5E5E5;">Valor Total Vendido</th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('nome')">Nome</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('cpf')">CPF</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('qtde_atendimentos')">Quantidade de Atendimentos</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_total_vendido')">Valor Total</button>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -221,7 +229,7 @@
                                                 <td x-text="dado.nome"></td>
                                                 <td x-text="dado.cpf"></td>
                                                 <td x-text="dado.qtde_atendimentos"></td>
-                                                <td x-text="dado.valor_total_vendido"></td>
+                                                <td x-text="'R$ ' + dado.valor_total_vendido"></td>
                                             </tr>
                                         </template>
                                     </tbody>

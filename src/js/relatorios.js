@@ -28,12 +28,6 @@ window.RelCardapio = function () {
                 console.log(error);
             });
         },
-        resetarFiltros() {
-            this.categoria = '';
-            this.data_inicial = '';
-            this.data_final = '';
-            this.exibir_inativo = false;
-        },
         ordenarPor(prop) {
             const propsNumericas = [
                 'valor_atual',
@@ -62,6 +56,12 @@ window.RelCardapio = function () {
                 return 0;
             });
         },
+        resetarFiltros() {
+            this.categoria = '';
+            this.data_inicial = '';
+            this.data_final = '';
+            this.exibir_inativo = false;
+        },
     }
 }
 
@@ -76,6 +76,7 @@ window.RelFuncionario = function () {
             const filtros = { cargo: this.cargo, data_inicial: this.data_inicial, data_final: this.data_final };
             axios.post('/gerarRelatorioFuncionario', filtros).then(resp => {
                 this.rel_funcionario = resp.data;
+                this.ordenarPor('nome');
             }).catch(error => {
                 console.log(error);
             });
@@ -85,6 +86,31 @@ window.RelFuncionario = function () {
             const padraoData = hoje.toISOString().slice(0, 10);
             this.data_inicial = padraoData;
             this.data_final = padraoData;
+        },
+        ordenarPor(prop) {
+            const propsNumericas = [
+                'qtde_atendimentos',
+                'valor_total_vendido',
+            ];
+            this.rel_funcionario.sort((a, b) => {
+                if (a[prop] === undefined || b[prop] === undefined) return 0;
+
+                if (propsNumericas.includes(prop)) {
+                    const numA = Number(a[prop]);
+                    const numB = Number(b[prop]);
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        return numB - numA; // decrescente
+                    }
+                    return 0;
+                }
+
+                // Para strings, ordena ignorando maiúsculas/minúsculas (crescente)
+                if (typeof a[prop] === 'string' && typeof b[prop] === 'string') {
+                    return a[prop].localeCompare(b[prop], 'pt-BR', { sensitivity: 'base' });
+                }
+
+                return 0;
+            });
         },
         resetarFiltros() {
             this.cargo = '';
