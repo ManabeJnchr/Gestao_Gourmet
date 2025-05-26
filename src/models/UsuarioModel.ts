@@ -108,7 +108,6 @@ class UsuarioModel {
                 RETURNING *;
                 `, [senha, salt, id_usuario]);
                 
-                console.log(result.rows);
                 
                 return result.rows[0];
                 
