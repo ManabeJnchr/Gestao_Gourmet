@@ -198,29 +198,29 @@
                             <div class="d-inline-flex" style="overflow-y:auto; flex:1; min-height:0;">
                                 <div class="d-grid align-content-between me-3">
                                     <div class="card" style="width: 18rem;">
-                                        <div class="card-body">
+                                        <div class="card-body p-2">
                                             <h5 class="card-title">Quantidade de Pedidos</h5>
-                                            <p class="card-text" x-text="rel_pedido.qtde_pedidos">5</p>
+                                            <p class="card-text"><span x-text="rel_pedido[0] && rel_pedido[0].total_pedidos ? rel_pedido[0].total_pedidos : 0"></span> pedidos</p>
                                         </div>
                                     </div>
 
                                     <div class="card" style="width: 18rem;">
-                                        <div class="card-body">
+                                        <div class="card-body p-2">
                                             <h5 class="card-title">Quantidade de Itens Vendidos</h5>
-                                            <p class="card-text" x-text="rel_pedido.qtde_itens_vendidos">5</p>
+                                            <p class="card-text"><span x-text="rel_pedido[0] && rel_pedido[0].total_itens_vendidos ? rel_pedido[0].total_itens_vendidos : 0"></span> itens vendidos</p>
                                         </div>
                                     </div>
 
                                     <div class="card" style="width: 18rem;">
-                                        <div class="card-body">
+                                        <div class="card-body p-2">
                                             <h5 class="card-title">Média de Valor por Pedido</h5>
-                                            <p class="card-text" x-text="rel_pedido.media_valor_pedido">5</p>
+                                            <p class="card-text" x-text="'R$ ' + (rel_pedido[0] && rel_pedido[0].media_valor_por_pedido ? rel_pedido[0].media_valor_por_pedido : 0)"></p>
                                         </div>
                                     </div>
                                     <div class="card" style="width: 18rem;">
-                                        <div class="card-body">
+                                        <div class="card-body p-2">
                                             <h5 class="card-title">Valor Total dos Pedidos</h5>
-                                            <p class="card-text" x-text="rel_pedido.valor_total_pedidos">5</p>
+                                            <p class="card-text" x-text="'R$ ' + (rel_pedido[0] && rel_pedido[0].valor_total_pedidos ? rel_pedido[0].valor_total_pedidos : 0)"></p>
                                         </div>
                                     </div>
                                 </div>
