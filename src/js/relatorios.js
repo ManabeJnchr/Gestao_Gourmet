@@ -126,16 +126,28 @@ window.RelPedido = function () {
         mesas: [],
         data_inicial: '',
         data_final: '',
+        rel_pagamento: [],
         rel_pedido: [],
         graf_pedido: [],
         gerarRelatorio() {
-            this.renderizaGrafico();
             const filtros = { mesa: this.mesa, data_inicial: this.data_inicial, data_final: this.data_final };
+            this.gerarRelatorioPagamento(filtros);
+            this.gerarRelatorioPedido(filtros);
+            this.renderizaGrafico(this.rel_pagamento);
+        },
+        gerarRelatorioPagamento(filtros) {
+            axios.post('/gerarRelatorioPagamento', filtros).then(resp => {
+                this.rel_pagamento = resp.data;
+            }).catch(error => {
+                console.log(error);
+            })
+        },
+        gerarRelatorioPedido(filtros) {
             axios.post('/gerarRelatorioPedido', filtros).then(resp => {
                 this.rel_pedido = resp.data;
             }).catch(error => {
                 console.log(error);
-            });
+            })
         },
         inicializarData() {
             const hoje = new Date();
