@@ -240,7 +240,54 @@ class RelatorioService {
                 ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
             `
 
-            console.log(query);
+            const result = await RelatorioModel.gerarRelatorio(query, values)
+
+            return result;
+        } catch (err: any) {
+            console.error("Erro no service: ", err);
+
+            if (err.statusCode) {
+                throw err;
+            }
+
+            throw { statusCode: 500, message: "Erro interno no servidor" }
+        }
+    }
+
+    static async gerarRelatorioPagamento ({mesa, data_inicial, data_final} : RelatorioPedidoParams) {
+        try {
+
+            let paramIndex = 1;
+            const values = []
+            const conditions = [];
+
+            if (data_inicial) {
+                conditions.push(`pag.data_pagamento >= $${paramIndex}`)
+                values.push(data_inicial);
+                paramIndex++
+            }
+
+            if (data_final) {
+                conditions.push(`pag.data_pagamento <= $${paramIndex}`)
+                values.push(data_final);
+                paramIndex++
+            }
+
+            if(mesa) {
+                conditions.push(`ped.id_mesa = $${paramIndex}`)
+                values.push(mesa)
+                paramIndex++
+            }
+
+            let query = `
+                SELECT 
+                    mp.nome AS meio_pagamento,
+                    SUM(valor_pagamento) AS valor_pagamentos
+                FROM pagamento pag JOIN meiopagamento mp ON pag.id_meiopagamento = mp.id_meiopagamento
+                            JOIN pedido ped ON pag.id_pedido = ped.id_pedido
+                ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
+                GROUP BY nome
+            `
 
             const result = await RelatorioModel.gerarRelatorio(query, values)
 
