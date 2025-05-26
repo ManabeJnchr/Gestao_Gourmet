@@ -280,7 +280,7 @@ async function initdb(pool: Pool) {
            CREATE TABLE public.pagamento (
             id_pagamento integer NOT NULL,
             id_pedido integer NOT NULL,
-            id_meiopagamento integer NOT NULL
+            id_meiopagamento integer NOT NULL,
             valor_pagamento numeric(10,2) NOT NULL,
             data_pagamento date DEFAULT CURRENT_DATE NOT NULL,
             hora_pagamento time without time zone DEFAULT CURRENT_TIME NOT NULL
