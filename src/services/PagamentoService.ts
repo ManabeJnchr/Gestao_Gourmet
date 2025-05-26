@@ -87,18 +87,24 @@ class PagamentoService {
             }
 
             // Inicia a transaction
+            const valorPedido = await PedidoService.somarValorTotal({id_pedido:pedido.id_pedido})
+
             await client.query("BEGIN");
 
             let somaPagamentos = 0
 
             for (const pagamentoIndex in pagamentos) {
                 const pagamento = pagamentos[pagamentoIndex];
+                const valor = Number(pagamento.valor_pagamento)
 
-                const resultPagamento = await PagamentoModel.adicionarPagamento(id_pedido, pagamento.id_meiopagamento, pagamento.valor_pagamento, client)
-                somaPagamentos += resultPagamento.valor_pagamento
+                if (isNaN(valor) || valor <= 0) {
+                    throw { statusCode: 400, message: `${pagamentoIndex+1}º pagamento possui valor inválido` }
+                }
+
+                await PagamentoModel.adicionarPagamento(id_pedido, pagamento.id_meiopagamento, valor, client)
+                somaPagamentos += valor;
             }
 
-            const valorPedido = await PedidoService.somarValorTotal({id_pedido:pedido.id_pedido})
 
             if (somaPagamentos !== valorPedido) {
                 throw { statusCode: 400, message: "Soma dos pagamentos é diferente do valor total do pedido" }
@@ -120,6 +126,7 @@ class PagamentoService {
             
             await client.query("COMMIT");
             
+            return true; // Retorna true em caso de sucesso
 
         } catch (err: any) {
             console.error("Erro no service: ", err);

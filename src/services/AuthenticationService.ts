@@ -171,7 +171,6 @@ class AuthenticationService {
             const salt =  random();
             const senhaFormatada = authentication(salt, senha);
 
-            console.log(verificarAuth);
             await UsuarioModel.trocarSenha(verificarAuth.id_login, senhaFormatada, salt);
             
             return { message: "Senha atualizada com sucesso" };

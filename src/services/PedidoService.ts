@@ -251,16 +251,16 @@ class PedidoService {
             let somaValorPedido = 0;
 
             for (const item of itensPedido) {
-                somaValorPedido += item.valor;
+                somaValorPedido += Number(item.valor);
 
                 const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
 
                 for (const adicional of adicionaisItem) {
-                    somaValorPedido += adicional.valor;
+                    somaValorPedido += Number(adicional.valor);
                 }
             }
 
-            return somaValorPedido;
+            return Number(somaValorPedido);
 
         } catch (err: any) {
             console.error("Erro no service: ", err);

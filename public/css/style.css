@@ -645,10 +645,6 @@ td {
     vertical-align: middle !important;
 }
 
-.table> :not(caption)>*>* {
-    border-bottom-width: 1px;
-}
-
 .adicionais-lista {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -730,7 +726,6 @@ td {
 }
 
 .report-table {
-    margin-bottom: 0;
     border: 1px solid #dee2e6;
 }
 
@@ -760,7 +755,6 @@ td {
 
 .report-table-container {
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-height: calc(100vh - 300px); /* Altura ajustável conforme necessário */
     overflow-y: auto;

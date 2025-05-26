@@ -359,6 +359,7 @@ window.EfetuarPedido = function () {
 
 window.EfetuarPagamento = function () {
     return {
+        meios_pagamento: [],
         tela: 'LIS',
         pag: { id_meiopagamento: '', valor_pagamento: 0 },
         pagamentos: [],
@@ -385,9 +386,8 @@ window.EfetuarPagamento = function () {
             }
 
             this.pagamentos.push({
-                id_pedido: this.pedido_sel.id_pedido,
                 id_meiopagamento: forma,
-                valor_pagamento: valor
+                valor_pagamento: valor.toFixed(2)
             });
 
             this.total_pago = this.pagamentos.reduce((soma, pag) => soma + parseFloat(pag.valor_pagamento), 0).toFixed(2);
@@ -431,7 +431,7 @@ window.EfetuarPagamento = function () {
         },
         finalizarPagamento() {
             if (this.pagamentos.length > 0) {
-                axios.post('/finalizarPagamento', { id_pedido: this.pedido_sel.id_pedido, pagamentos: this.pagamentos }).then(resp => {
+                axios.post('/adicionarPagamentos', { id_pedido: this.pedido_sel.id_pedido, pagamentos: this.pagamentos }).then(resp => {
                     if (resp.data == true) {
                         showToast('Pagamento realizado com sucesso!', 'success');
                         this.listarPedidos();
@@ -445,6 +445,15 @@ window.EfetuarPagamento = function () {
                 showToast('Nenhum pagamento adicionado.', 'danger');
             }
         },
+        listarMeiosPagamento() {
+            axios.get('/listarMeiosPagamento')
+                .then(resp => {
+                    this.meios_pagamento = resp.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
         listarPedidos() {
             axios.get('/listarPedidosFechados').then(resp => {
                 this.pedidos = resp.data;
@@ -454,14 +463,5 @@ window.EfetuarPagamento = function () {
                 console.log(error);
             });
         },
-        getMeioPagamentoNome(id_meiopagamento) {
-            switch (parseInt(id_meiopagamento)) {
-                case 1: return 'Dinheiro';
-                case 2: return 'PIX';
-                case 3: return 'Cartão de Débito';
-                case 4: return 'Cartão de Crédito';
-                default: return 'Outro';
-            }
-        }
     }
 }

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
 
@@ -21,7 +22,8 @@
         <header class="row border-bottom border-3">
             <div class="col-3" style="align-content: center;">
                 <a href="../html/index.html" class="text-decoration-none text-black d-inline-flex align-items-center">
-                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg" style="height: 45px;">
+                    <img src="../src/img/logo-gestao-gourmet-icon.svg" alt="logo-gestao-gourmet-text.svg"
+                        style="height: 45px;">
                     <h2 class="ms-3 mt-3 mb-3 fw-bold">Gestão Gourmet</h2>
                 </a>
             </div>
@@ -29,19 +31,24 @@
                 <div class="btn-group">
                     <button type="button" class="btn bg-transparent">
                         <span class="me-2" id="text_userName" x-text="identity.funcionarionome"></span>
-                        <img class="me-2 rounded-circle" id="img_userIcon" :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'"
-                            alt="user-icon">
+                        <img class="me-2 rounded-circle" id="img_userIcon"
+                            :src="identity.imagem || '../src/img/user-icon-placeholder.jpg'" alt="user-icon">
                     </button>
                     <button type="button" class="btn bg-transparent dropdown-toggle dropdown-toggle-split"
                         data-bs-toggle="dropdown" aria-expanded="true">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Alterar Senha</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#changePasswordModal">Alterar Senha</a>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" @click.prevent="logout()">Logout</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -72,10 +79,13 @@
                                     <span> Gerenciar Mesas</span>
                                 </a>
                             </li>
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2" x-data="quantidadeSolicitacoes()"
+                                x-init="quantidadeSolicitacoesResetSenha()">
                                 <a href="redefinicaoSenhaAdm.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-lock-reset" style="font-size: 20px;"></i>
                                     <span> Redifinição de Senhas</span>
+                                    <span class="badge text-bg-secondary" x-show="quantidadeSolicitacoes > 0"
+                                        x-text="quantidadeSolicitacoes"></span>
                                 </a>
                             </li>
                         </ul>
@@ -84,7 +94,7 @@
                         <h3 class="fw-bold text-start">Operacional</h3>
                         <ul class="list-unstyled">
                             <li class="mb-1 p-1 rounded-2" x-show="identity.id_cargo != 3">
-                                <a href="#" class="text-decoration-none text-black">
+                                <a href="../html/efetuarPagamento.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-cash-multiple" style="font-size: 20px;"></i>
                                     <span> Efetuar Pagamento</span>
                                 </a>
@@ -100,7 +110,7 @@
                     <div class="row" x-show="identity.id_cargo == 1 || identity.id_cargo == 4">
                         <h3 class="fw-bold text-start">Relatórios</h3>
                         <ul class="list-unstyled">
-                            <li class="mb-1 p-1 rounded-2">
+                            <li class="mb-1 p-1 rounded-2 selected">
                                 <a href="../html/relatorioCardapio.html" class="text-decoration-none text-black">
                                     <i class="mdi mdi-food" style="font-size: 20px;"></i>
                                     <span> Cadápio</span>
@@ -122,116 +132,201 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-10" id="div_content">
-                <div class="row mt-3 mb-4 border-3" id="div_contentHeader">
+            <div x-data="RelCardapio()" x-init="listarCategorias()" class="col-12 col-lg-10" id="div_content">
+                <div class="row mt-3 mb-2 border-3" id="div_contentHeader">
                     <div class="col d-flex align-items-center">
-                        <h1 class="m-0 ms-2">Emitir relatório de Cardápio</h1>
+                        <button type="button" class="btn m-2 p-0" onclick="history.go(-1)">
+                            <i class="mdi mdi-arrow-left-circle" style="font-size: 30px;"></i>
+                        </button>
+                        <h1 class="m-0 ms-2">RELATÓRIO DE CARDÁPIO</h1>
                     </div>
                 </div>
-                
+                <div class="row" :class="tela == 'LIS' ? '' : 'd-none'" style="max-height: 78vh; overflow-y: auto;">
+                </div>
+
                 <!-- Formulário de Filtros -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h2 class="mb-4">Filtros do Relatório</h2>
-                        <form class="row g-2 align-items-end">
-                            <div class="col-md-3">
-                                <label for="nomeItem" class="report-label">Nome do Item</label>
-                                <input type="text" class="report-input w-100" id="nomeItem" placeholder="Nome do item">
+                        <form class="row g-2">
+                            <div class="col-3">
+                                <h2 class="mb-0">Filtros do Relatório</h2>
                             </div>
-                            <div class="col-md-3">
-                                <label for="categoria" class="report-label">Categoria</label>
-                                <input type="text" class="report-input w-100" id="categoria" placeholder="Categoria">
+                            <div class="col-9 text-end">
+                                <div class="d-inline-flex">
+                                    <div class="form-check me-3 align-content-center">
+                                        <input x-model="exibir_inativo" class="form-check-input" type="checkbox" value="" id="exibirInativos">
+                                        <label class="form-check-label" for="exibirInativos">
+                                            Exibir Inativos
+                                        </label>
+                                    </div>
+                                    <button type="button" class="btn btn-primary me-3" @click="resetarFiltros()">LIMPAR</button>
+                                    <button type="button" class="btn btn-success" @click="gerarRelatorio()">PESQUISAR</button>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="ingredientes" class="report-label">Ingredientes</label>
-                                <input type="text" class="report-input w-100" id="ingredientes" placeholder="Ingredientes (separados por vírgula)">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select x-model="categoria" id="filtro_categoria" name="filtro_categoria" class="form-select">
+                                        <option value="" selected>
+                                            Selecione uma categoria
+                                        </option>
+                                        <template x-for="categoria in categorias">
+                                            <option :value="categoria.id_categoria" x-text="categoria.nome">
+                                            </option>
+                                        </template>
+                                    </select>
+                                    <label for="floatingSelect">Categoria</label>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="criadoPor" class="report-label">Criado por</label>
-                                <select class="report-select w-100" id="criadoPor">
-                                    <option value="">Todos</option>
-                                    <option value="1">Adm João Silva</option>
-                                    <option value="2">Gerente Maria Santos</option>
-                                    <option value="3">Adm Pedro Oliveira</option>
-                                </select>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-2">
+                                    <input type="date" x-model="data_inicial" class="form-control" id="data_inicial"
+                                        placeholder="Pedidos criados de">
+                                    <label for="data_inicial">Pedidos criados de</label>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="valorMinimo" class="report-label">Valor Mínimo</label>
-                                <input type="number" class="report-input w-100" id="valorMinimo" placeholder="Valor mínimo" step="0.01">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="valorMaximo" class="report-label">Valor Máximo</label>
-                                <input type="number" class="report-input w-100" id="valorMaximo" placeholder="Valor máximo" step="0.01">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="dataInicial" class="report-label">Criado a partir de</label>
-                                <input type="date" class="report-input w-100" id="dataInicial">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="dataFinal" class="report-label">Criado até</label>
-                                <input type="date" class="report-input w-100" id="dataFinal">
-                            </div>
-                            <div class="col-12 text-center mt-2">
-                                <button type="submit" class="report-btn-success w-100">Pesquisar</button>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-2">
+                                    <input type="date" x-model="data_final" class="form-control" id="data_final"
+                                        placeholder="Pedidos criados até">
+                                    <label for="data_final">Pedidos criados até</label>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- Tabela de Resultados -->
                 <div class="card">
-                    <div class="card-body p-0">
-                        <div class="report-table-container">
-                            <table class="report-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 15%">Nome</th>
-                                        <th style="width: 10%">Valor</th>
-                                        <th style="width: 10%">Categoria</th>
-                                        <th style="width: 25%">Ingredientes</th>
-                                        <th style="width: 10%">Data</th>
-                                        <th style="width: 10%">Hora</th>
-                                        <th style="width: 20%">Criador</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Spaghetti Carbonara</td>
-                                        <td>R$ 32,90</td>
-                                        <td>Massas</td>
-                                        <td>Macarrão, Bacon, Ovos, Queijo Parmesão, Pimenta Preta</td>
-                                        <td>26/04/2024</td>
-                                        <td>14:30:00</td>
-                                        <td>ADM João Silva</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Risoto de Cogumelos</td>
-                                        <td>R$ 45,90</td>
-                                        <td>Risotos</td>
-                                        <td>Arroz Arbóreo, Cogumelos, Vinho Branco, Caldo de Legumes</td>
-                                        <td>26/04/2024</td>
-                                        <td>15:00:00</td>
-                                        <td>Gerente Maria Santos</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Filé ao Molho Madeira</td>
-                                        <td>R$ 68,90</td>
-                                        <td>Carnes</td>
-                                        <td>Filé Mignon, Molho Madeira, Cogumelos, Batata</td>
-                                        <td>26/04/2024</td>
-                                        <td>16:15:00</td>
-                                        <td>ADM Pedro Oliveira</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card-body" style="height: 53vh;">
+                        <div style="height:100%; display:flex; flex-direction:column;">
+                            <div style="overflow-y:auto; flex:1; min-height:0;">
+                                <table class="table table-hover table-bordered table-sm m-0 border border-1"
+                                    style="width:100%; font-size: smaller;">
+                                    <thead style="position: sticky; top: 0; background: #E5E5E5; z-index: 2;">
+                                        <tr>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('nome_item')">Nome</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('categoria')">Categoria</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_atual')">Valor Unitário</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('vezes_pedido')">Quantidade Vendida</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_sem_adicionais')">Valor Sem Adicionais</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_adicionais')">Valor Adicionais</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('valor_total_com_adicionais')">Valor Total</button>
+                                            </th>
+                                            <th scope="col" style="background-color: #E5E5E5;">
+                                                <button type="button" class="btn bg-transparent fw-bold p-0" @click="ordenarPor('ativo')">Ativo</button>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="(dado, index) in rel_cardapio" :key="index">
+                                            <tr>
+                                                <td x-text="dado.nome_item"></td>
+                                                <td x-text="dado.categoria"></td>
+                                                <td x-text="'R$ ' + dado.valor_atual"></td>
+                                                <td x-text="dado.vezes_pedido"></td>
+                                                <td x-text="'R$ ' + dado.valor_sem_adicionais"></td>
+                                                <td x-text="'R$ ' + dado.valor_adicionais"></td>
+                                                <td x-text="'R$ ' + dado.valor_total_com_adicionais"></td>
+                                                <td x-text="dado.ativo ? 'Sim' : 'Não'"></td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #454545;">
+                        <h1 class="modal-title fs-5 text-white" id="changePasswordModalLabel">Alterar Senha</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="background-color: #d9d9d9;" class="rounded rounded-bottom-2">
+                        <form>
+                            <div class="mb-4">
+                                <label for="newPassword" class="form-label">Nova Senha</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.novaSenha" type="password" class="form-control change-password-input" id="newPassword"
+                                        required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('newPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                                <div class="input-group">
+                                    <input x-model="trocarSenha.confirmarNovaSenha" type="password" class="form-control change-password-input"
+                                        id="confirmPassword" required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        onclick="togglePassword('confirmPassword', this)">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                        <button type="button" class="btn bg-danger text-white" data-bs-dismiss="modal">
+                            CANCELAR
+                        </button>
+                        <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                            @click.prevent="verificarNovaSenha()">
+                            ALTERAR SENHA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #454545;">
+                        <h1 class="modal-title fs-5 text-white">Confirmar Alteração</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center" style="background-color: #d9d9d9;"
+                        class="rounded rounded-bottom-2">
+                        <p class="confirmation-text">Tem certeza que deseja alterar sua senha?</p>
+                        <div class="mt-4">
+                            <button type="button" class="btn bg-danger text-white me-3"
+                                data-bs-dismiss="modal">CANCELAR</button>
+                            <button type="button" class="btn text-white" style="background-color: #06d20e !important;"
+                                @click.prevent="trocarSenhaAtual()">CONFIRMAR</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0" style="background-color: #d9d9d9;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
