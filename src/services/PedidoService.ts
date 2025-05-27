@@ -251,13 +251,19 @@ class PedidoService {
             let somaValorPedido = 0;
 
             for (const item of itensPedido) {
-                somaValorPedido += Number(item.valor);
+                let somar = 0
+                somar += Number(item.valor);
 
                 const adicionaisItem = await AdicionalItemPedidoModel.listarAdicionaisDoItemPedido(item.id_itempedido);
 
                 for (const adicional of adicionaisItem) {
-                    somaValorPedido += Number(adicional.valor);
+                    somar += Number(adicional.valor);
                 }
+
+                somar = somar * item.quantidade;
+                
+                somaValorPedido += somar
+
             }
 
             return Number(somaValorPedido);
