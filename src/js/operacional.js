@@ -436,6 +436,7 @@ window.EfetuarPagamento = function () {
                         showToast('Pagamento realizado com sucesso!', 'success');
                         this.listarPedidos();
                         this.tela = 'LIS';
+                        this.pagamentos = [];
                     }
                 }).catch(error => {
                     showToast(error.response?.data?.erro || 'Erro ao finalizar pagamento.', 'danger');

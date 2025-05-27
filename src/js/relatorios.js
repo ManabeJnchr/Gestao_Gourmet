@@ -129,11 +129,12 @@ window.RelPedido = function () {
         rel_pagamento: [],
         rel_pedido: [],
         graf_pedido: [],
+        chart_pagamentos: null,
         gerarRelatorio() {
             const filtros = { mesa: this.mesa, data_inicial: this.data_inicial, data_final: this.data_final };
             this.gerarRelatorioPagamento(filtros);
             this.gerarRelatorioPedido(filtros);
-            this.renderizaGrafico(this.rel_pagamento);
+            this.renderizaGrafico();
         },
         gerarRelatorioPagamento(filtros) {
             axios.post('/gerarRelatorioPagamento', filtros).then(resp => {
@@ -162,19 +163,21 @@ window.RelPedido = function () {
                 console.log(error);
             });
         },
-        renderizaGrafico(dados) {
-            const series = dados.map(item => item.valor_total);
-            const labels = dados.map(item => item.meio_pagamento);
-            const options = {
+        renderizaGrafico() {
+            // Destroi o gráfico anterior, se existir
+            if (this.chart_pagamentos) {
+                this.chart_pagamentos.destroy();
+            }
+
+            var series = this.rel_pagamento.map(item => Number(item.valor_pagamentos) || 0);
+            var labels = this.rel_pagamento.map(item => item.meio_pagamento);
+
+            var options = {
                 series: series,
                 chart: {
-                    height: '100%', // <-- aqui!
+                    height: '100%',
                     width: '100%',
                     type: 'pie',
-                },
-                title: {
-                    text: 'Valor Total por Meio de Pagamento',
-                    align: 'left'
                 },
                 labels: labels,
                 responsive: [{
@@ -186,13 +189,16 @@ window.RelPedido = function () {
                         },
                         legend: {
                             position: 'bottom'
-                        }
+                        },
+                        title: {
+                            text: 'Valor por meio de pagamento (R$)',
+                        },
                     }
                 }]
             };
 
-            var chart = new ApexCharts(document.querySelector("#pie_chart_pagamentos"), options);
-            chart.render();
+            this.chart_pagamentos = new ApexCharts(document.querySelector("#pie_chart_pagamentos"), options);
+            this.chart_pagamentos.render();
         },
         resetarFiltros() {
             this.categoria = '';

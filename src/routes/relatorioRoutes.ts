@@ -6,5 +6,4 @@ export default (router: express.Router) => {
     router.post('/gerarRelatorioFuncionario', gerarRelatorioFuncionario );
     router.post('/gerarRelatorioPedido', gerarRelatorioPedido );
     router.post('/gerarRelatorioPagamento', gerarRelatorioPagamento );
-
 };
