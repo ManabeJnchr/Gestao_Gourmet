@@ -18,17 +18,15 @@ async function initdb(pool: Pool) {
         await pool.query(`
             BEGIN;
 
-                CREATE OR REPLACE FUNCTION public.atualizar_data_alteracao()
-                RETURNS trigger
-                LANGUAGE 'plpgsql'
-                COST 100
-                VOLATILE NOT LEAKPROOF
-                AS $BODY$
+                DROP FUNCTION IF EXISTS public.atualizar_data_alteracao();
+
+                CREATE FUNCTION public.atualizar_data_alteracao()
+                RETURNS trigger AS $$
                 BEGIN
                 NEW.dataalteracao = CURRENT_TIMESTAMP;
                 RETURN NEW;
                 END;
-                $BODY$;
+                $$ LANGUAGE plpgsql;
 
                 CREATE OR REPLACE FUNCTION atualiza_dataalteracao()
                 RETURNS TRIGGER AS $$
@@ -279,8 +277,8 @@ async function initdb(pool: Pool) {
 
            CREATE TABLE public.pagamento (
             id_pagamento integer NOT NULL,
-            id_pedido integer NOT NULL,
             id_meiopagamento integer NOT NULL,
+            id_pedido integer NOT NULL,
             valor_pagamento numeric(10,2) NOT NULL,
             data_pagamento date DEFAULT CURRENT_DATE NOT NULL,
             hora_pagamento time without time zone DEFAULT CURRENT_TIME NOT NULL
@@ -683,16 +681,13 @@ async function initdb(pool: Pool) {
                 ADD CONSTRAINT fk_itempedido FOREIGN KEY (id_itempedido) REFERENCES public.itempedido(id_itempedido);
 
             ALTER TABLE ONLY public.pagamento
-                ADD CONSTRAINT fk_meio_pagamento FOREIGN KEY (meio_pagamento) REFERENCES public.meiopagamento(id_meiopagamento) NOT VALID;
+                ADD CONSTRAINT fk_meio_pagamento FOREIGN KEY (id_meiopagamento) REFERENCES public.meiopagamento(id_meiopagamento) NOT VALID;
 
             ALTER TABLE ONLY public.login
                 ADD CONSTRAINT fk_login_funcionario FOREIGN KEY (id_funcionario) REFERENCES public.funcionario(id_funcionario);
 
             ALTER TABLE ONLY public.mesa
                 ADD CONSTRAINT fk_mesa_status FOREIGN KEY (id_status) REFERENCES public.statusmesa(id_status);
-
-            ALTER TABLE ONLY public.pagamento
-                ADD CONSTRAINT fk_pagamento_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesa(id_mesa);
 
             ALTER TABLE ONLY public.pagamento
                 ADD CONSTRAINT fk_pagamento_pedido FOREIGN KEY (id_pedido) REFERENCES public.pedido(id_pedido);
