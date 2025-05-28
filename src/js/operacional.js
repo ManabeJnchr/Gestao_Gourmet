@@ -141,7 +141,7 @@ window.EfetuarPedido = function () {
                     // erro já tratado em preparaPedido
                 });
             } else {
-                const itensValidos = this.pedido.itens
+                const itensNovos = this.pedido.itens
                     .filter(item => item.id_itempedido == null)
                     .map(item => ({
                         adicionais: item.adicionais,
@@ -149,7 +149,26 @@ window.EfetuarPedido = function () {
                         observacao: item.observacao,
                         quantidade: item.quantidade
                     }));
-                axios.post('/adicionarItensPedido', {id_pedido: this.pedido.id_pedido, itens: itensValidos}).then(() => {
+
+                if (itensNovos.length > 0) {
+                    axios.post('/adicionarItensPedido', {id_pedido: this.pedido.id_pedido, itens: itensNovos}).then(() => {
+                        axios.post('/fecharPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
+                            if (resp.data == true) {
+                                this.resetarPedido();
+                                this.id_pedido = null;
+                                showToast('Pedido finalizado com sucesso!', 'success');
+                                this.listarMesas();
+                            }
+                        }).catch(error => {
+                            showToast(error.response?.data?.erro || 'Erro ao finalizar pedido.', 'danger');
+                            console.log(error);
+                        });
+                    }).catch(error => {
+                        showToast(error.response?.data?.erro || 'Erro ao adicionar itens ao pedido.', 'danger');
+                        console.log(error);
+                    });
+                } else {
+                    // Não há itens novos, só fecha o pedido
                     axios.post('/fecharPedido', { id_pedido: this.pedido.id_pedido }).then(resp => {
                         if (resp.data == true) {
                             this.resetarPedido();
@@ -161,10 +180,7 @@ window.EfetuarPedido = function () {
                         showToast(error.response?.data?.erro || 'Erro ao finalizar pedido.', 'danger');
                         console.log(error);
                     });
-                }).catch(error => {
-                    showToast(error.response?.data?.erro || 'Erro ao adicionar itens ao pedido.', 'danger');
-                    console.log(error);
-                });
+                }
             }
         },
         filtrarCardapio(categoria) {
