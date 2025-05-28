@@ -134,11 +134,11 @@ window.RelPedido = function () {
             const filtros = { mesa: this.mesa, data_inicial: this.data_inicial, data_final: this.data_final };
             this.gerarRelatorioPagamento(filtros);
             this.gerarRelatorioPedido(filtros);
-            this.renderizaGrafico();
         },
         gerarRelatorioPagamento(filtros) {
             axios.post('/gerarRelatorioPagamento', filtros).then(resp => {
                 this.rel_pagamento = resp.data;
+                this.renderizaGrafico();
             }).catch(error => {
                 console.log(error);
             })

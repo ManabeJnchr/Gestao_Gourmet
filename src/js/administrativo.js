@@ -117,12 +117,14 @@ window.Cardapio = function () {
 
 window.Funcionarios = function () {
     return {
+        id_funcionario: '',
         tela: 'GER',
         registro: { id_funcionario: -1, nome: '', cpf: '', telefone: '', id_cargo: '' },
         dados: [],
         dadoSelecionado: [],
         idFuncionarioParaExcluir: '',
         buscarDados() {
+            this.getFuncionario();
             axios.get('/listarFuncionarios')
                 .then(resp => {
                     this.dados = resp.data.map(dado => ({
@@ -169,6 +171,13 @@ window.Funcionarios = function () {
                 });
         },
         deletarRegistro(id) {
+            const funcionario = this.dados.find(f => f.id_funcionario === id);
+
+            if (this.id_funcionario == funcionario.id_cargo) {
+                showToast('Gerente não pode deletar um administrador.', 'danger');
+                return;
+            }
+
             axios.post('/deletarFuncionario', { id_funcionario: id })
                 .then(resp => {
                     if (resp.data == -1) {
@@ -193,6 +202,15 @@ window.Funcionarios = function () {
             this.registro.imagem = this.dados[index].imagem ? this.dados[index].imagem : null;
             document.getElementById("selectedImage").src = this.registro.imagem || '../src/img/user-icon-placeholder.jpg';
             document.getElementById("input_img").value = '';
+        },
+        getFuncionario() {
+            axios.get('/identity').then(resp => {
+                this.pedido.id_funcionario = resp.data.id_funcionario;
+                this.id_funcionario = resp.data.id_funcionario;
+            })
+            .catch(error => {
+                console.log(error);
+            });
         },
         limparRegistro() {
             this.registro = { id_funcionario: -1, nome: '', cpf: '', telefone: '', id_cargo: '' };
