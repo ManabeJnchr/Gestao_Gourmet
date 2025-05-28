@@ -75,9 +75,9 @@ class RelatorioService {
                     ic.valor AS valor_atual,
                     ic.ativo,
                     COALESCE(SUM(ip.quantidade), 0) AS vezes_pedido,
-                    COALESCE(SUM(ip.valor), 0) AS valor_sem_adicionais,
-                    COALESCE(SUM(aip.valor_adicionais), 0) AS valor_adicionais,
-                    COALESCE(SUM(ip.valor), 0) + COALESCE(SUM(aip.valor_adicionais), 0) AS valor_total_com_adicionais
+                    COALESCE(SUM(ip.valor * ip.quantidade), 0) AS valor_sem_adicionais,
+                    COALESCE(SUM(aip.valor_adicionais * ip.quantidade), 0) AS valor_adicionais,
+                    COALESCE(SUM(ip.valor * ip.quantidade), 0) + COALESCE(SUM(aip.valor_adicionais * ip.quantidade), 0) AS valor_total_com_adicionais
                 FROM itemcardapio ic JOIN categoria c ON ic.id_categoria = c.id_categoria
                                     LEFT JOIN itempedido ip ON ic.id_itemcardapio = ip.id_itemcardapio
                                     JOIN (

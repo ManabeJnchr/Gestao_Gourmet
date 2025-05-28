@@ -105,7 +105,7 @@ class PagamentoService {
                 somaPagamentos += valor;
             }
 
-
+         
             if (somaPagamentos !== valorPedido) {
                 throw { statusCode: 400, message: "Soma dos pagamentos é diferente do valor total do pedido" }
             }
