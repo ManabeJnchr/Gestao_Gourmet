@@ -15,6 +15,7 @@ window.Cardapio = function () {
                     }));
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao listar cardápio.', 'danger');
                     console.log(error);
                 })
                 .finally(function () {
@@ -27,6 +28,7 @@ window.Cardapio = function () {
                     this.categorias = resp.data;
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao listar categorias.', 'danger');
                     console.log(error);
                 })
                 .finally(function () {
@@ -59,7 +61,8 @@ window.Cardapio = function () {
                     this.tela = 'GER';
                 })
                 .catch(error => {
-
+                    showToast(error.response?.data?.erro || 'Erro ao salvar item de cardápio.', 'danger');
+                    console.log(error);
                 })
                 .finally(() => {
 
@@ -73,6 +76,7 @@ window.Cardapio = function () {
                     }
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao deletar item de cardápio.', 'danger');
                     console.log(error);
                 });
         },
@@ -133,6 +137,7 @@ window.Funcionarios = function () {
                     }));
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao listar funcionários.', 'danger');
                     console.log(error);
                 });
         },
@@ -166,8 +171,8 @@ window.Funcionarios = function () {
                     }
                 })
                 .catch(error => {
-                    const errorMessage = error.response?.data?.erro?.message || error.response?.data?.message || 'Erro ao salvar funcionário.';
-                    showToast(errorMessage, 'danger');
+                    showToast(error.response?.data?.erro || 'Erro ao salvar funcionário.', 'danger');
+                    console.log(error);
                 });
         },
         deletarRegistro(id) {
@@ -189,8 +194,8 @@ window.Funcionarios = function () {
                     }
                 })
                 .catch(error => {
-                    const errorMessage = error.response?.data?.erro?.message || error.response?.data?.message || 'Erro ao deletar funcionário.';
-                    showToast(errorMessage, 'danger');
+                    showToast(error.response?.data?.erro || 'Erro ao deletar funcionários.', 'danger');
+                    console.log(error);
                 });
         },
         editarRegistro(index) {
@@ -209,6 +214,7 @@ window.Funcionarios = function () {
                 this.id_funcionario = resp.data.id_funcionario;
             })
             .catch(error => {
+                showToast(error.response?.data?.erro || 'Erro ao buscar funcionário.', 'danger');
                 console.log(error);
             });
         },
@@ -233,6 +239,7 @@ window.Mesas = function () {
                     this.dados = resp.data;
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao listar mesas.', 'danger');
                     console.log(error);
                 });
         },
@@ -242,6 +249,7 @@ window.Mesas = function () {
                     this.buscarDados();
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao salvar mesa.', 'danger');
                     console.log(error);
                 });
         },
@@ -253,6 +261,7 @@ window.Mesas = function () {
                     }
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao deletar mesa.', 'danger');
                     console.log(error);
                 });
         },

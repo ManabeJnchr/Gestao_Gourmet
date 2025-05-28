@@ -121,7 +121,8 @@ window.EfetuarPedido = function () {
                     this.itemAtual.adicionais = [];
                 }
             } else {
-                console.error('Item do cardápio não encontrado.');
+                showToast(error.response?.data?.erro || 'Item do cardápio não encontrado.', 'danger');
+                console.log(error);
             }
         },
         fecharPedido() {
@@ -192,6 +193,7 @@ window.EfetuarPedido = function () {
                 this.id_funcionario = resp.data.id_funcionario;
             })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao carregar funcionario.', 'danger');
                     console.log(error);
                 });
         },
@@ -486,6 +488,7 @@ window.EfetuarPagamento = function () {
                     this.meios_pagamento = resp.data;
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao listar meios pagamentos.', 'danger');
                     console.log(error);
                 });
         },

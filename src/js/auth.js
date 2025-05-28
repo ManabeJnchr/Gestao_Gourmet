@@ -39,6 +39,7 @@ window.Auth = function () {
                 }
             })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao carregar dados do usuário.', 'danger');
                     console.log(error);
                 });
         },
@@ -62,6 +63,7 @@ window.Auth = function () {
                 }
             })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao carregar dados do usuário.', 'danger');
                     console.log(error);
                 });
         },
@@ -85,6 +87,7 @@ window.Auth = function () {
                 }
             })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao carregar dados do usuário.', 'danger');
                     console.log(error);
                 });
         },
@@ -104,6 +107,7 @@ window.Auth = function () {
                 document.getElementById('div_auth').classList.remove('d-none');
             })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao carregar dados do usuário.', 'danger');
                     console.log(error);
                 });
         },
@@ -112,6 +116,7 @@ window.Auth = function () {
                 window.location.href = "/";
             })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Erro ao realizar logout.', 'danger');
                     console.log(error);
                 });
         },
@@ -144,7 +149,7 @@ window.Auth = function () {
                 showToast('Senha alterada com sucesso!', 'success');
                 window.location.reload();
             }).catch(error => {
-                showToast('Erro ao alterar a senha.', 'danger');
+                showToast(error.response?.data?.erro || 'Erro ao alterar senha.', 'danger');
                 console.log(error);
             });
         }
@@ -165,8 +170,8 @@ window.Login = function () {
                     }
                 })
                 .catch(error => {
+                    showToast(error.response?.data?.erro || 'Ocorreu um erro ao tentar efetuar o login.', 'danger');
                     console.log(error);
-                    showToast('Ocorreu um erro ao tentar efetuar o login.', 'danger');
                 });
         },
         solicitarResetSenha() {
