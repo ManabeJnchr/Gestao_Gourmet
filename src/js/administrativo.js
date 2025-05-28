@@ -35,12 +35,18 @@ window.Cardapio = function () {
         },
         salvarRegistro() {
             const formData = new FormData();
-            const fileInput = document.getElementById('input_img') || document.getElementById('selectedImage');
+            const fileInput = document.getElementById('input_img');
 
-            if (fileInput.files[0]) {
+            // Só adiciona o arquivo se o usuário selecionou um novo
+            if (fileInput && fileInput.files && fileInput.files[0]) {
                 formData.append('file', fileInput.files[0]);
             }
-            formData.append('registro', JSON.stringify(this.registro));
+
+            // Não envie a propriedade imagem se não for nova
+            const registroParaEnviar = { ...this.registro };
+            delete registroParaEnviar.imagem; // Remova a propriedade imagem
+
+            formData.append('registro', JSON.stringify(registroParaEnviar));
 
             axios.post('/salvarItemCardapio', formData, {
                 headers: {
@@ -48,7 +54,6 @@ window.Cardapio = function () {
                 }
             })
                 .then(resp => {
-                    console.log(resp.data);
                     this.buscarDados();
                     this.limparRegistro();
                     this.tela = 'GER';
@@ -72,16 +77,31 @@ window.Cardapio = function () {
                 });
         },
         editarRegistro(index) {
+            // Preencha os campos normalmente, mas NÃO coloque imagem base64 no registro
             this.registro.id_itemcardapio = this.dados[index].id_itemcardapio;
             this.registro.nome = this.dados[index].nome;
             this.registro.valor = this.dados[index].valor;
             this.registro.id_categoria = this.dados[index].id_categoria;
-            this.registro.imagem = this.dados[index].imagemBase64;
             this.registro.adicionais = this.dados[index].adicionais;
             this.registro.descricao = this.dados[index].descricao;
+            this.registro.imagem = ''; // Limpe o campo imagem
+
+            // Atualize a imagem visualmente
+            const selectedImage = document.getElementById("selectedImage");
+            selectedImage.src = this.dados[index].imagemBase64 || '/src/img/add-item-cardapio-icon.jpg';
+
+            // Limpe o input de arquivo
+            const fileInput = document.getElementById('input_img');
+            if (fileInput) fileInput.value = '';
         },
         limparRegistro() {
             this.registro = { id_itemcardapio: -1, nome: '', valor: '', descricao: '', id_categoria: '', imagem: '', adicionais: [] };
+            // Limpe a imagem visual
+            const selectedImage = document.getElementById("selectedImage");
+            if (selectedImage) selectedImage.src = '/src/img/add-item-cardapio-icon.jpg';
+            // Limpe o input de arquivo
+            const fileInput = document.getElementById('input_img');
+            if (fileInput) fileInput.value = '';
         },
         incluirAdicional() {
             if (!this.registro.adicionais) {

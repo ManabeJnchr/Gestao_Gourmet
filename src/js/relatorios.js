@@ -192,6 +192,8 @@ window.RelPedido = function () {
                         },
                         title: {
                             text: 'Valor por meio de pagamento (R$)',
+                            align: 'left',
+                            offsetX: 110
                         },
                     }
                 }]
