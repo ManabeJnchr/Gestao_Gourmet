@@ -425,6 +425,11 @@ window.EfetuarPagamento = function () {
             this.pag = { id_meiopagamento: '', valor_pagamento: 0 };
         },
         buscarPedido(id_pedido) {
+            this.pagamentos = [];
+            this.total_pago = 0;
+            this.total_restante = 0;
+            this.valor_total = 0;
+
             axios.post('/buscarPedido', { id_pedido: id_pedido }).then(resp => {
                 if (resp.data && Array.isArray(resp.data.itens)) {
                     resp.data.itens = resp.data.itens.map(item => {
