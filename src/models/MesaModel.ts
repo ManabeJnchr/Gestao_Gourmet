@@ -9,6 +9,7 @@ class MesaModel {
                 `SELECT m.id_mesa, m.numero_mesa, m.qtd_lugares, m.id_status, sm.status 
                  FROM mesa m
                  LEFT JOIN statusmesa sm ON sm.id_status = m.id_status 
+                 WHERE ativo
                  ORDER BY m.numero_mesa ASC`
             );
 
@@ -64,7 +65,8 @@ class MesaModel {
     static async deletarMesa(id_mesa: Number) {
         try {
             const result = await pool.query(
-                `DELETE FROM mesa 
+                `UPDATE mesa
+                 SET ativo = false
                  WHERE id_mesa = $1`,
                  [id_mesa]
             );
