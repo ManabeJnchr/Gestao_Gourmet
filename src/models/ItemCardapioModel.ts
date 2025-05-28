@@ -38,18 +38,36 @@ class ItemCardapioModel {
         }
     }
 
-    static async atualizarItemCardapio(id_itemcardapio: number, nome: any, valor: number, id_categoria: number, descricao: any, imagem: any, client : PgClient =pool) {
+    static async atualizarItemCardapio(id_itemcardapio: number, nome: any, valor: number, id_categoria: number, descricao: any, client : PgClient =pool) {
         try {
             const result = await client.query(
                 `UPDATE itemcardapio 
-                 SET nome = $1, valor = $2, id_categoria = $3, descricao = $4, imagem = $5
-                 WHERE id_itemcardapio = $6
+                 SET nome = $1, valor = $2, id_categoria = $3, descricao = $4
+                 WHERE id_itemcardapio = $5
                  RETURNING *
                 `,
-                 [nome, valor, id_categoria, descricao, imagem, id_itemcardapio]
+                 [nome, valor, id_categoria, descricao, id_itemcardapio]
             );
 
             return result.rows[0];
+        } catch (err: any) {
+            console.error("Erro no model", err);
+            throw {statusCode:500, message:"Erro ao atualizar item do cardápio, tente novamente"};
+        }
+    }
+
+    static async atualizarImagem(id_itemcardapio: number, imagem: any, client : PgClient =pool) {
+        try {
+            const result = await client.query(
+                `UPDATE itemcardapio 
+                 SET imagem = $1
+                 WHERE id_itemcardapio = $2
+                 RETURNING imagem
+                `,
+                 [imagem, id_itemcardapio]
+            );
+
+            return result.rows[0].imagem;
         } catch (err: any) {
             console.error("Erro no model", err);
             throw {statusCode:500, message:"Erro ao atualizar item do cardápio, tente novamente"};

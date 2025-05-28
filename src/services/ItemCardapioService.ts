@@ -142,7 +142,13 @@ class ItemCardapioService {
         try { 
             await client.query("BEGIN");
 
-            const item = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, imagemBuffer, client)
+            const item = await ItemCardapioModel.atualizarItemCardapio(id_itemcardapio, nome, valor, id_categoria, descricao, client)
+            console.log(item);
+            if (imagemBuffer) {
+                const imagem = await ItemCardapioModel.atualizarImagem(id_itemcardapio, imagemBuffer, client);
+                item.imagem = imagem;
+            }
+            console.log(item);
 
             const adicionaisAntigos = await AdicionaisService.listarAdicionais({id_itemcardapio});
             const adicionaisAntigosMap = new Map(adicionaisAntigos.map(a => [a.id_adicional, a]))
