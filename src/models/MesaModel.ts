@@ -66,7 +66,7 @@ class MesaModel {
         try {
             const result = await pool.query(
                 `UPDATE mesa
-                 SET ativo = false
+                 SET id_status = 1
                  WHERE id_mesa = $1`,
                  [id_mesa]
             );
