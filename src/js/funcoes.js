@@ -64,3 +64,17 @@ window.formatarDataHora = function (dataISO) {
     const segundo = String(data.getSeconds()).padStart(2, '0');
     return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
 }
+
+window.togglePassword = function(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === "password") {
+        input.type = "text";
+        btn.querySelector('i').classList.remove('mdi-eye');
+        btn.querySelector('i').classList.add('mdi-eye-off');
+    } else {
+        input.type = "password";
+        btn.querySelector('i').classList.remove('mdi-eye-off');
+        btn.querySelector('i').classList.add('mdi-eye');
+    }
+}

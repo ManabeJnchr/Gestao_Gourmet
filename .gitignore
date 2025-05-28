@@ -3,4 +3,5 @@ node_modules/
 uploads/*
 !.gitkeep
 public/css/*
+public/assets/*
 dist/*
