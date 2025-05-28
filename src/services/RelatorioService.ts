@@ -1,9 +1,3 @@
-import PedidoModel from "../models/PedidoModel";
-import MesaService from "./MesaService";
-import pool from "../database";
-import MesaModel from "../models/MesaModel";
-import PagamentoModel from "../models/PagamentoModel";
-import PedidoService from "./PedidoService";
 import RelatorioModel from "../models/RelatorioModel";
 
 interface RelatorioParams {
@@ -48,7 +42,7 @@ class RelatorioService {
             }
 
             if (conditionsData.length > 0) {
-                filtroData += 'WHERE ' + conditionsData.join(' AND ');
+                filtroData += 'AND ' + conditionsData.join(' AND ');
             }
 
             const conditions = [];
@@ -81,7 +75,8 @@ class RelatorioService {
                 FROM itemcardapio ic JOIN categoria c ON ic.id_categoria = c.id_categoria
                                     LEFT JOIN itempedido ip ON ic.id_itemcardapio = ip.id_itemcardapio
                                     JOIN (
-                                        SELECT * FROM pedido  ${filtroData}
+                                        SELECT * FROM pedido  
+                                        WHERE pedido.id_statuspedido = 3 ${filtroData}
                                     ) p ON p.id_pedido = ip.id_pedido
                                     LEFT JOIN (
                                                 SELECT id_itempedido, SUM(valor) AS valor_adicionais
@@ -130,7 +125,7 @@ class RelatorioService {
             }
 
             if (conditionsData.length > 0) {
-                filtroData += 'WHERE ' + conditionsData.join(' AND ');
+                filtroData += 'AND ' + conditionsData.join(' AND ');
             }
 
             const conditions = [];
@@ -158,7 +153,7 @@ class RelatorioService {
                         p.id_funcionario,
                         COUNT(DISTINCT p.id_pedido) AS qtde_atendimentos
                     FROM pedido p
-                    ${filtroData}
+                    WHERE p.id_statuspedido = 3 ${filtroData}
                     GROUP BY p.id_funcionario
                 ) pedidos ON pedidos.id_funcionario = f.id_funcionario
                 LEFT JOIN (
@@ -172,7 +167,7 @@ class RelatorioService {
                         FROM adicional_itempedido
                         GROUP BY id_itempedido
                     ) aip ON aip.id_itempedido = ip.id_itempedido
-                    ${filtroData}
+                    WHERE p.id_statuspedido = 3 ${filtroData}
                     GROUP BY p.id_funcionario
                 ) valores ON valores.id_funcionario = f.id_funcionario
                 ${filtroFuncionario}
@@ -237,7 +232,7 @@ class RelatorioService {
                     FROM adicional_itempedido
                     GROUP BY id_itempedido
                 ) aip ON aip.id_itempedido = ip.id_itempedido
-                ${conditions.length ? 'WHERE ' + conditions.join(' AND ') : ''}
+                WHERE p.id_statuspedido = 3 ${conditions.length ? 'AND ' + conditions.join(' AND ') : ''}
             `
 
             const result = await RelatorioModel.gerarRelatorio(query, values)
