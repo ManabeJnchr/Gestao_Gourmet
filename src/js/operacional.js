@@ -193,7 +193,6 @@ window.EfetuarPedido = function () {
                 this.id_funcionario = resp.data.id_funcionario;
             })
                 .catch(error => {
-                    showToast(error.response?.data?.erro || 'Erro ao carregar funcionario.', 'danger');
                     console.log(error);
                 });
         },
