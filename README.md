@@ -317,11 +317,20 @@ Este projeto está sob a licença **ISC**. Veja o arquivo [LICENSE](LICENSE) par
 
 ---
 
+## � Equipe de Desenvolvedores
+
+Este projeto foi desenvolvido pela seguinte equipe:
+
+- **[Jean Luca](https://github.com/Jean-Luk)** - [@Jean-Luk](https://github.com/Jean-Luk)
+- **[Lucas Samuel](https://github.com/ManabeJnchr)** - [@ManabeJnchr](https://github.com/ManabeJnchr)  
+- **[José Victor](https://github.com/Zevitu22)** - [@Zevitu22](https://github.com/Zevitu22)
+- **[Lucas Felipe](https://github.com/lfsiqueiras)** - [@lfsiqueiras](https://github.com/lfsiqueiras)
+- **[Bianca Amaral](https://github.com/Bibis2801)** - [@Bibis2801](https://github.com/Bibis2801)
+
 ## 📞 Suporte
 
 Para dúvidas ou suporte, entre em contato:
-- **Email**: seu-email@exemplo.com
-- **GitHub Issues**: [Criar issue](https://github.com/seu-usuario/gestao-gourmet/issues)
+- **GitHub Issues**: [Criar issue](https://github.com/ManabeJnchr/Gestao_Gourmet/issues)
 
 ---
 
