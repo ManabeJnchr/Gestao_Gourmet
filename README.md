@@ -327,11 +327,6 @@ Este projeto foi desenvolvido pela seguinte equipe:
 - **[Lucas Felipe](https://github.com/lfsiqueiras)** - [@lfsiqueiras](https://github.com/lfsiqueiras)
 - **[Bianca Amaral](https://github.com/Bibis2801)** - [@Bibis2801](https://github.com/Bibis2801)
 
-## 📞 Suporte
-
-Para dúvidas ou suporte, entre em contato:
-- **GitHub Issues**: [Criar issue](https://github.com/ManabeJnchr/Gestao_Gourmet/issues)
-
 ---
 
 **Desenvolvido com ❤️ para facilitar a gestão de restaurantes**
