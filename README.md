@@ -84,43 +84,17 @@ Gestao_Gourmet/
 │   │   ├── itemCardapioController.ts
 │   │   ├── mesaController.ts
 │   │   ├── pedidoController.ts
-│   │   ├── pagamentoController.ts
-│   │   └── relatorioController.ts
-│   │
-│   ├── models/               # Modelos de dados
-│   │   ├── FuncionarioModel.ts
-│   │   ├── ItemCardapioModel.ts
-│   │   ├── MesaModel.ts
-│   │   ├── PedidoModel.ts
 │   │   └── ...
 │   │
 │   ├── services/             # Lógica de negócio
 │   │   ├── FuncionarioService.ts
-│   │   ├── ItemCardapioService.ts
-│   │   ├── PedidoService.ts
-│   │   └── ...
-│   │
-│   ├── routes/               # Definição de rotas
-│   │   ├── authRoutes.ts
-│   │   ├── funcionarioRoutes.ts
 │   │   ├── pedidoRoutes.ts
 │   │   └── index.ts
 │   │
-│   ├── database/             # Configuração do banco
-│   │   ├── index.ts
-│   │   ├── dbinit.ts
-│   │   └── resetdb.ts
-│   │
 │   ├── js/                   # Scripts do frontend
-│   │   ├── auth.js
-│   │   ├── administrativo.js
-│   │   ├── operacional.js
 │   │   └── funcoes.js
 │   │
 │   └── server.ts             # Servidor principal
-│
-├── public/                   # Arquivos estáticos
-│   ├── html/                 # Páginas HTML
 │   ├── css/                  # Estilos CSS
 │   ├── js/                   # Scripts públicos
 │   └── src/img/              # Imagens do sistema
@@ -180,9 +154,6 @@ O sistema estará disponível em `http://localhost:3001`
 
 ### Primeiro Acesso
 1. Acesse `http://localhost:3001`
-2. Faça login com as credenciais padrão do administrador
-3. Configure funcionários, mesas e cardápio
-4. Comece a gerenciar pedidos
 
 ### Fluxo Operacional
 1. **Funcionário Operacional**: Cria pedidos e adiciona itens
@@ -239,13 +210,7 @@ O sistema estará disponível em `http://localhost:3001`
 - **Gerente**: Acesso a relatórios e configurações básicas
 - **Operacional**: Acesso a pedidos e caixa
 
-### Funcionalidades de Segurança
-- Sistema de login com cookies
-- Controle de permissões por cargo
-- Redefinição de senha com aprovação
-- Logout automático
 
-### Reset de Senha
 - Funcionários podem solicitar reset
 - Administradores aprovam/rejeitam solicitações
 - Processo seguro de redefinição
